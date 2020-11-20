@@ -1,3 +1,6 @@
 pillow
 django==2.2
-
+drf-haystack 
+elasticsearch
+djangorestframework
+setuptools_scm
