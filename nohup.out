@@ -1,0 +1,72 @@
+[2020-11-20 23:37:21 +0800] [31499] [INFO] Starting gunicorn 20.0.4
+[2020-11-20 23:37:21 +0800] [31499] [INFO] Listening at: unix:/tmp/182.92.239.145.socket (31499)
+[2020-11-20 23:37:21 +0800] [31499] [INFO] Using worker: sync
+[2020-11-20 23:37:21 +0800] [31502] [INFO] Booting worker with pid: 31502
+[2020-11-20 23:37:21 +0800] [31502] [ERROR] Exception in worker process
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.6/dist-packages/gunicorn/arbiter.py", line 583, in spawn_worker
+    worker.init_process()
+  File "/usr/local/lib/python3.6/dist-packages/gunicorn/workers/base.py", line 119, in init_process
+    self.load_wsgi()
+  File "/usr/local/lib/python3.6/dist-packages/gunicorn/workers/base.py", line 144, in load_wsgi
+    self.wsgi = self.app.wsgi()
+  File "/usr/local/lib/python3.6/dist-packages/gunicorn/app/base.py", line 67, in wsgi
+    self.callable = self.load()
+  File "/usr/local/lib/python3.6/dist-packages/gunicorn/app/wsgiapp.py", line 49, in load
+    return self.load_wsgiapp()
+  File "/usr/local/lib/python3.6/dist-packages/gunicorn/app/wsgiapp.py", line 39, in load_wsgiapp
+    return util.import_app(self.app_uri)
+  File "/usr/local/lib/python3.6/dist-packages/gunicorn/util.py", line 358, in import_app
+    mod = importlib.import_module(module)
+  File "/usr/lib/python3.6/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 994, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 971, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 955, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 665, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 678, in exec_module
+  File "<frozen importlib._bootstrap>", line 219, in _call_with_frames_removed
+  File "/home/sites/ssad.com/saadback/saadback/wsgi.py", line 12, in <module>
+    from django.core.wsgi import get_wsgi_application
+ModuleNotFoundError: No module named 'django'
+[2020-11-20 23:37:21 +0800] [31502] [INFO] Worker exiting (pid: 31502)
+[2020-11-20 23:37:21 +0800] [31499] [INFO] Shutting down: Master
+[2020-11-20 23:37:21 +0800] [31499] [INFO] Reason: Worker failed to boot.
+[2020-11-20 23:38:23 +0800] [31516] [INFO] Starting gunicorn 20.0.4
+[2020-11-20 23:38:23 +0800] [31516] [INFO] Listening at: unix:/tmp/182.92.239.145.socket (31516)
+[2020-11-20 23:38:23 +0800] [31516] [INFO] Using worker: sync
+[2020-11-20 23:38:23 +0800] [31519] [INFO] Booting worker with pid: 31519
+[2020-11-20 23:38:23 +0800] [31519] [ERROR] Exception in worker process
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.6/dist-packages/gunicorn/arbiter.py", line 583, in spawn_worker
+    worker.init_process()
+  File "/usr/local/lib/python3.6/dist-packages/gunicorn/workers/base.py", line 119, in init_process
+    self.load_wsgi()
+  File "/usr/local/lib/python3.6/dist-packages/gunicorn/workers/base.py", line 144, in load_wsgi
+    self.wsgi = self.app.wsgi()
+  File "/usr/local/lib/python3.6/dist-packages/gunicorn/app/base.py", line 67, in wsgi
+    self.callable = self.load()
+  File "/usr/local/lib/python3.6/dist-packages/gunicorn/app/wsgiapp.py", line 49, in load
+    return self.load_wsgiapp()
+  File "/usr/local/lib/python3.6/dist-packages/gunicorn/app/wsgiapp.py", line 39, in load_wsgiapp
+    return util.import_app(self.app_uri)
+  File "/usr/local/lib/python3.6/dist-packages/gunicorn/util.py", line 358, in import_app
+    mod = importlib.import_module(module)
+  File "/usr/lib/python3.6/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 994, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 971, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 955, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 665, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 678, in exec_module
+  File "<frozen importlib._bootstrap>", line 219, in _call_with_frames_removed
+  File "/home/sites/ssad.com/saadback/saadback/wsgi.py", line 12, in <module>
+    from django.core.wsgi import get_wsgi_application
+ModuleNotFoundError: No module named 'django'
+[2020-11-20 23:38:23 +0800] [31519] [INFO] Worker exiting (pid: 31519)
+[2020-11-20 23:38:23 +0800] [31516] [INFO] Shutting down: Master
+[2020-11-20 23:38:23 +0800] [31516] [INFO] Reason: Worker failed to boot.
+[2020-11-20 23:46:33 +0800] [31591] [INFO] Starting gunicorn 20.0.4
+[2020-11-20 23:46:33 +0800] [31591] [INFO] Listening at: unix:/tmp/182.92.239.145.socket (31591)
+[2020-11-20 23:46:33 +0800] [31591] [INFO] Using worker: sync
+[2020-11-20 23:46:33 +0800] [31594] [INFO] Booting worker with pid: 31594
