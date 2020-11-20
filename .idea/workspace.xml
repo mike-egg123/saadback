@@ -1,7 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="b4c32a7c-51a4-4759-91d6-1561f01c39b9" name="Default Changelist" comment="" />
+    <list default="true" id="b4c32a7c-51a4-4759-91d6-1561f01c39b9" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/media/avatar/20201120/ICO.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/media/checkcode/h7mj.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/user/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/user/admin.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/user/apps.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/user/forms.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/user/migrations/0001_initial.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/user/migrations/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/user/models.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/user/tests.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/user/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/a376c2d4-b8f2-4e5f-b572-01c289cc1b33.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/a376c2d4-b8f2-4e5f-b572-01c289cc1b33.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/saadback/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/saadback/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/saadback/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/saadback/urls.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -47,13 +65,20 @@
       </list>
     </option>
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
   <component name="ProjectId" id="1kH0XUoszYzyo1b8ktX2J31MaxZ" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showExcludedFiles" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="DatabaseDriversLRU" value="sqlite" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
@@ -125,11 +150,19 @@
       <option name="presentableId" value="Default" />
       <updated>1605342248395</updated>
       <workItem from="1605342250849" duration="3204000" />
+      <workItem from="1605346121842" duration="46000" />
+      <workItem from="1605878987652" duration="2768000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
+  </component>
+  <component name="UnknownFeatures">
+    <option featureType="com.intellij.fileTypeFactory" implementationName="requirements.txt" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
   </component>
   <component name="WindowStateProjectService">
     <state x="96" y="3" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1605343128306">
@@ -140,28 +173,28 @@
       <screen x="0" y="0" width="1280" height="689" />
     </state>
     <state x="421" y="103" key="FileChooserDialogImpl/0.0.1280.689@0.0.1280.689" timestamp="1605343127095" />
-    <state width="1237" height="166" key="GridCell.Tab.0.bottom" timestamp="1605345457648">
+    <state width="1237" height="166" key="GridCell.Tab.0.bottom" timestamp="1605880759839">
       <screen x="0" y="0" width="1280" height="689" />
     </state>
-    <state width="1237" height="166" key="GridCell.Tab.0.bottom/0.0.1280.689@0.0.1280.689" timestamp="1605345457648" />
-    <state width="1237" height="166" key="GridCell.Tab.0.center" timestamp="1605345457648">
+    <state width="1237" height="166" key="GridCell.Tab.0.bottom/0.0.1280.689@0.0.1280.689" timestamp="1605880759839" />
+    <state width="1237" height="166" key="GridCell.Tab.0.center" timestamp="1605880759839">
       <screen x="0" y="0" width="1280" height="689" />
     </state>
-    <state width="1237" height="166" key="GridCell.Tab.0.center/0.0.1280.689@0.0.1280.689" timestamp="1605345457648" />
-    <state width="1237" height="166" key="GridCell.Tab.0.left" timestamp="1605345457648">
+    <state width="1237" height="166" key="GridCell.Tab.0.center/0.0.1280.689@0.0.1280.689" timestamp="1605880759839" />
+    <state width="1237" height="166" key="GridCell.Tab.0.left" timestamp="1605880759839">
       <screen x="0" y="0" width="1280" height="689" />
     </state>
-    <state width="1237" height="166" key="GridCell.Tab.0.left/0.0.1280.689@0.0.1280.689" timestamp="1605345457648" />
-    <state width="1237" height="166" key="GridCell.Tab.0.right" timestamp="1605345457648">
+    <state width="1237" height="166" key="GridCell.Tab.0.left/0.0.1280.689@0.0.1280.689" timestamp="1605880759839" />
+    <state width="1237" height="166" key="GridCell.Tab.0.right" timestamp="1605880759839">
       <screen x="0" y="0" width="1280" height="689" />
     </state>
-    <state width="1237" height="166" key="GridCell.Tab.0.right/0.0.1280.689@0.0.1280.689" timestamp="1605345457648" />
+    <state width="1237" height="166" key="GridCell.Tab.0.right/0.0.1280.689@0.0.1280.689" timestamp="1605880759839" />
     <state x="371" y="153" key="com.intellij.database.dbimport.ImportUtil.MyDialog" timestamp="1605343189384">
       <screen x="0" y="0" width="1280" height="689" />
     </state>
     <state x="371" y="153" key="com.intellij.database.dbimport.ImportUtil.MyDialog/0.0.1280.689@0.0.1280.689" timestamp="1605343189384" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/saadback$manage.coverage" NAME="manage Coverage Results" MODIFIED="1605344877942" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/saadback$manage.coverage" NAME="manage Coverage Results" MODIFIED="1605880759830" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>
