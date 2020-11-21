@@ -10,6 +10,20 @@ from django.http import JsonResponse
 
 from .forms import ProfileForm
 from .models import Profile
+from django.contrib.auth.backends import ModelBackend
+from django.db.models import Q
+from .models import Profile
+
+
+class CustomBackend(ModelBackend):
+    """邮箱也能登录"""
+    def authenticate(self, request, username=None, password=None, **kwargs):
+        try:
+            user = User.objects.get(Q(username=username) | Q(email=username))
+            if user.check_password(password):
+                return user
+        except Exception as e:
+            return None
 
 
 # Create your views here.
@@ -31,7 +45,7 @@ class Users:
                 "status": 0,
                 "username": str(request.user),
                 "email": str(request.user.email),
-                "userid":str(request.user.id),
+                "userid":request.user.id,
                 "phone":str(userprofile.phone),
                 "bio":str(userprofile.bio),
                 "avatar": avatar
@@ -46,11 +60,12 @@ class Users:
     def login_user(request):
         if request.method == "POST":
             data = json.loads(request.body)
-            username = data.get("username")
-            password = data.get("password")
+            email = data.get("u_email")
+            password = data.get("u_password")
             print(password)
-            if username is not None and password is not None:
-                islogin = authenticate(request, username=username, password=password)
+            if email is not None and password is not None:
+                islogin = authenticate(request, username=email, password=password)
+                print(islogin)
                 if islogin:
                     user_id = islogin.id
                     login(request, islogin)
@@ -65,10 +80,10 @@ class Users:
                     return JsonResponse({
                         "status": 0,
                         "message": "Login Success",
-                        "username": username,
+                        "username": request.user.username,
                         "password":password,
                         "email": str(request.user.email),
-                        "userid": str(request.user.id),
+                        "userid": request.user.id,
                         "phone": str(userprofile.phone),
                         "bio": str(userprofile.bio),
                         "avatar": avatar
@@ -102,9 +117,9 @@ class Users:
     def register(request):
         if request.method == "POST":
             data = json.loads(request.body)
-            username = data.get("username")
-            password = data.get("password")
-            email = data.get("email")
+            username = data.get("u_username")
+            password = data.get("u_password")
+            email = data.get("u_email")
             if username is not None and password is not None and email is not None:
                 try:
                     user = User.objects.create_user(username=username, password=password, email=email)
