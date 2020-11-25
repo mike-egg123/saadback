@@ -9,6 +9,7 @@ from django.contrib.auth.models import User
 from django.http import JsonResponse
 
 from .forms import ProfileForm
+# 载入数据模型Profile
 from .models import Profile
 
 
