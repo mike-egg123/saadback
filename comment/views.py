@@ -26,6 +26,10 @@ class CreateComment:
                 comment.body = comment_body
                 # 保存后提交
                 comment.save()
+                blog = BlogPost.objects.get(id=blog_id)
+                blog.tipnum = blog.tipnum + 1
+                blog.save(update_fields=['tipnum'])
+                print(blog.tipnum)
                 # 获取用户信息
                 user_id = int(request.user.id)
                 userprofile = Profile.objects.get(user_id=user_id)
@@ -42,10 +46,6 @@ class CreateComment:
                           "name": str(request.user),
                           "avatar": avatar
                         }
-                    })
-                return JsonResponse({
-                        "status": 3,
-                        "message": "评论失败！"
                     })
             # 处理错误请求
             else:

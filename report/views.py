@@ -23,9 +23,7 @@ class CreateReport:
                 report_body = data.get('text')
                 # 尝试举报
                 # 创建新的举报对象
-                print(8)
                 report = Report.objects.create(user_id=request.user.id, blog_id=blog_id)
-                print(9)
                 report.body = report_body
                 # 保存后提交
                 report.save()
@@ -34,10 +32,6 @@ class CreateReport:
                         "data": {
                           "status": 0
                         }
-                    })
-                return JsonResponse({
-                        "status": 3,
-                        "message": "举报失败！"
                     })
             # 处理错误请求
             else:
@@ -53,7 +47,4 @@ class CreateReport:
                 "status": 1,
                 "message": "请登录后再举报！"
             })
-
-
-
 

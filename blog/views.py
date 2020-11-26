@@ -93,49 +93,49 @@ class Blog:
                 })
             data = json.loads(request.body)
             blogid = data.get("id")
+            print(blogid)
+            print(0)
             if blogid is not None:
-                try:
-                    print(1)
-                    blog = BlogPost.objects.get(id=blogid)
-                    blog.readnum = blog.readnum + 1
-                    blog.save(update_fields=['readnum'])
-                    comments = Comment.objects.filter(blog=blogid)
-                    json_tiplist = []
-                    for comment in comments:
-                        # 获取用户信息
-                        user_id = int(comment.user.id)
-                        userprofile = Profile.objects.get(user_id=user_id)
-                        if userprofile.avatar and hasattr(userprofile.avatar, 'url'):
-                            avatar = "http://182.92.239.145" + str(userprofile.avatar.url)
-                        else:
-                            avatar = ""
-                        json_dict = {}
-                        json_dict["id"] = comment.user.userid
-                        json_dict["name"] = comment.user.username
-                        json_dict["img"] = avatar
-                        json_dict["content"] = comment.body
-                        json_tiplist.append(json_dict)
-                    return JsonResponse({
-                        "status": 0,
-                        "message": "帖子详情查看成功！",
-                        "error_code": 0,
-                        "data": {
-                            "title": str(blog.title),
-                            "blogContent": str(blog.content),
-                            "type": blog.type,
-                            "date": blog.created,
-                            "readnum": blog.readnum,
-                            "tipnum": blog.tipnum,
-                            "likenum": blog.likenum,
-                            "like": blog.is_like,
-                            "tiplist": json_tiplist
-                        }
-                    })
-                except:
-                    return JsonResponse({
-                        "status": 3,
-                        "message": "未找到帖子"
-                    })
+                blog = BlogPost.objects.get(id=blogid)
+                blog.readnum = blog.readnum + 1
+                blog.save(update_fields=['readnum'])
+                comments = Comment.objects.filter(blog=blogid)
+                print(9)
+                print(blogid)
+                json_tiplist = []
+                print(2)
+                for comment in comments:
+                    # 获取用户信息
+                    user_id = int(comment.user.id)
+                    userprofile = Profile.objects.get(user_id=user_id)
+                    if userprofile.avatar and hasattr(userprofile.avatar, 'url'):
+                        avatar = "http://182.92.239.145" + str(userprofile.avatar.url)
+                    else:
+                        avatar = ""
+
+                    json_dict = {}
+                    json_dict["id"] = user_id
+                    json_dict["name"] = userprofile.user.username
+                    json_dict["img"] = avatar
+                    json_dict["content"] = comment.body
+                    json_tiplist.append(json_dict)
+                return JsonResponse({
+                            "status": 0,
+                            "message": "帖子详情查看成功！",
+                            "error_code": 0,
+                            "data": {
+                                "title": str(blog.title),
+                                "blogContent": str(blog.content),
+                                "type": blog.type,
+                                "date": blog.created,
+                                "readnum": blog.readnum,
+                                "tipnum": blog.tipnum,
+                                "likenum": blog.likenum,
+                                "like": blog.is_like,
+                                "tiplist": json_tiplist
+                            }
+                        })
+
             else:
                 return JsonResponse({
                     "status": 2,

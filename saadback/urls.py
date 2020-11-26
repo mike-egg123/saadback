@@ -54,7 +54,7 @@ urlpatterns = [
     path('apis/blog/getUserHotBlog', Blog.getUserHotBlog),
     # 评论
     path('apis/blog/comment', CreateComment.post_comment),
-    # 举报
+    # 举报帖子
     path('apis/blog/reportblog', CreateReport.post_report),
     # 获取用户所有评论信息
     path('apis/blog/getMyComment', Blog.getMyComment),
