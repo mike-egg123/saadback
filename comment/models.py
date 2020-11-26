@@ -1,8 +1,9 @@
 from django.db import models
-from django.db import models
 from django.contrib.auth.models import User
 from blog.models import BlogPost
 # Create your models here.
+from user.models import Profile
+from django.utils import timezone
 
 
 class Comment(models.Model):
@@ -10,18 +11,18 @@ class Comment(models.Model):
     blog = models.ForeignKey(
         BlogPost,
         on_delete=models.CASCADE,
-        related_name='comments'
     )
     # 评论的发布者
     user = models.ForeignKey(
-        User,
+        Profile,
         on_delete=models.CASCADE,
-        related_name='comments'
     )
+    # 评论id
+    commentid = models.CharField(max_length=20, blank=True)
     # 评论内容
     body = models.TextField()
     # 发布时间为当前时间
-    created = models.DateTimeField(auto_now_add=True)
+    created = models.DateTimeField(default=timezone.now)
 
     # 内部类 class Meta 用于给 model 定义元数据
     class Meta:

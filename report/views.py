@@ -13,6 +13,7 @@ from user.models import Profile
 
 class CreateReport:
     @staticmethod
+    # 举报
     def post_report(request):
         if request.user.is_authenticated:
             # 处理 POST 请求
@@ -20,28 +21,21 @@ class CreateReport:
                 data = json.loads(request.body)
                 blog_id = data.get('id')
                 report_body = data.get('text')
-                created = timezone.now()
-                blog = get_object_or_404(BlogPost, id=blog_id)
                 # 尝试举报
-                try:
-                    # 创建新的举报对象
-                    new_report = Report()
-                    new_report.blog = blog
-                    new_report.user = request.user
-                    new_report.body = report_body
-                    new_report.created = created
-                    # 保存后提交
-                    new_report.save()
-                    print(0)
-                    return JsonResponse({
+                # 创建新的举报对象
+                print(8)
+                report = Report.objects.create(user_id=request.user.id, blog_id=blog_id)
+                print(9)
+                report.body = report_body
+                # 保存后提交
+                report.save()
+                return JsonResponse({
                         "error_code": 0,
                         "data": {
                           "status": 0
                         }
                     })
-                except:
-                    print(3)
-                    return JsonResponse({
+                return JsonResponse({
                         "status": 3,
                         "message": "举报失败！"
                     })

@@ -4,6 +4,7 @@ from django.shortcuts import render, redirect
 # 引入HttpResponse
 from django.http import HttpResponse, JsonResponse
 # 引入刚才定义的ArticlePostForm表单类
+from comment.models import Comment
 from user.models import Profile
 from .forms import BlogPostForm
 # 引入User模型
@@ -98,6 +99,22 @@ class Blog:
                     blog = BlogPost.objects.get(id=blogid)
                     blog.readnum = blog.readnum + 1
                     blog.save(update_fields=['readnum'])
+                    comments = Comment.objects.filter(blog=blogid)
+                    json_tiplist = []
+                    for comment in comments:
+                        # 获取用户信息
+                        user_id = int(comment.user.id)
+                        userprofile = Profile.objects.get(user_id=user_id)
+                        if userprofile.avatar and hasattr(userprofile.avatar, 'url'):
+                            avatar = "http://182.92.239.145" + str(userprofile.avatar.url)
+                        else:
+                            avatar = ""
+                        json_dict = {}
+                        json_dict["id"] = comment.user.userid
+                        json_dict["name"] = comment.user.username
+                        json_dict["img"] = avatar
+                        json_dict["content"] = comment.body
+                        json_tiplist.append(json_dict)
                     return JsonResponse({
                         "status": 0,
                         "message": "帖子详情查看成功！",
@@ -111,12 +128,7 @@ class Blog:
                             "tipnum": blog.tipnum,
                             "likenum": blog.likenum,
                             "like": blog.is_like,
-                            # zyy~ 评论
-                            "tiplist": [{}],
-                            "id": 0,
-                            "name": "zyy",
-                            "img": "",
-                            "commentContent": "hhh"
+                            "tiplist": json_tiplist
                         }
                     })
                 except:
@@ -319,5 +331,48 @@ class Blog:
                 "message": "error method"
             })
 
+
+    @staticmethod
+    # 获取用户所有评论信息
+    def getMyComment(request):
+        if request.method == "POST":
+            if not request.user.is_authenticated:
+                return JsonResponse({
+                    "massage": "请先登录"
+                })
+            userid = request.user.id
+            comments = Comment.objects.filter(user=userid)
+            json_list = []
+            for comment in comments:
+                json_dict = {}
+                blog = comment.blog
+                profile = Profile.objects.get(user_id=blog.user_id)
+                if profile.avatar and hasattr(profile.avatar, 'url'):
+                    avatar = "http://182.92.239.145" + str(profile.avatar.url)
+                else:
+                    avatar = ""
+                user = User.objects.get(id=blog.user_id)
+                json_dict['date'] = comment.created
+                json_dict['blogid'] = blog.id
+                json_dict['blogname'] = blog.title
+                json_dict['content'] = comment.body
+                json_dict['img'] = avatar
+                json_dict['username'] = user.username
+                json_dict['userid'] = blog.user_id
+                json_dict['readnum'] = blog.readnum
+                json_dict['likenum'] = blog.likenum
+                json_dict['tipnum'] = blog.tipnum
+                json_list.append(json_dict)
+            return JsonResponse({
+                "status": 0,
+                "data": {
+                    "list": json_list
+                }
+            }, safe=False)
+        else:
+            return JsonResponse({
+                "status": 1,
+                "message": "error method"
+            })
 
 

@@ -17,6 +17,8 @@ class Report(models.Model):
         on_delete=models.CASCADE,
         related_name='reports'
     )
+    # 举报id
+    reportid = models.CharField(max_length=20, blank=True)
     # 举报理由
     body = models.TextField()
     # 举报时间为当前时间

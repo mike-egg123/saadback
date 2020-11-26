@@ -19,6 +19,8 @@ from django.urls import path
 from rest_framework import routers
 
 from blog.views import Blog
+from comment.views import CreateComment
+from report.views import CreateReport
 from user.views import Users, Personality
 
 from app01.views import BookSearchView
@@ -50,6 +52,13 @@ urlpatterns = [
     path('apis/blog/gethotblogs', Blog.getHotBlogs),
     # 获取用户5条热门帖子信息
     path('apis/blog/getUserHotBlog', Blog.getUserHotBlog),
+    # 评论
+    path('apis/blog/comment', CreateComment.post_comment),
+    # 举报
+    path('apis/blog/reportblog', CreateReport.post_report),
+    # 获取用户所有评论信息
+    path('apis/blog/getMyComment', Blog.getMyComment),
+
 ]
 
 urlpatterns += router.urls
