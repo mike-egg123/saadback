@@ -2,12 +2,30 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b4c32a7c-51a4-4759-91d6-1561f01c39b9" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/a376c2d4-b8f2-4e5f-b572-01c289cc1b33.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/a376c2d4-b8f2-4e5f-b572-01c289cc1b33.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/comment/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/comment/admin.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/comment/apps.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/comment/migrations/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/comment/models.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/comment/tests.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/comment/views.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/report/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/report/admin.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/report/apps.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/report/migrations/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/report/models.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/report/tests.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/report/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/saadback.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/saadback.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/blog/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/blog/forms.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/blog/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/blog/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/blog/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/blog/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/blog/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/blog/views.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/saadback/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/saadback/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/user/views.py" afterDir="false" />
     </list>
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -70,6 +88,19 @@
     <property name="DatabaseDriversLRU" value="sqlite" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
   </component>
   <component name="RunManager" selected="Python.manage">
     <configuration name="manage" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
@@ -142,6 +173,7 @@
       <workItem from="1605878987652" duration="2768000" />
       <workItem from="1605888522631" duration="264000" />
       <workItem from="1605946778508" duration="4197000" />
+      <workItem from="1606370457220" duration="947000" />
     </task>
     <servers />
   </component>
@@ -150,6 +182,17 @@
   </component>
   <component name="UnknownFeatures">
     <option featureType="com.intellij.fileTypeFactory" implementationName="requirements.txt" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />

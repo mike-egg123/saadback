@@ -32,8 +32,8 @@ urlpatterns = [
     path('apis/user/getvalidcode', Users.get_valid_img),  # 获取验证码
     path('apis/user/logout', Users.logout_user),  # 注销
     path('apis/user/register', Users.register),  # 注册
-    path('apis/personality/change', Personality.change_personality), #修改用户信息
-    path('apis/personality/get', Personality.get_personality), # 得到用户信息
+    path('apis/personality/change', Personality.change_personality),  # 修改用户信息
+    path('apis/personality/get', Personality.get_personality),  # 得到用户信息
     # 新建帖子
     path('apis/blog/createblog', Blog.createBlog),
     # 修改帖子
