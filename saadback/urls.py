@@ -41,23 +41,23 @@ urlpatterns = [
     # 修改帖子
     path('apis/blog/editblog', Blog.editBlog),
     # 获取帖子详情
-    path('apis/blog/getBlogInfo', Blog.getBlogInfo),
+    path('apis/blog/getbloginfo', Blog.getBlogInfo),
     # 获取用户所有帖子信息
-    path('apis/blog/getpeopleblogs', Blog.getAllBlogs),
+    path('apis/blog/getuserblogs', Blog.getAllBlogs),
     # 点赞/取消点赞帖子
     path('apis/blog/setbloglike', Blog.setBlogLike),
     # 获取用户的帖子论坛大致信息
-    path('apis/blog/getUserBlogInfo', Blog.getUserBlogInfo),
+    path('apis/blog/getuserbloginfo', Blog.getUserBlogInfo),
     # 获取热门帖子列表
     path('apis/blog/gethotblogs', Blog.getHotBlogs),
     # 获取用户5条热门帖子信息
-    path('apis/blog/getUserHotBlog', Blog.getUserHotBlog),
+    path('apis/blog/getuserhotblog', Blog.getUserHotBlog),
     # 评论
     path('apis/blog/comment', CreateComment.post_comment),
     # 举报帖子
     path('apis/blog/reportblog', CreateReport.post_report),
     # 获取用户所有评论信息
-    path('apis/blog/getMyComment', Blog.getMyComment),
+    path('apis/blog/getmycomment', Blog.getMyComment),
 
 ]
 
