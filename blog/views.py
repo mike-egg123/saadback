@@ -90,6 +90,7 @@ class Blog:
         if request.method == "POST":
             if not request.user.is_authenticated:
                 return JsonResponse({
+                    "status": 3,
                     "massage": "请先登录"
                 })
             data = json.loads(request.body)
@@ -123,7 +124,6 @@ class Blog:
                 return JsonResponse({
                             "status": 0,
                             "message": "帖子详情查看成功！",
-                            "error_code": 0,
                             "data": {
                                 "title": str(blog.title),
                                 "blogContent": str(blog.content),
