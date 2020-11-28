@@ -22,6 +22,7 @@ class Blog:
         if request.method == "POST":
             if not request.user.is_authenticated:
                 return JsonResponse({
+                    "status": 2,
                     "massage": "请先登录"
                 })
             data = json.loads(request.body)
@@ -48,6 +49,7 @@ class Blog:
         if request.method == "POST":
             if not request.user.is_authenticated:
                 return JsonResponse({
+                    "status": 4,
                     "massage": "请先登录"
                 })
             data = json.loads(request.body)
@@ -64,8 +66,7 @@ class Blog:
                     blog.save()
                     return JsonResponse({
                         "status": 0,
-                        "message": "帖子修改成功！",
-                        "error_code": 0,
+                        "message": "帖子修改成功！"
                     })
                 except:
                     return JsonResponse({
@@ -74,8 +75,8 @@ class Blog:
                     })
             else:
                 return JsonResponse({
-                    "status": 1,
-                    "message": "error method"
+                    "status": 3,
+                    "message": "blogid或type必填！"
                 })
         else:
             return JsonResponse({
@@ -301,7 +302,9 @@ class Blog:
             data = json.loads(request.body)
             userid = data.get('id')
             user = User.objects.get(id=userid)
+            print(user)
             if user:
+                print(userid)
                 blogs = BlogPost.objects.filter(user_id=userid).order_by('-readnum')
                 json_list = []
                 i = 0
