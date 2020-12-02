@@ -17,7 +17,7 @@ class Comment(models.Model):
         Profile,
         on_delete=models.CASCADE,
     )
-    # 评论id
+    # 评论id（感觉没有必要）
     commentid = models.CharField(max_length=20, blank=True)
     # 评论内容
     body = models.TextField()

@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from blog.models import BlogPost
+from comment.models import Comment
 # Create your models here.
 
 
@@ -17,6 +18,14 @@ class Report(models.Model):
         on_delete=models.CASCADE,
         related_name='reports'
     )
+    # 被举报的评论（外键无法允许为空？那就只好变成id的形式了）
+    comment_id = models.IntegerField(
+        blank=True,
+        null=True
+    )
+    # todo:被举报的门户
+    # 举报类型：1为举报门户，2为举报帖子，3为举报评论
+    type = models.IntegerField(blank=True, null=True)
     # 举报id
     reportid = models.CharField(max_length=20, blank=True)
     # 举报理由
