@@ -39,6 +39,6 @@ class BlogPost(models.Model):
 class Like(models.Model):
     liker = models.ForeignKey(Profile, on_delete=models.CASCADE)
     liked = models.ForeignKey(BlogPost, on_delete=models.CASCADE)
-    time = models.DateTimeField(default=timezone.now())
+    time = models.DateTimeField(default=timezone.now)
     def __str__(self):
         return self.liker.user.username + " likes " + self.liked.title
