@@ -1,4 +1,6 @@
 # 引入redirect重定向模块
+import re
+
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 # 引入HttpResponse
@@ -11,7 +13,7 @@ from .forms import BlogPostForm
 from django.contrib.auth.models import User
 import json
 
-from .models import BlogPost, Like
+from .models import BlogPost, Like, Collect
 
 
 class Blog:
@@ -132,7 +134,8 @@ class Blog:
                                 "readnum": blog.readnum,
                                 "tipnum": blog.tipnum,
                                 "likenum": blog.likenum,
-                                "like": blog.is_like,
+                                "is_like": blog.is_like,
+                                "is_collect": blog.is_collect,
                                 "tiplist": json_tiplist
                             }
                         })
@@ -165,6 +168,8 @@ class Blog:
                 json_dict["readnum"] = blog.readnum
                 json_dict["likenum"] = blog.likenum
                 json_dict["tipnum"] = blog.tipnum
+                json_dict["is_like"] = blog.is_like
+                json_dict["is_collect"] = blog.is_collect
                 json_list.append(json_dict)
             return JsonResponse({
                 "status": 0,
@@ -223,6 +228,55 @@ class Blog:
             })
 
     @staticmethod
+    # 点赞/取消收藏
+    def setBlogCollect(request):
+        if request.method == "POST":
+            if not request.user.is_authenticated:
+                return JsonResponse({
+                    "status": 2,
+                    "massage": "请先登录"
+                })
+            data = json.loads(request.body)
+            blogid = data.get("id")
+            collect = data.get("type")  # 0收藏，1 取消收藏
+            blog = BlogPost.objects.get(id=blogid)
+            if not blog:
+                return JsonResponse({
+                    "status": 2,
+                    "message": "不存在该作者或者该帖子"
+                })
+            if collect == 1: # 取消收藏
+                collects = Collect.objects.filter(collector_id=request.user.id, collectBlog_id=blogid)
+                for collect in collects:
+                    collect.delete()
+                    blog.is_collect = 1
+                    blog.save()
+                return JsonResponse({
+                    "status": 0,
+                    "message": "discollect success"
+                })
+            else:
+                if Collect.objects.filter(collector_id=request.user.id, collectBlog_id=blogid):
+                    return JsonResponse({
+                        "status": 2,
+                        "isrepeat": "already collect"
+                    })
+                else:
+                    collect = Collect.objects.create(collector_id=request.user.id, collectBlog_id=blogid)
+                    collect.save()
+                    blog.is_collect = 0
+                    blog.save()
+                    return JsonResponse({
+                        "status": 0,
+                        "message": str(collect),
+                    })
+        else:
+            return JsonResponse({
+                "status": 1,
+                "message": "error method"
+            })
+
+    @staticmethod
     # 获取用户的帖子论坛大致信息
     def getUserBlogInfo(requset):
         if requset.method == "POST":
@@ -246,7 +300,7 @@ class Blog:
                     "username": str(user.username),
                     "blogNum": blogNum,
                     "likeNum": likeNum,
-                    "tipNum": tipNum
+                    "tipNum": tipNum,
                 })
             else:
                 return JsonResponse({
@@ -372,6 +426,80 @@ class Blog:
                     "list": json_list
                 }
             }, safe=False)
+        else:
+            return JsonResponse({
+                "status": 1,
+                "message": "error method"
+            })
+
+
+    @staticmethod
+    # 搜索帖子
+    def search_blog(request):
+        if request.method == "POST":
+            data = json.loads(request.body)
+            text = data.get("text")
+            type = data.get("type")
+            blogs = BlogPost.objects.filter(type=type)
+            json_list = []
+            for blog in blogs:
+                if re.search(text, blog.title):
+                    json_dict = {}
+                    profile = Profile.objects.get(user_id=blog.user_id)
+                    json_dict['blogname'] = str(blog.title)
+                    json_dict['blogid'] = blog.id
+                    json_dict['content'] = str(blog.content)
+                    json_dict['date'] = blog.created
+                    json_dict['username'] = str(profile.user.username)
+                    json_dict['userid'] = blog.user_id
+                    json_dict['readnum'] = blog.readnum
+                    json_dict['likenum'] = blog.likenum
+                    json_dict['tipnum'] = blog.tipnum
+                    json_list.append(json_dict)
+            return JsonResponse({
+                "status": 0,
+                "data": {
+                    "list": json_list
+                }
+            }, safe=False)
+        else:
+            return JsonResponse({
+                "status": 1,
+                "message": "error method"
+            })
+
+    @staticmethod
+    # 列出收藏帖子列表
+    def get_collect_blog_list(request):
+        if request.method == 'POST':
+            data = json.loads(request.body)
+            userid = data.get('userid')
+            collects = Collect.objects.filter(collector_id=userid)
+            print(collects)
+            json_list = []
+            for collect in collects:
+                blogid = collect.collectBlog_id
+                blog = BlogPost.objects.get(id=blogid)
+                json_dict = {}
+                json_dict["blogid"] = blogid
+                json_dict["title"] = blog.title
+                json_dict["content"] = blog.content
+                json_dict["created"] = blog.created
+                profile = Profile.objects.get(id=blog.user_id)
+                json_dict["author"] = profile.user.username
+                json_dict["authorid"] = profile.id
+                json_dict["bio"] = profile.bio
+                # if Collect.objects.filter(collector_id=userid, collectBlog_id=blogid):
+                #     json_dict["is_collect"] = 0
+                # else:
+                #     json_dict["is_collect"] = 1
+                json_list.append(json_dict)
+            return JsonResponse({
+                "status": 0,
+                "data": {
+                    "list": json_list
+                }
+            })
         else:
             return JsonResponse({
                 "status": 1,

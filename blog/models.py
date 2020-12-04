@@ -25,8 +25,10 @@ class BlogPost(models.Model):
     readnum = models.PositiveIntegerField(default=0)
     # 帖子类型
     type = models.PositiveIntegerField(default=0)
-    # 是否点赞
-    is_like = models.BooleanField(default=False)
+    # 是否点赞 0点赞，1没点赞
+    is_like = models.IntegerField(default=1)
+    # 是否收藏 0收藏，1没收藏
+    is_collect = models.IntegerField(default=1)
 
     # 文章创建时间。参数 default=timezone.now 指定其在创建数据时将默认写入当前的时间
     created = models.DateTimeField(default=timezone.now)
@@ -42,3 +44,11 @@ class Like(models.Model):
     time = models.DateTimeField(default=timezone.now)
     def __str__(self):
         return self.liker.user.username + " likes " + self.liked.title
+
+# 收藏
+class Collect(models.Model):
+    collector = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    collectBlog = models.ForeignKey(BlogPost, on_delete=models.CASCADE)
+    time = models.DateTimeField(default=timezone.now)
+    def __str__(self):
+        return self.collector.user.username + " collects " + self.collectBlog.title
