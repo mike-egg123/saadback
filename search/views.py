@@ -4,7 +4,7 @@ import json
 from pypinyin import *
 from search.models import *
 
-
+#更新数据
 def update(request):
     data = json.loads(request.body)
     aid = data.get("administratorid")
