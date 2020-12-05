@@ -59,7 +59,9 @@ urlpatterns = [
     # 评论
     path('apis/blog/comment', CreateComment.post_comment),
     # 举报帖子
-    path('apis/blog/reportblog', CreateReport.post_report),
+    path('apis/blog/reportblog', CreateReport.post_report_blog),
+    # 举报评论
+    path('apis/blog/reportcomment', CreateReport.post_report_comment),
     # 获取用户所有评论信息
     path('apis/blog/getmycomment', Blog.getMyComment),
     # 搜索帖子
@@ -69,6 +71,16 @@ urlpatterns = [
     path('apis/blog/collectbloglist', Blog.get_collect_blog_list),
     # 收藏或者取消收藏帖子
     path('apis/blog/setblogcollect', Blog.setBlogCollect),
+
+    # 获取帖子举报
+    path('apis/report/getblogreports', CreateReport.get_report_blog),
+    # 获取评论举报
+    path('apis/report/getcommentreports', CreateReport.get_report_comment),
+    # 处理帖子举报
+    path('apis/report/handleblogreport', CreateReport.handle_report_blog),
+    # 处理评论举报
+    path('apis/report/handlecommentreport', CreateReport.handle_report_comment),
+
 ]
 
 urlpatterns += router.urls

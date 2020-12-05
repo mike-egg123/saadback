@@ -6,12 +6,6 @@ from comment.models import Comment
 
 
 class Report(models.Model):
-    # 被举报的文章
-    blog = models.ForeignKey(
-        BlogPost,
-        on_delete=models.CASCADE,
-        related_name='reports'
-    )
     # 举报人
     user = models.ForeignKey(
         User,
@@ -20,6 +14,11 @@ class Report(models.Model):
     )
     # 被举报的评论（外键无法允许为空？那就只好变成id的形式了）
     comment_id = models.IntegerField(
+        blank=True,
+        null=True
+    )
+    # 被举报的文章
+    blog_id = models.IntegerField(
         blank=True,
         null=True
     )

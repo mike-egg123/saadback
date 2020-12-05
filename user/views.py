@@ -80,7 +80,7 @@ class Users:
                         "status": 0,
                         "message": "Login Success",
                         "username": username,
-                        "password":password,
+                        "password": password,
                         "email": str(request.user.email),
                         "userid": str(request.user.id),
                         "phone": str(userprofile.phone),

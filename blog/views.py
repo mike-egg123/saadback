@@ -174,7 +174,7 @@ class Blog:
             return JsonResponse({
                 "status": 0,
                 "data":{
-                    "list":json_list
+                    "list": json_list
                 }
             }, safe=False)
         else:
