@@ -2,11 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b4c32a7c-51a4-4759-91d6-1561f01c39b9" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/a376c2d4-b8f2-4e5f-b572-01c289cc1b33.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/a376c2d4-b8f2-4e5f-b572-01c289cc1b33.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/saadback/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/saadback/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/user/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -113,9 +109,15 @@
       <workItem from="1605346121842" duration="46000" />
       <workItem from="1605878987652" duration="2768000" />
       <workItem from="1605888522631" duration="264000" />
+<<<<<<< HEAD
       <workItem from="1605946778508" duration="4197000" />
       <workItem from="1606031406091" duration="1970000" />
       <workItem from="1607132855906" duration="10834000" />
+=======
+      <workItem from="1605946778508" duration="5052000" />
+      <workItem from="1606226278426" duration="1780000" />
+      <workItem from="1606272911505" duration="606000" />
+>>>>>>> d08e9671f54b5ec13d317cfd12b43138eb16115d
     </task>
     <servers />
   </component>
@@ -137,27 +139,35 @@
       <screen x="99" y="0" width="1437" height="864" />
     </state>
     <state x="421" y="103" key="FileChooserDialogImpl/0.0.1280.689@0.0.1280.689" timestamp="1605343127095" />
+<<<<<<< HEAD
     <state x="572" y="129" key="FileChooserDialogImpl/99.0.1437.864@99.0.1437.864" timestamp="1607133620284" />
     <state width="1237" height="166" key="GridCell.Tab.0.bottom" timestamp="1605950783240">
+=======
+    <state width="1237" height="166" key="GridCell.Tab.0.bottom" timestamp="1605952786329">
+>>>>>>> d08e9671f54b5ec13d317cfd12b43138eb16115d
       <screen x="0" y="0" width="1280" height="689" />
     </state>
-    <state width="1237" height="166" key="GridCell.Tab.0.bottom/0.0.1280.689@0.0.1280.689" timestamp="1605950783240" />
-    <state width="1237" height="166" key="GridCell.Tab.0.center" timestamp="1605950783240">
+    <state width="1237" height="166" key="GridCell.Tab.0.bottom/0.0.1280.689@0.0.1280.689" timestamp="1605952786329" />
+    <state width="1237" height="166" key="GridCell.Tab.0.center" timestamp="1605952786329">
       <screen x="0" y="0" width="1280" height="689" />
     </state>
-    <state width="1237" height="166" key="GridCell.Tab.0.center/0.0.1280.689@0.0.1280.689" timestamp="1605950783240" />
-    <state width="1237" height="166" key="GridCell.Tab.0.left" timestamp="1605950783240">
+    <state width="1237" height="166" key="GridCell.Tab.0.center/0.0.1280.689@0.0.1280.689" timestamp="1605952786329" />
+    <state width="1237" height="166" key="GridCell.Tab.0.left" timestamp="1605952786329">
       <screen x="0" y="0" width="1280" height="689" />
     </state>
-    <state width="1237" height="166" key="GridCell.Tab.0.left/0.0.1280.689@0.0.1280.689" timestamp="1605950783240" />
-    <state width="1237" height="166" key="GridCell.Tab.0.right" timestamp="1605950783240">
+    <state width="1237" height="166" key="GridCell.Tab.0.left/0.0.1280.689@0.0.1280.689" timestamp="1605952786329" />
+    <state width="1237" height="166" key="GridCell.Tab.0.right" timestamp="1605952786329">
       <screen x="0" y="0" width="1280" height="689" />
     </state>
+<<<<<<< HEAD
     <state width="1237" height="166" key="GridCell.Tab.0.right/0.0.1280.689@0.0.1280.689" timestamp="1605950783240" />
     <state width="212" height="477" key="HiddenNamespacesPopup" timestamp="1607137902019">
       <screen x="99" y="0" width="1437" height="864" />
     </state>
     <state width="212" height="477" key="HiddenNamespacesPopup/99.0.1437.864@99.0.1437.864" timestamp="1607137902019" />
+=======
+    <state width="1237" height="166" key="GridCell.Tab.0.right/0.0.1280.689@0.0.1280.689" timestamp="1605952786329" />
+>>>>>>> d08e9671f54b5ec13d317cfd12b43138eb16115d
     <state x="371" y="153" key="com.intellij.database.dbimport.ImportUtil.MyDialog" timestamp="1605343189384">
       <screen x="0" y="0" width="1280" height="689" />
     </state>
