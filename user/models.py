@@ -15,7 +15,7 @@ class Profile(models.Model):
     # 用户id
     userid = models.CharField(max_length=20, blank=True)
     # 生日
-    birthday = models.DateTimeField(blank=True, null=True)
+    birthday = models.CharField(max_length=100, blank=True)
     # 地址
     address = models.CharField(max_length=20, blank=True)
     # 工作单位
@@ -33,3 +33,19 @@ class Profile(models.Model):
 
     def __str__(self):
         return 'user {}'.format(self.user.username)
+
+
+class Follow(models.Model):
+    follower = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='follower'
+    )
+    followed = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='followed'
+    )
+
+    def __str__(self):
+        return '{} has followed {}'.format(self.follower.username, self.followed.username)

@@ -10,7 +10,20 @@ from django.http import JsonResponse
 
 from .forms import ProfileForm
 # 载入数据模型Profile
-from .models import Profile
+from .models import Profile, Follow
+from django.contrib.auth.backends import ModelBackend
+from django.db.models import Q
+
+
+class CustomBackend(ModelBackend):
+    """邮箱也能登录"""
+    def authenticate(self, request, username=None, password=None, **kwargs):
+        try:
+            user=User.objects.get(Q(username=username)|Q(email=username))
+            if user.check_password(password):
+                return user
+        except Exception as e:
+            return None
 
 
 # Create your views here.
@@ -106,6 +119,11 @@ class Users:
             username = data.get("username")
             password = data.get("password")
             email = data.get("email")
+            if User.objects.filter(email=email):
+                return JsonResponse({
+                    "status": 2,
+                    "message": "注册失败, 该邮箱已经存在."
+                })
             if username is not None and password is not None and email is not None:
                 try:
                     user = User.objects.create_user(username=username, password=password, email=email)
@@ -188,6 +206,92 @@ class Users:
             "url":"http://182.92.239.145" + '/media/checkcode/{}.png'.format(mystr),
             "code":mystr
         })
+    # 修改密码
+    @staticmethod
+    def modify_password(request):
+        # 要验证一下当前的密码
+        if request.method == "POST":
+            data = json.loads(request.body)
+            oldpassword = data.get("oldpassword")
+            user = request.user
+            username = user.username
+            # print(password)
+            if oldpassword is not None:
+                islogin = authenticate(request, username=username, password=oldpassword)
+                if islogin:
+                    user_id = islogin.id
+                    newpassword = data.get("newpassword")
+                    newpassword2 = data.get("newpassword2")
+                    if newpassword == newpassword2:
+                        user.set_password(newpassword)
+                        user.save()
+                        return JsonResponse({
+                            "status":0,
+                            "message":"修改成功"
+                        })
+                    else:
+                        return JsonResponse({
+                            "status": 1,
+                            "message": "两次新密码不一致"
+                        })
+                else:
+                    return JsonResponse({
+                        "status": 2,
+                        "message": "原密码不正确"
+                    })
+    # 关注用户
+    @staticmethod
+    def follow(request):
+        if request.method == "POST":
+            data = json.loads(request.body)
+            followed_id = data.get("userid")
+            follower_id = request.user.id
+            try:
+                follow = Follow.objects.create(follower_id = follower_id, followed_id = followed_id)
+            except Exception as e:
+                return JsonResponse({
+                    "status":2,
+                    "message":"此用户不存在"
+                })
+            else:
+                follow.save()
+                return JsonResponse({
+                    "status": 0,
+                    "message": "关注成功"
+                })
+
+        else:
+            return JsonResponse({
+                "status":1,
+                "message":"请求方式有误"
+            })
+    @staticmethod
+    def getfolloweds(request):
+        if request.method == "POST":
+            follower_id = request.user.id
+            try:
+                followeds = Follow.objects.filter(follower_id=follower_id)
+            except Exception as e:
+                return JsonResponse({
+                    "status":2,
+                    "message":"该用户不存在"
+                })
+            else:
+                followeds_list = []
+                for followed in followeds:
+                    followed_dic = {}
+                    followed_dic['userid'] = followed.id
+                    followeds_list.append(followed_dic)
+                # followeds_json = json.dump(followeds_list)
+                return JsonResponse({
+                    "status":0,
+                    "f_list":followeds_list
+                })
+        else:
+            return JsonResponse({
+                "status": 1,
+                "message": "请求方式有误"
+            })
 
 class Personality:
     # 修改与完善用户信息
@@ -202,8 +306,7 @@ class Personality:
                 print(profile_cd['phone'])
                 print(profile_cd['avatar'])
                 print(profile_cd['bio'])
-                print(profile_cd['userid'])
-                id = int(profile_cd['userid'])
+                id = request.user.id
                 user = User.objects.get(id=id)
                 # profile = Profile.objects.get(user_id = id)
                 if Profile.objects.filter(user_id=id).exists():
@@ -214,24 +317,25 @@ class Personality:
                 bio = profile_cd['bio']
                 if 'avatar' in request.FILES:
                     avatar = profile_cd['avatar']
-                # 验证修改数据者是否为用户本人
                 else:
                     avatar = profile.avatar
-                if False:
-                    return JsonResponse({
-                        "status":1,
-                        "message":"你没有权限修改这个用户的信息"
-                    })
-                else:
-                    profile.phone = phone
-                    profile.bio = bio
-                    profile.avatar = avatar
-                    profile.save()
-                    print(1)
-                    return JsonResponse({
-                        "status":0,
-                        "message":"修改成功！"
-                    })
+                profile.phone = phone
+                profile.bio = bio
+                profile.avatar = avatar
+                profile.birthday = profile_cd['birthday']
+                profile.address = profile_cd['address']
+                profile.org = profile_cd['org']
+                profile.position = profile_cd['position']
+                profile.gender = profile_cd['gender']
+                profile.is_administrator = profile_cd['is_administrator']
+                profile.is_associated = profile_cd['is_associated']
+                profile.author_id = profile_cd['author_id']
+                profile.save()
+                print(1)
+                return JsonResponse({
+                    "status":0,
+                    "message":"修改成功！"
+                })
             else:
                 print(3)
                 return JsonResponse({
@@ -249,8 +353,8 @@ class Personality:
     @staticmethod
     def get_personality(request):
         if request.method == 'POST':
-            data = json.loads(request.body)
-            user_id = data.get('userid')
+            # data = json.loads(request.body)
+            user_id = request.user.id
             user = User.objects.get(id=user_id)
             # userprofile = Profile.objects.get(user_id = user_id)
             if Profile.objects.filter(user_id = user_id).exists():
@@ -265,6 +369,14 @@ class Personality:
             email = user.email
             phone = userprofile.phone
             bio = userprofile.bio
+            birthday = userprofile.birthday
+            addr = userprofile.address
+            org = userprofile.org
+            postion = userprofile.position
+            gender = userprofile.gender
+            is_administrator = userprofile.is_administrator
+            is_associated = userprofile.is_associated
+            author_id = userprofile.author_id
             return JsonResponse({
                 "status":0,
                 "username":username,
@@ -272,7 +384,15 @@ class Personality:
                 "phone":phone,
                 "bio":bio,
                 "avatar":avatar,
-                "userid":user_id
+                "userid":user_id,
+                "birthday":birthday,
+                "addr":addr,
+                "org":org,
+                "postion":postion,
+                "gender":gender,
+                "is_admin":is_administrator,
+                "is_associated":is_associated,
+                "author_id":author_id
             })
         else:
             return JsonResponse({

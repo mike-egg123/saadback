@@ -36,6 +36,10 @@ urlpatterns = [
     path('apis/user/register', Users.register),  # 注册
     path('apis/personality/change', Personality.change_personality),  # 修改用户信息
     path('apis/personality/get', Personality.get_personality),  # 得到用户信息
+    path('apis/user/modifypassword', Users.modify_password),  # 修改密码
+    path('apis/user/follow', Users.follow),  # 关注用户
+    path('apis/user/getfolloweds', Users.getfolloweds),  # 关注用户
+
     # 新建帖子
     path('apis/blog/createblog', Blog.createBlog),
     # 修改帖子

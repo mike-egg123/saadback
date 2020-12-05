@@ -29,6 +29,8 @@ ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
+# 记得get改成filter或者保证唯一性
+AUTHENTICATION_BACKENDS=( 'user.views.CustomBackend' , )
 
 INSTALLED_APPS = [
     'django.contrib.admin',
