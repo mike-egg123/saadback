@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 from rest_framework import routers
 from user.views import Users, Personality
 
@@ -32,6 +32,8 @@ urlpatterns = [
     path('apis/user/register', Users.register),  # 注册
     path('apis/personality/change', Personality.change_personality), #修改用户信息
     path('apis/personality/get', Personality.get_personality), # 得到用户信息
+
+    path('apis/search/', include('search.urls')),  # 学术数据库相关
 ]
 
-urlpatterns += router.urls
+#urlpatterns += router.urls
