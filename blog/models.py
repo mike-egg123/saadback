@@ -15,6 +15,8 @@ class BlogPost(models.Model):
     title = models.CharField(max_length=100, blank=True)
     # 文章正文。保存大量文本使用 TextField
     content = models.TextField(blank=True)
+    # 带有html标签的文章正文
+    htmlcontent = models.TextField(blank=True)
     # 文章id
     blogid = models.CharField(max_length=20, blank=True)
     # 评论量

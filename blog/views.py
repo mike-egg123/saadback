@@ -45,7 +45,7 @@ class Blog:
                 "message": "error method"
             })
 
-    @staticmethod
+    @staticmethod  # cxy
     # 修改帖子
     def editBlog(request):
         if request.method == "POST":
@@ -57,13 +57,15 @@ class Blog:
             data = json.loads(request.body)
             blogid = data.get("id")
             title = data.get("name")
-            content = data.get("content")
+            content = data.get("textcontent")
+            htmlcontent = data.get("htmlcontent")
             type = data.get("type")
             if blogid is not None and type is not None:
                 try:
                     blog = BlogPost.objects.get(id=blogid)
                     blog.title = title
                     blog.content = content
+                    blog.htmlcontent = htmlcontent
                     blog.type = type
                     blog.save()
                     return JsonResponse({
@@ -86,7 +88,7 @@ class Blog:
                 "message": "error method"
             })
 
-    @staticmethod
+    @staticmethod  # cxy
     # 获取帖子详情
     def getBlogInfo(request):
         if request.method == "POST":
@@ -121,24 +123,26 @@ class Blog:
                     json_dict["id"] = user_id
                     json_dict["name"] = userprofile.user.username
                     json_dict["img"] = avatar
-                    json_dict["content"] = comment.body
+                    json_dict["textcontent"] = comment.body
+                    json_dict["htmlcontent"] = "<p>" + comment.body + "</p>"
                     json_tiplist.append(json_dict)
                 return JsonResponse({
-                            "status": 0,
-                            "message": "帖子详情查看成功！",
-                            "data": {
-                                "title": str(blog.title),
-                                "blogContent": str(blog.content),
-                                "type": blog.type,
-                                "date": blog.created,
-                                "readnum": blog.readnum,
-                                "tipnum": blog.tipnum,
-                                "likenum": blog.likenum,
-                                "is_like": blog.is_like,
-                                "is_collect": blog.is_collect,
-                                "tiplist": json_tiplist
-                            }
-                        })
+                    "status": 0,
+                    "message": "帖子详情查看成功！",
+                    "data": {
+                        "title": str(blog.title),
+                        "textcontent": str(blog.content),
+                        "htmlcontent": blog.htmlcontent,
+                        "type": blog.type,
+                        "date": blog.created,
+                        "readnum": blog.readnum,
+                        "tipnum": blog.tipnum,
+                        "likenum": blog.likenum,
+                        "is_like": blog.is_like,
+                        "is_collect": blog.is_collect,
+                        "tiplist": json_tiplist
+                    }
+                })
 
             else:
                 return JsonResponse({
@@ -151,7 +155,7 @@ class Blog:
                 "message": "error method"
             })
 
-    @staticmethod
+    @staticmethod  # cxy
     # 获取用户所有帖子信息
     def getAllBlogs(request):
         if request.method == "POST":
@@ -163,7 +167,8 @@ class Blog:
                 json_dict = {}
                 json_dict["blogid"] = blog.id
                 json_dict["title"] = blog.title
-                json_dict["content"] = blog.content
+                json_dict["textcontent"] = blog.content
+                json_dict["htmlcontent"] = blog.htmlcontent
                 json_dict["date"] = blog.created
                 json_dict["readnum"] = blog.readnum
                 json_dict["likenum"] = blog.likenum
@@ -173,14 +178,14 @@ class Blog:
                 json_list.append(json_dict)
             return JsonResponse({
                 "status": 0,
-                "data":{
+                "data": {
                     "list": json_list
                 }
             }, safe=False)
         else:
             return JsonResponse({
-                "status":1,
-                "message":"error method"
+                "status": 1,
+                "message": "error method"
             })
 
     @staticmethod
@@ -432,8 +437,7 @@ class Blog:
                 "message": "error method"
             })
 
-
-    @staticmethod
+    @staticmethod  # cxy
     # 搜索帖子
     def search_blog(request):
         if request.method == "POST":
@@ -449,6 +453,7 @@ class Blog:
                     json_dict['blogname'] = str(blog.title)
                     json_dict['blogid'] = blog.id
                     json_dict['content'] = str(blog.content)
+                    json_dict['htmlcontent'] = blog.htmlcontent
                     json_dict['date'] = blog.created
                     json_dict['username'] = str(profile.user.username)
                     json_dict['userid'] = blog.user_id

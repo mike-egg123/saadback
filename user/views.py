@@ -239,7 +239,7 @@ class Users:
                         "status": 2,
                         "message": "原密码不正确"
                     })
-    # 关注用户
+    # 切换关注的状态
     @staticmethod
     def follow(request):
         if request.method == "POST":
@@ -247,24 +247,33 @@ class Users:
             followed_id = data.get("userid")
             follower_id = request.user.id
             try:
-                follow = Follow.objects.create(follower_id = follower_id, followed_id = followed_id)
+                follow = Follow.objects.get(follower_id = follower_id, followed_id = followed_id)
             except Exception as e:
-                return JsonResponse({
-                    "status":2,
-                    "message":"此用户不存在"
-                })
+                try:
+                    follow = Follow.objects.create(follower_id=follower_id, followed_id=followed_id)
+                except Exception as e:
+                    return JsonResponse({
+                        "status": 2,
+                        "message": "此用户不存在"
+                    })
+                else:
+                    follow.save()
+                    return JsonResponse({
+                        "status": 0,
+                        "message": "关注成功"
+                    })
             else:
-                follow.save()
+                follow.delete()
                 return JsonResponse({
                     "status": 0,
-                    "message": "关注成功"
+                    "message": "取消关注成功"
                 })
-
         else:
             return JsonResponse({
                 "status":1,
                 "message":"请求方式有误"
             })
+    #获取关注的所有用户
     @staticmethod
     def getfolloweds(request):
         if request.method == "POST":
@@ -286,6 +295,31 @@ class Users:
                 return JsonResponse({
                     "status":0,
                     "f_list":followeds_list
+                })
+        else:
+            return JsonResponse({
+                "status": 1,
+                "message": "请求方式有误"
+            })
+
+    # 获取当前用户对目标用户的关注状态
+    @staticmethod
+    def get_follow_state(request):
+        if request.method == "POST":
+            data = json.loads(request.body)
+            followed_id = data.get('userid')
+            follower_id = request.user.id
+            try:
+                follow = Follow.objects.get(follower_id = follower_id, followed_id = followed_id)
+            except Exception as e:
+                return JsonResponse({
+                    "status": 0,
+                    "is_follow": False
+                })
+            else:
+                return JsonResponse({
+                    "status": 0,
+                    "is_follow": True
                 })
         else:
             return JsonResponse({
