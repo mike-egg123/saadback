@@ -506,4 +506,44 @@ class Blog:
                 "message": "error method"
             })
 
+    @staticmethod
+    # 获取他人收藏帖子列表
+    def get_other_collect_blog(request):
+        if request.method == 'POST':
+            data = json.loads(request.body)
+            userid = data.get('id')
+            if userid == 0:
+                userid = request.user.id
+            collects = Collect.objects.filter(collector_id=userid)
+            print(collects)
+            json_list = []
+            for collect in collects:
+                blogid = collect.collectBlog_id
+                blog = BlogPost.objects.get(id=blogid)
+                json_dict = {}
+                json_dict["blogid"] = blogid
+                json_dict["title"] = blog.title
+                json_dict["content"] = blog.content
+                json_dict["created"] = blog.created
+                profile = Profile.objects.get(id=blog.user_id)
+                json_dict["author"] = profile.user.username
+                json_dict["authorid"] = profile.id
+                json_dict["bio"] = profile.bio
+                # if Collect.objects.filter(collector_id=userid, collectBlog_id=blogid):
+                #     json_dict["is_collect"] = 0
+                # else:
+                #     json_dict["is_collect"] = 1
+                json_list.append(json_dict)
+            return JsonResponse({
+                "status": 0,
+                "data": {
+                    "list": json_list
+                }
+            })
+        else:
+            return JsonResponse({
+                "status": 1,
+                "message": "error method"
+            })
+
 

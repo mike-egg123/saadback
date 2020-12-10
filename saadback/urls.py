@@ -69,6 +69,8 @@ urlpatterns = [
 
     # 返回收藏帖子列表
     path('apis/blog/collectbloglist', Blog.get_collect_blog_list),
+    # 获取他人收藏帖子列表
+    path('apis/blog/othercollectblog', Blog.get_other_collect_blog),
     # 收藏或者取消收藏帖子
     path('apis/blog/setblogcollect', Blog.setBlogCollect),
 
