@@ -7,7 +7,7 @@ import os
 import codecs
 from django.core import serializers
 from django.core.serializers import serialize
-
+import operator
 import chardet
 from elasticsearch import Elasticsearch
 
@@ -255,11 +255,12 @@ def getrelatedauthor(request):
     }
 
     res = client.search(index="author", filter_path=['hits.hits._source'], body=body)
+    print(res)
     pubs = res["hits"]["hits"][0]["_source"]["pubs"]
+    name = res["hits"]["hits"][0]["_source"]["name"].replace(" ","")
 
     res_list_temp= []
     for pub in pubs:
-        print(pub["i"])
         body = {
             "query": {
                 "match": {
@@ -273,11 +274,14 @@ def getrelatedauthor(request):
             authors = res["hits"]["hits"][0]["_source"]["authors"]
             res_list_temp.extend(authors)
     res_list = []
-    res_set = list(set(res_list_temp))
-    for re in res_set:
+    print(name)
+    print()
+    for re in res_list_temp:
+        print(re['name'])
         count = res_list_temp.count(re)
         re["account_cooperation"] = count
-        res_list.append(re)
+        if re['name'].replace(" ","") != name:
+            res_list.append(re)
 
     return JsonResponse(res_list, safe=False)
 
