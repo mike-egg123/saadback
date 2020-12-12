@@ -29,6 +29,8 @@ ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
+# 记得get改成filter或者保证唯一性
+AUTHENTICATION_BACKENDS=( 'user.views.CustomBackend' , )
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -42,6 +44,9 @@ INSTALLED_APPS = [
     'rest_framework',
     'user',
     'search',
+    'blog',
+    'comment',
+    'report',
 ]
 
 MIDDLEWARE = [
@@ -53,8 +58,6 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
-
-AUTHENTICATION_BACKENDS = ('user.views.CustomBackend',)
 
 ROOT_URLCONF = 'saadback.urls'
 
