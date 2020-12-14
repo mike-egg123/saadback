@@ -6,8 +6,11 @@ from django.utils import timezone
 
 from blog.models import BlogPost
 from comment.models import Comment
+from message.models import Reportmessage
 from report.models import Report
 from user.models import Profile
+
+
 # Create your views here.
 
 
@@ -29,12 +32,21 @@ class CreateReport:
                 report.type = 2
                 # 保存后提交
                 report.save()
+
+                # 生成消息通知并保存
+                blog = BlogPost.objects.get(id=blog_id)
+                reportmessage = Reportmessage.objects.create(blog=blog.id,
+                                                             to_user_id=blog.user.id)
+                # commentmessage.message = comment_body
+                reportmessage.type = 2
+                reportmessage.save()
+
                 return JsonResponse({
-                        "error_code": 0,
-                        "data": {
-                          "status": 0
-                        }
-                    })
+                    "error_code": 0,
+                    "data": {
+                        "status": 0
+                    }
+                })
             # 处理错误请求
             else:
                 print(2)
@@ -67,6 +79,15 @@ class CreateReport:
                 report.type = 3
                 # 保存后提交
                 report.save()
+
+                # 生成消息通知并保存
+                comment = Comment.objects.get(id=comment_id)
+                reportmessage = Reportmessage.objects.create(comment=comment.id,
+                                                             to_user_id=comment.user.id)
+                # commentmessage.message = comment_body
+                reportmessage.type = 3
+                reportmessage.save()
+
                 return JsonResponse({
                     "error_code": 0,
                     "data": {

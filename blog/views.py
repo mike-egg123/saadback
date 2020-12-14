@@ -7,6 +7,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse, JsonResponse
 # 引入刚才定义的ArticlePostForm表单类
 from comment.models import Comment
+from message.models import Starmessage
 from user.models import Profile
 from .forms import BlogPostForm
 # 引入User模型
@@ -124,21 +125,21 @@ class Blog:
                     json_dict["content"] = comment.body
                     json_tiplist.append(json_dict)
                 return JsonResponse({
-                            "status": 0,
-                            "message": "帖子详情查看成功！",
-                            "data": {
-                                "title": str(blog.title),
-                                "blogContent": str(blog.content),
-                                "type": blog.type,
-                                "date": blog.created,
-                                "readnum": blog.readnum,
-                                "tipnum": blog.tipnum,
-                                "likenum": blog.likenum,
-                                "is_like": blog.is_like,
-                                "is_collect": blog.is_collect,
-                                "tiplist": json_tiplist
-                            }
-                        })
+                    "status": 0,
+                    "message": "帖子详情查看成功！",
+                    "data": {
+                        "title": str(blog.title),
+                        "blogContent": str(blog.content),
+                        "type": blog.type,
+                        "date": blog.created,
+                        "readnum": blog.readnum,
+                        "tipnum": blog.tipnum,
+                        "likenum": blog.likenum,
+                        "is_like": blog.is_like,
+                        "is_collect": blog.is_collect,
+                        "tiplist": json_tiplist
+                    }
+                })
 
             else:
                 return JsonResponse({
@@ -173,14 +174,14 @@ class Blog:
                 json_list.append(json_dict)
             return JsonResponse({
                 "status": 0,
-                "data":{
+                "data": {
                     "list": json_list
                 }
             }, safe=False)
         else:
             return JsonResponse({
-                "status":1,
-                "message":"error method"
+                "status": 1,
+                "message": "error method"
             })
 
     @staticmethod
@@ -189,7 +190,7 @@ class Blog:
         if request.method == "POST":
             data = json.loads(request.body)
             blogid = data.get("id")
-            like = data.get("type") # 0 点赞，1 取消点赞
+            like = data.get("type")  # 0 点赞，1 取消点赞
             blog = BlogPost.objects.get(id=blogid)
             if not blog:
                 return JsonResponse({
@@ -223,8 +224,8 @@ class Blog:
                     })
         else:
             return JsonResponse({
-                "status":1,
-                "message":"error method"
+                "status": 1,
+                "message": "error method"
             })
 
     @staticmethod
@@ -245,7 +246,7 @@ class Blog:
                     "status": 2,
                     "message": "不存在该作者或者该帖子"
                 })
-            if collect == 1: # 取消收藏
+            if collect == 1:  # 取消收藏
                 collects = Collect.objects.filter(collector_id=request.user.id, collectBlog_id=blogid)
                 for collect in collects:
                     collect.delete()
@@ -266,6 +267,12 @@ class Blog:
                     collect.save()
                     blog.is_collect = 0
                     blog.save()
+
+                    # 生成消息通知并保存
+                    starmessage = Starmessage.objects.create(user_id=request.user.id, blog_id=blog.id, to_user_id=blog.user.id)
+                    # commentmessage.message = comment_body
+                    starmessage.save()
+
                     return JsonResponse({
                         "status": 0,
                         "message": str(collect),
@@ -379,15 +386,14 @@ class Blog:
                 }, safe=False)
             else:
                 return JsonResponse({
-                "status": 2,
-                "message": "不存在该用户"
-            })
+                    "status": 2,
+                    "message": "不存在该用户"
+                })
         else:
             return JsonResponse({
                 "status": 1,
                 "message": "error method"
             })
-
 
     @staticmethod
     # 获取用户所有评论信息
@@ -431,7 +437,6 @@ class Blog:
                 "status": 1,
                 "message": "error method"
             })
-
 
     @staticmethod
     # 搜索帖子
@@ -545,5 +550,3 @@ class Blog:
                 "status": 1,
                 "message": "error method"
             })
-
-

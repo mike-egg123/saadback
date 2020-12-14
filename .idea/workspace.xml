@@ -2,9 +2,26 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b4c32a7c-51a4-4759-91d6-1561f01c39b9" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/message/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/message/admin.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/message/apps.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/message/migrations/0001_initial.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/message/migrations/0002_auto_20201215_0028.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/message/migrations/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/message/models.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/message/tests.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/message/views.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/saadback.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/saadback.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/blog/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/blog/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/comment/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/comment/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/report/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/report/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/saadback/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/saadback/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/saadback/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/saadback/urls.py" afterDir="false" />
     </list>
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -69,6 +86,18 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
   </component>
   <component name="RunManager" selected="Python.manage">
     <configuration name="manage" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
@@ -150,6 +179,7 @@
       <workItem from="1607141853976" duration="475000" />
       <workItem from="1607144328572" duration="12093000" />
       <workItem from="1607604386393" duration="409000" />
+      <workItem from="1607952313105" duration="14521000" />
     </task>
     <servers />
   </component>
@@ -229,7 +259,18 @@
     </state>
     <state x="303" y="10" width="672" height="678" key="search.everywhere.popup/0.0.1280.689@0.0.1280.689" timestamp="1606900910822" />
   </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/message/models.py</url>
+          <line>43</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/saadback$manage.coverage" NAME="manage Coverage Results" MODIFIED="1607184188948" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/saadback$manage.coverage" NAME="manage Coverage Results" MODIFIED="1607966150355" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

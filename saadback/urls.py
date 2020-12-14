@@ -20,6 +20,7 @@ from rest_framework import routers
 
 from blog.views import Blog
 from comment.views import CreateComment
+from message.views import Message
 from report.views import CreateReport
 from user.views import Users, Personality
 
@@ -82,6 +83,17 @@ urlpatterns = [
     path('apis/report/handleblogreport', CreateReport.handle_report_blog),
     # 处理评论举报
     path('apis/report/handlecommentreport', CreateReport.handle_report_comment),
+
+    # 发送私信
+    path('apis/message/sendmeaasge', Message.create_message),
+    # 获取评论通知
+    path('apis/message/getcommentmessage', Message.get_comment_message),
+    # 获取举报通知
+    path('apis/message/getreportmessage', Message.get_report_message),
+    # 获取收藏通知
+    path('apis/message/getstarmessage', Message.get_star_message),
+    # 获取私信通知
+    path('apis/message/getimessage', Message.get_i_message),
 
 ]
 
