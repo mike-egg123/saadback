@@ -23,6 +23,7 @@ host_list = [
 
 
 # 更新数据
+## 只有两种选项可选 Paper和Author （Venue已经全部更新至数据库中）
 def update(request):
     data = json.loads(request.body)
     aid = data.get("administratorid")
@@ -49,10 +50,6 @@ def update(request):
         for line in ufile.readlines()[sline - 1:(sline + alines - 1)]:
             client.index(index='paper', doc_type='_doc', body=json.loads(line))
 
-    else:
-        for line in ufile.readlines()[sline - 1:(sline + alines - 1)]:
-            client.index(index='venue', doc_type='_doc', body=json.loads(line))
-
     ufile.close()
 
     return JsonResponse({
@@ -62,7 +59,7 @@ def update(request):
 
 
 # 根据文件名获取更新记录
-## 下拉框可选 一共就3种 author venue paper
+## 下拉框可选 一共就2种 author paper
 ## 结果按时间排序
 def getupdatebyfilename(request):
     data = json.loads(request.body)
@@ -232,14 +229,59 @@ def papernotdisplay(request):
         "message": "change success"
     })
 
+
+# 相似专家
+## 准确度有待提高
 def getsimilarauthor(request):
     data = json.loads(request.body)
     aid = data.get("authorid")
-    user_profile = Profile.objects.get(user_id=uid)
-    aid = user_profile.author_id
+
+    # 获取发表的论文列表
+    client = Elasticsearch(host_list)
+    body = {
+        "query": {
+            "match": {
+                "id": aid
+            }
+        }
+    }
+
+    res = client.search(index="author", filter_path=['hits.hits._source'], body=body)
+    tags = res["hits"]["hits"][0]["_source"]["tags"]
+
+    sd = []
+    for tag in tags:
+        taginfo = tag["t"]
+        sd.append({
+                        "match": {
+                            "tags.t": taginfo
+                        }
+                    })
+    body = {
+        "query": {
+            "bool": {
+                "should": sd
+            }
+        }
+        , "sort": [
+            {
+                "_score": "desc"  # 排序字段，desc降序排序
+            }
+        ]
+    }
+
+    res = client.search(index="author", filter_path=['hits.hits._source'], body=body)
+
+    res_list = []
+    if len(res) > 0:
+        hits = res['hits']['hits']
+        for re in hits:
+            if re['_source']['id'] != aid:
+                res_list.append(re['_source'])
     return JsonResponse(res_list, safe=False)
 
 
+# 相关专家
 def getrelatedauthor(request):
     data = json.loads(request.body)
     aid = data.get("authorid")
@@ -255,7 +297,6 @@ def getrelatedauthor(request):
     }
 
     res = client.search(index="author", filter_path=['hits.hits._source'], body=body)
-    print(res)
     pubs = res["hits"]["hits"][0]["_source"]["pubs"]
     name = res["hits"]["hits"][0]["_source"]["name"].replace(" ","")
 
@@ -274,10 +315,7 @@ def getrelatedauthor(request):
             authors = res["hits"]["hits"][0]["_source"]["authors"]
             res_list_temp.extend(authors)
     res_list = []
-    print(name)
-    print()
     for re in res_list_temp:
-        print(re['name'])
         count = res_list_temp.count(re)
         re["account_cooperation"] = count
         if re['name'].replace(" ","") != name:
@@ -287,15 +325,28 @@ def getrelatedauthor(request):
 
 
 # 基本检索
-# 作者基本检索字段：姓名 相关领域（tag） 工作单位（org）
-# 论文基本检索字段：标题 刊物（venue）关键词  摘要 issn isbn doi
-type = ['', 'name', 'tags', 'org',
-        'title', 'venue', 'keyword', 'abstract', 'issn', 'doi']
+
+    # 作者基本检索字段：姓名 相关领域（tag） 工作单位（org）
+    # 论文基本检索字段：标题 刊物（venue）关键词  摘要 issn isbn doi
+    # 以上10个字段 编号分别为1-10s
+    # 如果使用前3种检索 默认页面是作者 后6种检索 默认页面是论文
+type = ['', 'name', 'tags.t', 'orgs',
+        'title', 'venue.raw', 'keywords', 'abstract', 'issn', 'isbn', 'doi']
+
+    # 默认排序为综合 编号为1
+    # 作者排序有3种 h指数 被引用数 发表论文数 编号分别为 2 3 4
+    # 论文排序有2种 时间（最新） 被引用数 编号为 5 6
+order = ['', '_score', 'h_index', 'n_citation', 'n_pubs',
+        'year', 'n_citation']
+
+    #字段isasc意为是否增序 1为增序 0为减序
+isascend = ['desc', 'asc']
 def basicsearch(request):
     data = json.loads(request.body)
     typeid = data.get("type")
     content = data.get("content")
     orderid = data.get("order")
+    isasc = data.get("isasc")
 
     client = Elasticsearch(host_list)
     body = {
@@ -303,7 +354,13 @@ def basicsearch(request):
             "match": {
                 type[typeid]: content
             }
+
         }
+        , "sort": [
+            {
+                order[orderid]: isascend[isasc]  # 排序字段，desc降序排序
+            }
+        ]
     }
 
     if typeid <=3 :
