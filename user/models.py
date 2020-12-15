@@ -30,6 +30,8 @@ class Profile(models.Model):
     is_associated = models.BooleanField(default=False)
     # 门户id（todo:暂时做成这种id的形式，后面有了门户列表可以用外键关联）
     author_id = models.CharField(max_length=20, blank=True)
+    # 真实姓名
+    realname = models.CharField(max_length=20, blank=True)
 
     def __str__(self):
         return 'user {}'.format(self.user.username)

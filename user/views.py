@@ -364,6 +364,7 @@ class Personality:
                 profile.is_administrator = profile_cd['is_administrator']
                 profile.is_associated = profile_cd['is_associated']
                 profile.author_id = profile_cd['author_id']
+                profile.realname = profile_cd['realname']
                 profile.save()
                 print(1)
                 return JsonResponse({
@@ -411,6 +412,7 @@ class Personality:
             is_administrator = userprofile.is_administrator
             is_associated = userprofile.is_associated
             author_id = userprofile.author_id
+            realname = userprofile.realname
             return JsonResponse({
                 "status":0,
                 "username":username,
@@ -426,7 +428,8 @@ class Personality:
                 "gender":gender,
                 "is_admin":is_administrator,
                 "is_associated":is_associated,
-                "author_id":author_id
+                "author_id":author_id,
+                "realname":realname
             })
         else:
             return JsonResponse({

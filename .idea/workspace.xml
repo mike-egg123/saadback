@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="b4c32a7c-51a4-4759-91d6-1561f01c39b9" name="Default Changelist" comment="">
+    <list default="true" id="b4c32a7c-51a4-4759-91d6-1561f01c39b9" name="Default Changelist" comment="修补id=0时不是当前用户的bug">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/blog/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/blog/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/user/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/user/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -152,7 +153,7 @@
       <workItem from="1607604386393" duration="409000" />
       <workItem from="1607952313105" duration="14521000" />
       <workItem from="1607997764641" duration="1619000" />
-      <workItem from="1607999592968" duration="1831000" />
+      <workItem from="1607999592968" duration="2454000" />
     </task>
     <task id="LOCAL-00001" summary="Merge remote-tracking branch 'origin/zyy' into qrn&#10;&#10;# Conflicts:&#10;#&#9;.idea/workspace.xml&#10;#&#9;blog/__pycache__/views.cpython-38.pyc&#10;#&#9;blog/views.py&#10;#&#9;comment/__pycache__/views.cpython-38.pyc&#10;#&#9;db.sqlite3&#10;#&#9;report/__pycache__/views.cpython-38.pyc&#10;#&#9;saadback/__pycache__/settings.cpython-38.pyc&#10;#&#9;saadback/__pycache__/urls.cpython-38.pyc">
       <created>1607998464572</created>
@@ -168,7 +169,14 @@
       <option name="project" value="LOCAL" />
       <updated>1607999351248</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="修补id=0时不是当前用户的bug">
+      <created>1608001516587</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1608001516587</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -194,21 +202,22 @@
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="Merge remote-tracking branch 'origin/zyy' into qrn&#10;&#10;# Conflicts:&#10;#&#9;.idea/workspace.xml&#10;#&#9;blog/__pycache__/views.cpython-38.pyc&#10;#&#9;blog/views.py&#10;#&#9;comment/__pycache__/views.cpython-38.pyc&#10;#&#9;db.sqlite3&#10;#&#9;report/__pycache__/views.cpython-38.pyc&#10;#&#9;saadback/__pycache__/settings.cpython-38.pyc&#10;#&#9;saadback/__pycache__/urls.cpython-38.pyc" />
     <MESSAGE value="更改数据库字段" />
-    <option name="LAST_COMMIT_MESSAGE" value="更改数据库字段" />
+    <MESSAGE value="修补id=0时不是当前用户的bug" />
+    <option name="LAST_COMMIT_MESSAGE" value="修补id=0时不是当前用户的bug" />
   </component>
   <component name="WindowStateProjectService">
     <state x="96" y="3" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1607998886621">
       <screen x="0" y="0" width="1280" height="689" />
     </state>
     <state x="96" y="3" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1280.689@0.0.1280.689" timestamp="1607998886621" />
-    <state x="263" y="0" key="CommitChangelistDialog2" timestamp="1607999350366">
+    <state x="263" y="0" key="CommitChangelistDialog2" timestamp="1608001526038">
       <screen x="0" y="0" width="1280" height="689" />
     </state>
-    <state x="263" y="0" key="CommitChangelistDialog2/0.0.1280.689@0.0.1280.689" timestamp="1607999350366" />
-    <state x="93" y="93" width="1095" height="504" key="DiffContextDialog" timestamp="1608001496613">
+    <state x="263" y="0" key="CommitChangelistDialog2/0.0.1280.689@0.0.1280.689" timestamp="1608001526038" />
+    <state x="93" y="93" width="1095" height="504" key="DiffContextDialog" timestamp="1608002048663">
       <screen x="0" y="0" width="1280" height="689" />
     </state>
-    <state x="93" y="93" width="1095" height="504" key="DiffContextDialog/0.0.1280.689@0.0.1280.689" timestamp="1608001496613" />
+    <state x="93" y="93" width="1095" height="504" key="DiffContextDialog/0.0.1280.689@0.0.1280.689" timestamp="1608002048663" />
     <state x="421" y="103" key="FileChooserDialogImpl" timestamp="1607998884379">
       <screen x="0" y="0" width="1280" height="689" />
     </state>
@@ -249,10 +258,10 @@
       <screen x="0" y="0" width="1280" height="689" />
     </state>
     <state width="218" height="477" key="HiddenNamespacesPopup/0.0.1280.689@0.0.1280.689" timestamp="1607063362118" />
-    <state x="233" y="81" key="Vcs.Push.Dialog.v2" timestamp="1607999363857">
+    <state x="233" y="81" key="Vcs.Push.Dialog.v2" timestamp="1608001533016">
       <screen x="0" y="0" width="1280" height="689" />
     </state>
-    <state x="233" y="81" key="Vcs.Push.Dialog.v2/0.0.1280.689@0.0.1280.689" timestamp="1607999363857" />
+    <state x="233" y="81" key="Vcs.Push.Dialog.v2/0.0.1280.689@0.0.1280.689" timestamp="1608001533016" />
     <state x="371" y="153" key="com.intellij.database.dbimport.ImportUtil.MyDialog" timestamp="1607066502102">
       <screen x="0" y="0" width="1280" height="689" />
     </state>
