@@ -21,6 +21,12 @@ host_list = [
     '123.57.107.14:9200'
 ]
 
+# 最热专家
+popularAuthors = []
+
+#最热论文
+popularPapers = []
+
 
 # 更新数据
 ## 只有两种选项可选 Paper和Author （Venue已经全部更新至数据库中）
@@ -52,6 +58,43 @@ def update(request):
 
     ufile.close()
 
+    #获取最热专家和最热论文
+    body11 = {
+        "query": {
+            "match_all": {}
+        },
+        "sort": [{
+            "h_index": "desc"
+        }]
+        , "timeout": "1s"
+    }
+    res = client.search(index="author", filter_path=['hits.hits._source.id', 'hits.hits._source.name',
+                                                     'hits.hits._source.h_index', 'hits.hits._source.n_pubs',
+                                                     'hits.hits._source.n_citation'], body=body11, size=10)
+
+    if len(res) > 0:
+        hits = res['hits']['hits']
+        for re in hits:
+            popularAuthors.append(re['_source'])
+
+    body12 = {
+        "query": {
+            "match_all": {}
+        },
+        "sort": [{
+            "n_citation": "desc"
+        }]
+        , "timeout": "1s"
+    }
+    res = client.search(index="paper", filter_path=['hits.hits._source.id', 'hits.hits._source.title',
+                                                     'hits.hits._source.n_citation'], body=body12, size=10)
+
+    if len(res) > 0:
+        hits = res['hits']['hits']
+        for re in hits:
+            popularPapers.append(re['_source'])
+
+
     return JsonResponse({
         "status": 0,
         "message": "update success"
@@ -73,13 +116,15 @@ def getupdatebyfilename(request):
         record_list.append(re['fields'])
     return JsonResponse(record_list, safe=False)
 
+
 # 获取可认领的门户
 ## 未用拼音处理
 ## 中文名字为精准匹配 西文为匹配名或姓
 def getassAuthor(request):
     data = json.loads(request.body)
     name = data.get("name")
-    # print(name)
+
+
     flag = 0
     for ch in name:
         if '\u4e00' <= ch <= '\u9fa5':
@@ -89,7 +134,6 @@ def getassAuthor(request):
     #     sytle = Style.NORMAL
     #     name = pinyin(name, sytle)
     # print(name)
-
 
     client = Elasticsearch(host_list)
     body = {}
@@ -112,7 +156,7 @@ def getassAuthor(request):
 
     res = client.search(index="author", filter_path=['hits.hits._source'], body=body)
     res_list = []
-    if len(res) >0 :
+    if len(res) > 0:
         hits = res['hits']['hits']
         for re in hits:
             res_list.append(re['_source'])
@@ -152,7 +196,7 @@ def disassociatetoAuthor(request):
     })
 
 
-#门户管理 只有认领了门户的用户才能调用该功能
+# 门户管理 只有认领了门户的用户才能调用该功能
 # 论文展示
 def paperdisplay(request):
     data = json.loads(request.body)
@@ -191,7 +235,7 @@ def paperdisplay(request):
     })
 
 
-#论文隐藏
+# 论文隐藏
 def papernotdisplay(request):
     data = json.loads(request.body)
     uid = data.get("userid")
@@ -223,7 +267,6 @@ def papernotdisplay(request):
     }
     client.update_by_query(index='author', body=body)
 
-
     return JsonResponse({
         "status": 0,
         "message": "change success"
@@ -253,10 +296,10 @@ def getsimilarauthor(request):
     for tag in tags:
         taginfo = tag["t"]
         sd.append({
-                        "match": {
-                            "tags.t": taginfo
-                        }
-                    })
+            "match": {
+                "tags.t": taginfo
+            }
+        })
     body = {
         "query": {
             "bool": {
@@ -286,7 +329,7 @@ def getrelatedauthor(request):
     data = json.loads(request.body)
     aid = data.get("authorid")
 
-    #获取发表的论文列表
+    # 获取发表的论文列表
     client = Elasticsearch(host_list)
     body = {
         "query": {
@@ -298,9 +341,9 @@ def getrelatedauthor(request):
 
     res = client.search(index="author", filter_path=['hits.hits._source'], body=body)
     pubs = res["hits"]["hits"][0]["_source"]["pubs"]
-    name = res["hits"]["hits"][0]["_source"]["name"].replace(" ","")
+    name = res["hits"]["hits"][0]["_source"]["name"].replace(" ", "")
 
-    res_list_temp= []
+    res_list_temp = []
     for pub in pubs:
         body = {
             "query": {
@@ -311,14 +354,14 @@ def getrelatedauthor(request):
         }
         res = client.search(index="paper", filter_path=['hits.hits._source'], body=body)
         print(res)
-        if len(res)>0 :
+        if len(res) > 0:
             authors = res["hits"]["hits"][0]["_source"]["authors"]
             res_list_temp.extend(authors)
     res_list = []
     for re in res_list_temp:
         count = res_list_temp.count(re)
         re["account_cooperation"] = count
-        if re['name'].replace(" ","") != name:
+        if re['name'].replace(" ", "") != name:
             res_list.append(re)
 
     return JsonResponse(res_list, safe=False)
@@ -326,35 +369,48 @@ def getrelatedauthor(request):
 
 # 基本检索
 
-    # 作者基本检索字段：姓名 相关领域（tag） 工作单位（org）
-    # 论文基本检索字段：标题 刊物（venue）关键词  摘要 issn isbn doi
-    # 以上10个字段 编号分别为1-10s
-    # 如果使用前3种检索 默认页面是作者 后6种检索 默认页面是论文
+# 作者基本检索字段：姓名 相关领域（tag） 工作单位（org）
+# 论文基本检索字段：标题 刊物（venue）关键词  摘要 issn isbn doi
+# 以上10个字段 编号分别为1-10s
+# 如果使用前3种检索 默认页面是作者 后6种检索 默认页面是论文
 type = ['', 'name', 'tags.t', 'orgs',
         'title', 'venue.raw', 'keywords', 'abstract', 'issn', 'isbn', 'doi']
 
-    # 默认排序为综合 编号为1
-    # 作者排序有3种 h指数 被引用数 发表论文数 编号分别为 2 3 4
-    # 论文排序有2种 时间（最新） 被引用数 编号为 5 6
+# 默认排序为综合 编号为1
+# 作者排序有3种 h指数 被引用数 发表论文数 编号分别为 2 3 4
+# 论文排序有2种 时间（最新） 被引用数 编号为 5 6
 order = ['', '_score', 'h_index', 'n_citation', 'n_pubs',
-        'year', 'n_citation']
+         'year', 'n_citation']
 
-    #字段isasc意为是否增序 1为增序 0为减序
+# 字段isasc意为是否增序 1为增序 0为减序
 isascend = ['desc', 'asc']
+
+
 def basicsearch(request):
     data = json.loads(request.body)
     typeid = data.get("type")
     content = data.get("content")
     orderid = data.get("order")
     isasc = data.get("isasc")
+    isran = data.get("isrange")
+    lowran = data.get("lowrange")
+    highran = data.get("highrange")
 
     client = Elasticsearch(host_list)
+
     body = {
         "query": {
-            "match": {
-                type[typeid]: content
-            }
+            "bool": {
+                "must": [
+                    {
+                        "match": {
+                            type[typeid]: content
+                        }
 
+                    }
+
+                ]
+            }
         }
         , "sort": [
             {
@@ -363,11 +419,67 @@ def basicsearch(request):
         ]
     }
 
-    if typeid <=3 :
+    if isran == 1:
+        body['query']['bool']['must'].append({
+                        "range": {
+                            "year": {
+                                "gte": lowran,
+                                "lte": highran
+                            }
+                        }
+                    })
+
+    if typeid <= 3:
         res = client.search(index="author", filter_path=['hits.hits._source'], body=body)
-    else :
+    else:
         res = client.search(index="paper", filter_path=['hits.hits._source'], body=body)
 
-    return JsonResponse(res, safe=False)
+    res_list = []
+    if len(res) > 0:
+        hits = res['hits']['hits']
+        for re in hits:
+            res_list.append(re['_source'])
+    return JsonResponse(res_list, safe=False)
 
 
+def popularauthors(request):
+    return JsonResponse(popularAuthors, safe=False)
+
+def popularpapers(request):
+    return JsonResponse(popularPapers, safe=False)
+
+
+# 根据id获取论文
+def getpaperbyid(request):
+    data = json.loads(request.body)
+    pid = data.get("paperid")
+
+    client = Elasticsearch(host_list)
+    body = {
+        "query": {
+            "match": {
+                "id": pid
+            }
+        }
+    }
+
+    res = client.search(index="paper", filter_path=['hits.hits._source'], body=body)
+    return JsonResponse(res['hits']['hits'][0]['_source'], safe=False)
+
+
+# 根据id获取门户
+def getauthorbyid(request):
+    data = json.loads(request.body)
+    aid = data.get("authorid")
+
+    client = Elasticsearch(host_list)
+    body = {
+        "query": {
+            "match": {
+                "id": aid
+            }
+        }
+    }
+
+    res = client.search(index="author", filter_path=['hits.hits._source'], body=body)
+    return JsonResponse(res['hits']['hits'][0]['_source'], safe=False)

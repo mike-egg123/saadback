@@ -38,8 +38,18 @@ urlpatterns = [
     # 论文排序有2种 时间（最新） 被引用数 编号为 5 6
 
     #基本检索（单字段，单关键词）
-    path('basicsearch',views.basicsearch),
+    path('basicsearch', views.basicsearch),
 
+    # 最热专家
+    path('popularauthors', views.popularauthors),
+
+    # 最热论文
+    path('popularpapers', views.popularpapers),
+
+    #根据id获取论文
+    path('getpaperbyid', views.getpaperbyid),
+    #根据id获取门户
+    path('getauthorbyid', views.getauthorbyid)
 
     #高级检索
 
