@@ -45,7 +45,7 @@ class Users:
                 "status": 0,
                 "username": str(request.user),
                 "email": str(request.user.email),
-                "userid":str(request.user.id),
+                "userid":request.user.id,
                 "phone":str(userprofile.phone),
                 "bio":str(userprofile.bio),
                 "avatar": avatar
@@ -82,7 +82,7 @@ class Users:
                         "username": username,
                         "password": password,
                         "email": str(request.user.email),
-                        "userid": str(request.user.id),
+                        "userid": request.user.id,
                         "phone": str(userprofile.phone),
                         "bio": str(userprofile.bio),
                         "avatar": avatar
