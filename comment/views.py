@@ -6,6 +6,7 @@ from django.utils import timezone
 
 from blog.models import BlogPost
 from comment.models import Comment
+from message.models import Commentmessage
 from user.models import Profile
 # Create your views here.
 
@@ -22,14 +23,24 @@ class CreateComment:
                 comment_body = data.get('text')
                 # 尝试评论
                 # 创建新的评论对象
+                print(blog_id)
+                print(request.user.id)
                 comment = Comment.objects.create(user_id=request.user.id, blog_id=blog_id)
                 comment.body = comment_body
                 # 保存后提交
                 comment.save()
                 blog = BlogPost.objects.get(id=blog_id)
+                print(blog_id)
                 blog.tipnum = blog.tipnum + 1
                 blog.save(update_fields=['tipnum'])
                 print(blog.tipnum)
+
+                # 生成消息通知并保存
+                print(blog.user.id)
+                commentmessage = Commentmessage.objects.create(user_id=request.user.id, blog_id=blog_id, to_user_id=blog.user.id)
+                # commentmessage.message = comment_body
+                commentmessage.save()
+
                 # 获取用户信息
                 user_id = int(request.user.id)
                 userprofile = Profile.objects.get(user_id=user_id)

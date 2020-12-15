@@ -7,6 +7,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse, JsonResponse
 # 引入刚才定义的ArticlePostForm表单类
 from comment.models import Comment
+from message.models import Starmessage
 from user.models import Profile
 from .forms import BlogPostForm
 # 引入User模型
@@ -45,7 +46,7 @@ class Blog:
                 "message": "error method"
             })
 
-    @staticmethod  # cxy
+    @staticmethod
     # 修改帖子
     def editBlog(request):
         if request.method == "POST":
@@ -88,7 +89,7 @@ class Blog:
                 "message": "error method"
             })
 
-    @staticmethod  # cxy
+    @staticmethod
     # 获取帖子详情
     def getBlogInfo(request):
         if request.method == "POST":
@@ -155,7 +156,7 @@ class Blog:
                 "message": "error method"
             })
 
-    @staticmethod  # cxy
+    @staticmethod
     # 获取用户所有帖子信息
     def getAllBlogs(request):
         if request.method == "POST":
@@ -178,7 +179,7 @@ class Blog:
                 json_list.append(json_dict)
             return JsonResponse({
                 "status": 0,
-                "data": {
+                "data":{
                     "list": json_list
                 }
             }, safe=False)
@@ -194,7 +195,7 @@ class Blog:
         if request.method == "POST":
             data = json.loads(request.body)
             blogid = data.get("id")
-            like = data.get("type") # 0 点赞，1 取消点赞
+            like = data.get("type")  # 0 点赞，1 取消点赞
             blog = BlogPost.objects.get(id=blogid)
             if not blog:
                 return JsonResponse({
@@ -228,8 +229,8 @@ class Blog:
                     })
         else:
             return JsonResponse({
-                "status":1,
-                "message":"error method"
+                "status": 1,
+                "message": "error method"
             })
 
     @staticmethod
@@ -271,6 +272,12 @@ class Blog:
                     collect.save()
                     blog.is_collect = 0
                     blog.save()
+
+                    # 生成消息通知并保存
+                    starmessage = Starmessage.objects.create(user_id=request.user.id, blog_id=blog.id, to_user_id=blog.user.id)
+                    # commentmessage.message = comment_body
+                    starmessage.save()
+
                     return JsonResponse({
                         "status": 0,
                         "message": str(collect),
@@ -437,7 +444,8 @@ class Blog:
                 "message": "error method"
             })
 
-    @staticmethod  # cxy
+
+    @staticmethod
     # 搜索帖子
     def search_blog(request):
         if request.method == "POST":
