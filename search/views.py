@@ -59,6 +59,8 @@ def update(request):
     ufile.close()
 
     #获取最热专家和最热论文
+    popularAuthors.clear()
+    popularPapers.clear()
     body11 = {
         "query": {
             "match_all": {}
