@@ -2,10 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b4c32a7c-51a4-4759-91d6-1561f01c39b9" name="Default Changelist" comment="修补id=0时不是当前用户的bug">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/user/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/user/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/saadback.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/saadback.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/report/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/report/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/report/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/report/views.py" afterDir="false" />
     </list>
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -70,6 +72,18 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
   </component>
   <component name="RunManager" selected="Python.manage">
     <configuration name="manage" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
@@ -154,6 +168,7 @@
       <workItem from="1607952313105" duration="14521000" />
       <workItem from="1607997764641" duration="1619000" />
       <workItem from="1607999592968" duration="2454000" />
+      <workItem from="1608002708255" duration="257000" />
     </task>
     <task id="LOCAL-00001" summary="Merge remote-tracking branch 'origin/zyy' into qrn&#10;&#10;# Conflicts:&#10;#&#9;.idea/workspace.xml&#10;#&#9;blog/__pycache__/views.cpython-38.pyc&#10;#&#9;blog/views.py&#10;#&#9;comment/__pycache__/views.cpython-38.pyc&#10;#&#9;db.sqlite3&#10;#&#9;report/__pycache__/views.cpython-38.pyc&#10;#&#9;saadback/__pycache__/settings.cpython-38.pyc&#10;#&#9;saadback/__pycache__/urls.cpython-38.pyc">
       <created>1607998464572</created>

@@ -36,7 +36,7 @@ class Report(models.Model):
     class Meta:
         # ordering 指定模型返回的数据的排列顺序
         # '-created' 表明数据应该以倒序排列
-        ordering = ('created',)
+        ordering = ('-created',)
 
     # 函数 __str__ 定义当调用对象的 str() 方法时的返回值内容
     def __str__(self):

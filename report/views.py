@@ -130,7 +130,7 @@ class CreateReport:
                     json_dict["report_id"] = report.id
                     json_dict["blog_id"] = report.blog_id
                     json_dict["title"] = BlogPost.objects.get(id=report.blog_id).title
-                    json_dict["content"] = BlogPost.objects.get(id=report.blog_id).content
+                    json_dict["content"] = BlogPost.objects.get(id=report.blog_id).htmlcontent
                     json_dict["reason"] = report.body
                     json_dict["user_id"] = BlogPost.objects.get(id=report.blog_id).user_id
                     json_dict["user_icon"] = avatar
