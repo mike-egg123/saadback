@@ -2,10 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b4c32a7c-51a4-4759-91d6-1561f01c39b9" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/blog/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/blog/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -153,7 +151,8 @@
       <workItem from="1607144328572" duration="12093000" />
       <workItem from="1607604386393" duration="409000" />
       <workItem from="1607952313105" duration="14521000" />
-      <workItem from="1607997764641" duration="1392000" />
+      <workItem from="1607997764641" duration="1619000" />
+      <workItem from="1607999592968" duration="1831000" />
     </task>
     <task id="LOCAL-00001" summary="Merge remote-tracking branch 'origin/zyy' into qrn&#10;&#10;# Conflicts:&#10;#&#9;.idea/workspace.xml&#10;#&#9;blog/__pycache__/views.cpython-38.pyc&#10;#&#9;blog/views.py&#10;#&#9;comment/__pycache__/views.cpython-38.pyc&#10;#&#9;db.sqlite3&#10;#&#9;report/__pycache__/views.cpython-38.pyc&#10;#&#9;saadback/__pycache__/settings.cpython-38.pyc&#10;#&#9;saadback/__pycache__/urls.cpython-38.pyc">
       <created>1607998464572</created>
@@ -162,7 +161,14 @@
       <option name="project" value="LOCAL" />
       <updated>1607998464572</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="更改数据库字段">
+      <created>1607999351248</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1607999351248</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -187,41 +193,42 @@
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="Merge remote-tracking branch 'origin/zyy' into qrn&#10;&#10;# Conflicts:&#10;#&#9;.idea/workspace.xml&#10;#&#9;blog/__pycache__/views.cpython-38.pyc&#10;#&#9;blog/views.py&#10;#&#9;comment/__pycache__/views.cpython-38.pyc&#10;#&#9;db.sqlite3&#10;#&#9;report/__pycache__/views.cpython-38.pyc&#10;#&#9;saadback/__pycache__/settings.cpython-38.pyc&#10;#&#9;saadback/__pycache__/urls.cpython-38.pyc" />
-    <option name="LAST_COMMIT_MESSAGE" value="Merge remote-tracking branch 'origin/zyy' into qrn&#10;&#10;# Conflicts:&#10;#&#9;.idea/workspace.xml&#10;#&#9;blog/__pycache__/views.cpython-38.pyc&#10;#&#9;blog/views.py&#10;#&#9;comment/__pycache__/views.cpython-38.pyc&#10;#&#9;db.sqlite3&#10;#&#9;report/__pycache__/views.cpython-38.pyc&#10;#&#9;saadback/__pycache__/settings.cpython-38.pyc&#10;#&#9;saadback/__pycache__/urls.cpython-38.pyc" />
+    <MESSAGE value="更改数据库字段" />
+    <option name="LAST_COMMIT_MESSAGE" value="更改数据库字段" />
   </component>
   <component name="WindowStateProjectService">
     <state x="96" y="3" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1607998886621">
       <screen x="0" y="0" width="1280" height="689" />
     </state>
     <state x="96" y="3" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1280.689@0.0.1280.689" timestamp="1607998886621" />
-    <state x="263" y="0" key="CommitChangelistDialog2" timestamp="1607999297661">
+    <state x="263" y="0" key="CommitChangelistDialog2" timestamp="1607999350366">
       <screen x="0" y="0" width="1280" height="689" />
     </state>
-    <state x="263" y="0" key="CommitChangelistDialog2/0.0.1280.689@0.0.1280.689" timestamp="1607999297661" />
-    <state x="93" y="93" width="1095" height="504" key="DiffContextDialog" timestamp="1607998332142">
+    <state x="263" y="0" key="CommitChangelistDialog2/0.0.1280.689@0.0.1280.689" timestamp="1607999350366" />
+    <state x="93" y="93" width="1095" height="504" key="DiffContextDialog" timestamp="1608001496613">
       <screen x="0" y="0" width="1280" height="689" />
     </state>
-    <state x="93" y="93" width="1095" height="504" key="DiffContextDialog/0.0.1280.689@0.0.1280.689" timestamp="1607998332142" />
+    <state x="93" y="93" width="1095" height="504" key="DiffContextDialog/0.0.1280.689@0.0.1280.689" timestamp="1608001496613" />
     <state x="421" y="103" key="FileChooserDialogImpl" timestamp="1607998884379">
       <screen x="0" y="0" width="1280" height="689" />
     </state>
     <state x="421" y="103" key="FileChooserDialogImpl/0.0.1280.689@0.0.1280.689" timestamp="1607998884379" />
-    <state width="1237" height="114" key="GridCell.Tab.0.bottom" timestamp="1607999254326">
+    <state width="1237" height="114" key="GridCell.Tab.0.bottom" timestamp="1607999384220">
       <screen x="0" y="0" width="1280" height="689" />
     </state>
-    <state width="1237" height="114" key="GridCell.Tab.0.bottom/0.0.1280.689@0.0.1280.689" timestamp="1607999254326" />
-    <state width="1237" height="114" key="GridCell.Tab.0.center" timestamp="1607999254326">
+    <state width="1237" height="114" key="GridCell.Tab.0.bottom/0.0.1280.689@0.0.1280.689" timestamp="1607999384220" />
+    <state width="1237" height="114" key="GridCell.Tab.0.center" timestamp="1607999384220">
       <screen x="0" y="0" width="1280" height="689" />
     </state>
-    <state width="1237" height="114" key="GridCell.Tab.0.center/0.0.1280.689@0.0.1280.689" timestamp="1607999254326" />
-    <state width="1237" height="114" key="GridCell.Tab.0.left" timestamp="1607999254326">
+    <state width="1237" height="114" key="GridCell.Tab.0.center/0.0.1280.689@0.0.1280.689" timestamp="1607999384220" />
+    <state width="1237" height="114" key="GridCell.Tab.0.left" timestamp="1607999384220">
       <screen x="0" y="0" width="1280" height="689" />
     </state>
-    <state width="1237" height="114" key="GridCell.Tab.0.left/0.0.1280.689@0.0.1280.689" timestamp="1607999254326" />
-    <state width="1237" height="114" key="GridCell.Tab.0.right" timestamp="1607999254326">
+    <state width="1237" height="114" key="GridCell.Tab.0.left/0.0.1280.689@0.0.1280.689" timestamp="1607999384220" />
+    <state width="1237" height="114" key="GridCell.Tab.0.right" timestamp="1607999384220">
       <screen x="0" y="0" width="1280" height="689" />
     </state>
-    <state width="1237" height="114" key="GridCell.Tab.0.right/0.0.1280.689@0.0.1280.689" timestamp="1607999254326" />
+    <state width="1237" height="114" key="GridCell.Tab.0.right/0.0.1280.689@0.0.1280.689" timestamp="1607999384220" />
     <state width="1237" height="208" key="GridCell.Tab.1.bottom" timestamp="1607096380263">
       <screen x="0" y="0" width="1280" height="689" />
     </state>
@@ -242,10 +249,10 @@
       <screen x="0" y="0" width="1280" height="689" />
     </state>
     <state width="218" height="477" key="HiddenNamespacesPopup/0.0.1280.689@0.0.1280.689" timestamp="1607063362118" />
-    <state x="233" y="81" key="Vcs.Push.Dialog.v2" timestamp="1607998626874">
+    <state x="233" y="81" key="Vcs.Push.Dialog.v2" timestamp="1607999363857">
       <screen x="0" y="0" width="1280" height="689" />
     </state>
-    <state x="233" y="81" key="Vcs.Push.Dialog.v2/0.0.1280.689@0.0.1280.689" timestamp="1607998626874" />
+    <state x="233" y="81" key="Vcs.Push.Dialog.v2/0.0.1280.689@0.0.1280.689" timestamp="1607999363857" />
     <state x="371" y="153" key="com.intellij.database.dbimport.ImportUtil.MyDialog" timestamp="1607066502102">
       <screen x="0" y="0" width="1280" height="689" />
     </state>
@@ -271,6 +278,6 @@
     </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/saadback$manage.coverage" NAME="manage Coverage Results" MODIFIED="1607999254320" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/saadback$manage.coverage" NAME="manage Coverage Results" MODIFIED="1608000584859" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

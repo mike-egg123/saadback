@@ -162,6 +162,8 @@ class Blog:
         if request.method == "POST":
             data = json.loads(request.body)
             userid = data.get('id')
+            if userid == 0:
+                userid = request.user.id
             blogs = BlogPost.objects.filter(user_id=userid)
             json_list = []
             for blog in blogs:
@@ -294,6 +296,8 @@ class Blog:
         if requset.method == "POST":
             data = json.loads(requset.body)
             userid = data.get("id")
+            if userid == 0:
+                userid = requset.user.id
             user = User.objects.get(id=userid)
             profile = Profile.objects.get(user_id=userid)
             blogs = BlogPost.objects.filter(user_id=userid)
@@ -331,8 +335,10 @@ class Blog:
         if request.method == "POST":
             data = json.loads(request.body)
             type = data.get("type")
-            print(type)
-            blogs = BlogPost.objects.filter(type=type).order_by("-readnum")
+            if type == 0:
+                blogs = BlogPost.objects.order_by("-readnum")
+            else:
+                blogs = BlogPost.objects.filter(type=type).order_by("-readnum")
             print(blogs)
             json_list = []
             for blog in blogs:
@@ -348,7 +354,9 @@ class Blog:
                 json_dict['likenum'] = blog.likenum
                 json_dict['tipnum'] = blog.tipnum
                 json_dict['userid'] = blog.user_id
-                json_dict['content'] = blog.content
+                json_dict['textcontent'] = blog.content
+                json_dict['htmlcontent'] = blog.htmlcontent
+                json_dict['blogid'] = blog.id
                 json_list.append(json_dict)
             return JsonResponse({
                 "status": 0,
@@ -367,6 +375,8 @@ class Blog:
         if request.method == "POST":
             data = json.loads(request.body)
             userid = data.get('id')
+            if userid == 0:
+                userid = request.user.id
             user = User.objects.get(id=userid)
             print(user)
             if user:
