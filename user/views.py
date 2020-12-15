@@ -364,7 +364,6 @@ class Personality:
                 profile.is_administrator = profile_cd['is_administrator']
                 profile.is_associated = profile_cd['is_associated']
                 profile.author_id = profile_cd['author_id']
-                profile.realname = profile_cd['realname']
                 profile.save()
                 print(1)
                 return JsonResponse({

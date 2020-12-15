@@ -127,6 +127,8 @@ class Blog:
                     json_dict["textcontent"] = comment.body
                     json_dict["htmlcontent"] = "<p>" + comment.body + "</p>"
                     json_tiplist.append(json_dict)
+                blog.tipnum = len(json_tiplist)
+                blog.save()
                 return JsonResponse({
                     "status": 0,
                     "message": "帖子详情查看成功！",
