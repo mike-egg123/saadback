@@ -22,7 +22,13 @@ class Report(models.Model):
         blank=True,
         null=True
     )
-    # todo:被举报的门户
+    # 被举报的门户
+    author_id = models.CharField(max_length=20, blank=True)
+    # 被举报的门户的冒领人
+    author_user_id = models.IntegerField(
+        blank=True,
+        null=True
+    )
     # 举报类型：1为举报门户，2为举报帖子，3为举报评论
     type = models.IntegerField(blank=True, null=True)
     # 举报id

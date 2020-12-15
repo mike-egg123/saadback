@@ -121,7 +121,8 @@ class Blog:
                         avatar = ""
 
                     json_dict = {}
-                    json_dict["id"] = user_id
+                    json_dict["user_id"] = user_id
+                    json_dict["comment_id"] = comment.id
                     json_dict["name"] = userprofile.user.username
                     json_dict["img"] = avatar
                     json_dict["textcontent"] = comment.body

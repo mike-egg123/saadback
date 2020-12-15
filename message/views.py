@@ -98,6 +98,9 @@ class Message:
                     elif report_message.type == 3:
                         comment = Comment.objects.get(id=report_message.comment)
                         json_dict["message"] = comment.body
+                    elif report_message.type == 1:
+                        author_id = report_message.author_id
+                        json_dict["message"] = author_id
                     json_list.append(json_dict)
 
                 return JsonResponse({
