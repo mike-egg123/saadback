@@ -4,3 +4,5 @@ drf-haystack
 elasticsearch
 djangorestframework
 setuptools_scm
+chardet==3.0.4
+pypinyin==0.40.0
