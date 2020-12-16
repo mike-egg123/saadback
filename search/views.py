@@ -189,8 +189,32 @@ def disassociatetoAuthor(request):
     uid = data.get("userid")
 
     user_profile = Profile.objects.get(user_id=uid)
+    aid =user_profile.author_id
     user_profile.is_associated = False
+    user_profile.author_id = ""
     user_profile.save()
+
+    # 将原本的isdisplay设置全部恢复
+    client = Elasticsearch(host_list)
+    body = {
+        "script": {
+            "source": """
+                    for(int i=0;i<ctx._source.pubs.length;i++){
+                        ctx._source.pubs[i].isdisplay=params.turnto;
+                    }
+                    """,
+            "lang": "painless",
+            "params": {
+                "turnto": 1
+            }
+        },
+        "query": {
+            "term": {
+                "id": aid
+            }
+        }
+    }
+    client.update_by_query(index='author', body=body)
 
     return JsonResponse({
         "status": 0,
@@ -246,6 +270,7 @@ def papernotdisplay(request):
     aid = user_profile.author_id
 
     client = Elasticsearch(host_list)
+
     body = {
         "query": {
             "term": {

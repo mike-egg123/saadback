@@ -1,6 +1,7 @@
-pillow
-django==2.2
-drf-haystack 
-elasticsearch
-djangorestframework
-setuptools_scm
+elasticsearch==7.10.0
+chardet==3.0.4
+drf_haystack==1.8.9
+Django==2.2
+pypinyin==0.40.0
+django_haystack==3.0
+Pillow==8.0.1
