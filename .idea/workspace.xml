@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
+<<<<<<< Updated upstream
     <list default="true" id="b4c32a7c-51a4-4759-91d6-1561f01c39b9" name="Default Changelist" comment="修补id=0时不是当前用户的bug">
       <change afterPath="$PROJECT_DIR$/message/migrations/0003_auto_20201215_2105.py" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/report/migrations/0006_auto_20201215_2105.py" afterDir="false" />
@@ -14,6 +15,12 @@
       <change beforePath="$PROJECT_DIR$/report/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/report/models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/report/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/report/views.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/saadback/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/saadback/urls.py" afterDir="false" />
+=======
+    <list default="true" id="b4c32a7c-51a4-4759-91d6-1561f01c39b9" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+>>>>>>> Stashed changes
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -36,6 +43,17 @@
       <path>
         <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
         <item name="db.sqlite3" type="feb32156:DbDataSourceImpl" />
+      </path>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="db.sqlite3" type="feb32156:DbDataSourceImpl" />
+        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
+      </path>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="db.sqlite3" type="feb32156:DbDataSourceImpl" />
+        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
+        <item name="main: schema" type="981a47c2:SqliteImplModel$Schema" />
       </path>
     </expand>
     <select />
@@ -166,8 +184,12 @@
       <workItem from="1607997764641" duration="1619000" />
       <workItem from="1607999592968" duration="2454000" />
       <workItem from="1608002708255" duration="257000" />
+<<<<<<< Updated upstream
       <workItem from="1608022613517" duration="601000" />
       <workItem from="1608028285980" duration="8442000" />
+=======
+      <workItem from="1608028271338" duration="2564000" />
+>>>>>>> Stashed changes
     </task>
     <task id="LOCAL-00001" summary="Merge remote-tracking branch 'origin/zyy' into qrn&#10;&#10;# Conflicts:&#10;#&#9;.idea/workspace.xml&#10;#&#9;blog/__pycache__/views.cpython-38.pyc&#10;#&#9;blog/views.py&#10;#&#9;comment/__pycache__/views.cpython-38.pyc&#10;#&#9;db.sqlite3&#10;#&#9;report/__pycache__/views.cpython-38.pyc&#10;#&#9;saadback/__pycache__/settings.cpython-38.pyc&#10;#&#9;saadback/__pycache__/urls.cpython-38.pyc">
       <created>1607998464572</created>
@@ -220,10 +242,10 @@
     <option name="LAST_COMMIT_MESSAGE" value="修补id=0时不是当前用户的bug" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="96" y="3" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1607998886621">
+    <state x="96" y="3" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1608028502168">
       <screen x="0" y="0" width="1280" height="689" />
     </state>
-    <state x="96" y="3" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1280.689@0.0.1280.689" timestamp="1607998886621" />
+    <state x="96" y="3" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1280.689@0.0.1280.689" timestamp="1608028502168" />
     <state x="263" y="0" key="CommitChangelistDialog2" timestamp="1608001526038">
       <screen x="0" y="0" width="1280" height="689" />
     </state>
@@ -232,26 +254,26 @@
       <screen x="0" y="0" width="1280" height="689" />
     </state>
     <state x="93" y="93" width="1095" height="504" key="DiffContextDialog/0.0.1280.689@0.0.1280.689" timestamp="1608002048663" />
-    <state x="421" y="103" key="FileChooserDialogImpl" timestamp="1607998884379">
+    <state x="421" y="103" key="FileChooserDialogImpl" timestamp="1608028501212">
       <screen x="0" y="0" width="1280" height="689" />
     </state>
-    <state x="421" y="103" key="FileChooserDialogImpl/0.0.1280.689@0.0.1280.689" timestamp="1607998884379" />
-    <state width="1237" height="114" key="GridCell.Tab.0.bottom" timestamp="1607999384220">
+    <state x="421" y="103" key="FileChooserDialogImpl/0.0.1280.689@0.0.1280.689" timestamp="1608028501212" />
+    <state width="1237" height="173" key="GridCell.Tab.0.bottom" timestamp="1608034795762">
       <screen x="0" y="0" width="1280" height="689" />
     </state>
-    <state width="1237" height="114" key="GridCell.Tab.0.bottom/0.0.1280.689@0.0.1280.689" timestamp="1607999384220" />
-    <state width="1237" height="114" key="GridCell.Tab.0.center" timestamp="1607999384220">
+    <state width="1237" height="173" key="GridCell.Tab.0.bottom/0.0.1280.689@0.0.1280.689" timestamp="1608034795762" />
+    <state width="1237" height="173" key="GridCell.Tab.0.center" timestamp="1608034795762">
       <screen x="0" y="0" width="1280" height="689" />
     </state>
-    <state width="1237" height="114" key="GridCell.Tab.0.center/0.0.1280.689@0.0.1280.689" timestamp="1607999384220" />
-    <state width="1237" height="114" key="GridCell.Tab.0.left" timestamp="1607999384220">
+    <state width="1237" height="173" key="GridCell.Tab.0.center/0.0.1280.689@0.0.1280.689" timestamp="1608034795762" />
+    <state width="1237" height="173" key="GridCell.Tab.0.left" timestamp="1608034795762">
       <screen x="0" y="0" width="1280" height="689" />
     </state>
-    <state width="1237" height="114" key="GridCell.Tab.0.left/0.0.1280.689@0.0.1280.689" timestamp="1607999384220" />
-    <state width="1237" height="114" key="GridCell.Tab.0.right" timestamp="1607999384220">
+    <state width="1237" height="173" key="GridCell.Tab.0.left/0.0.1280.689@0.0.1280.689" timestamp="1608034795762" />
+    <state width="1237" height="173" key="GridCell.Tab.0.right" timestamp="1608034795762">
       <screen x="0" y="0" width="1280" height="689" />
     </state>
-    <state width="1237" height="114" key="GridCell.Tab.0.right/0.0.1280.689@0.0.1280.689" timestamp="1607999384220" />
+    <state width="1237" height="173" key="GridCell.Tab.0.right/0.0.1280.689@0.0.1280.689" timestamp="1608034795762" />
     <state width="1237" height="208" key="GridCell.Tab.1.bottom" timestamp="1607096380263">
       <screen x="0" y="0" width="1280" height="689" />
     </state>
@@ -268,14 +290,14 @@
       <screen x="0" y="0" width="1280" height="689" />
     </state>
     <state width="1237" height="208" key="GridCell.Tab.1.right/0.0.1280.689@0.0.1280.689" timestamp="1607096380263" />
-    <state width="218" height="477" key="HiddenNamespacesPopup" timestamp="1607063362118">
+    <state width="218" height="477" key="HiddenNamespacesPopup" timestamp="1608028476050">
       <screen x="0" y="0" width="1280" height="689" />
     </state>
-    <state width="218" height="477" key="HiddenNamespacesPopup/0.0.1280.689@0.0.1280.689" timestamp="1607063362118" />
-    <state x="233" y="81" key="Vcs.Push.Dialog.v2" timestamp="1608001533016">
+    <state width="218" height="477" key="HiddenNamespacesPopup/0.0.1280.689@0.0.1280.689" timestamp="1608028476050" />
+    <state x="233" y="81" key="Vcs.Push.Dialog.v2" timestamp="1608005695880">
       <screen x="0" y="0" width="1280" height="689" />
     </state>
-    <state x="233" y="81" key="Vcs.Push.Dialog.v2/0.0.1280.689@0.0.1280.689" timestamp="1608001533016" />
+    <state x="233" y="81" key="Vcs.Push.Dialog.v2/0.0.1280.689@0.0.1280.689" timestamp="1608005695880" />
     <state x="371" y="153" key="com.intellij.database.dbimport.ImportUtil.MyDialog" timestamp="1607066502102">
       <screen x="0" y="0" width="1280" height="689" />
     </state>
@@ -301,6 +323,10 @@
     </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
+<<<<<<< Updated upstream
     <SUITE FILE_PATH="coverage/saadback$manage.coverage" NAME="manage Coverage Results" MODIFIED="1608039446358" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+=======
+    <SUITE FILE_PATH="coverage/saadback$manage.coverage" NAME="manage Coverage Results" MODIFIED="1608028613545" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+>>>>>>> Stashed changes
   </component>
 </project>

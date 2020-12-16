@@ -41,7 +41,7 @@ urlpatterns = [
     path('apis/user/change_follow_state', Users.follow),  # 切换关注状态
     path('apis/user/getfolloweds', Users.getfolloweds),  # 获取当前用户关注的所有用户
     path('apis/user/get_follow_state', Users.get_follow_state),  # 请求关注状态，即当前用户是否关注了目标用户
-
+    path('apis/user/get_userid_by_authorid', Users.get_userid_by_authorid),  # 根据门户id寻找用户id
 
     # 新建帖子
     path('apis/blog/createblog', Blog.createBlog),

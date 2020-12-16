@@ -327,6 +327,30 @@ class Users:
                 "message": "请求方式有误"
             })
 
+    # 根据传入的门户id寻找用户id
+    @staticmethod
+    def get_userid_by_authorid(request):
+        if request.method == 'POST':
+            data = json.loads(request.body)
+            authorid = data.get('authorid')
+            try:
+                profile = Profile.objects.get(author_id = authorid)
+            except Exception as e:
+                return JsonResponse({
+                    "status":0,
+                    "userid":-1
+                })
+            else:
+                return JsonResponse({
+                    "status":0,
+                    "userid":profile.id
+                })
+        else:
+            return JsonResponse({
+                "status":1,
+                "message":"请求方式有误"
+            })
+
 class Personality:
     # 修改与完善用户信息
     @staticmethod
