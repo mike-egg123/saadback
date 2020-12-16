@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 from rest_framework import routers
 
 from blog.views import Blog
@@ -72,6 +72,8 @@ urlpatterns = [
     path('apis/blog/othercollectblog', Blog.get_other_collect_blog),
     # 收藏或者取消收藏帖子
     path('apis/blog/setblogcollect', Blog.setBlogCollect),
+
+    path('apis/search/', include("search.urls")),
 
     # 举报冒领门户
     path('apis/blog/reportauthor', CreateReport.post_report_author),

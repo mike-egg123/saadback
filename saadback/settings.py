@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'haystack',
     'rest_framework',
     'user',
+    'search',
     'blog',
     'comment',
     'report',

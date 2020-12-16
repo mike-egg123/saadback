@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="SshConfigs">
+    <configs>
+      <sshConfig host="49.234.51.41" id="c71b5639-d4ce-45b2-aa8c-59be0a181364" keyPath="C:\Users\13220\Desktop\文件空间\软件系统分析与设计\saadback\rcy.pem" port="22" nameFormat="DESCRIPTIVE" username="ubuntu" />
+    </configs>
+  </component>
+</project>
