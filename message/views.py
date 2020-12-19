@@ -51,22 +51,34 @@ class Message:
         if request.user.is_authenticated:
             # 处理 POST 请求
             if request.method == 'POST':
-                comment_messages = Commentmessage.objects.filter(to_user_id=request.user.id)
-                json_list = []
-                for comment_message in comment_messages:
-                    json_dict = {}
-                    blog = BlogPost.objects.get(id=comment_message.blog_id)
-                    profile = Profile.objects.get(id=comment_message.user_id)
-                    json_dict["name"] = profile.user.username
-                    json_dict["blog_title"] = blog.title
-                    json_list.append(json_dict)
+                try:
+                    comment_messages = Commentmessage.objects.filter(to_user_id=request.user.id)
+                    json_list = []
+                    for comment_message in comment_messages:
+                        try:
+                            json_dict = {}
+                            blog = BlogPost.objects.get(id=comment_message.blog_id)
+                            profile = Profile.objects.get(id=comment_message.user_id)
+                            json_dict["name"] = profile.user.username
+                            json_dict["blog_title"] = blog.title
+                            json_dict["message_id"] = comment_message.id
+                            json_list.append(json_dict)
+                        except Exception as e:
+                            continue
 
-                return JsonResponse({
-                    "error_code": 0,
-                    "data": {
-                        "msgCollection": json_list
-                    }
-                })
+                    return JsonResponse({
+                        "error_code": 0,
+                        "data": {
+                            "msgCollection": json_list
+                        }
+                    })
+                except Exception as e:
+                    return JsonResponse({
+                        "error_code": 1,
+                        "data": {
+                            "msgCollection": "没有评论通知"
+                        }
+                    })
             # 处理错误请求
             else:
                 print(2)
@@ -88,27 +100,39 @@ class Message:
         if request.user.is_authenticated:
             # 处理 POST 请求
             if request.method == 'POST':
-                report_messages = Reportmessage.objects.filter(to_user_id=request.user.id)
-                json_list = []
-                for report_message in report_messages:
-                    json_dict = {"type": report_message.type}
-                    if report_message.type == 2:
-                        blog = BlogPost.objects.get(id=report_message.blog)
-                        json_dict["message"] = blog.title
-                    elif report_message.type == 3:
-                        comment = Comment.objects.get(id=report_message.comment)
-                        json_dict["message"] = comment.body
-                    elif report_message.type == 1:
-                        author_id = report_message.author_id
-                        json_dict["message"] = author_id
-                    json_list.append(json_dict)
+                try:
+                    report_messages = Reportmessage.objects.filter(to_user_id=request.user.id)
+                    json_list = []
+                    for report_message in report_messages:
+                        try:
+                            json_dict = {"type": report_message.type}
+                            if report_message.type == 2:
+                                blog = BlogPost.objects.get(id=report_message.blog)
+                                json_dict["message"] = blog.title
+                            elif report_message.type == 3:
+                                comment = Comment.objects.get(id=report_message.comment)
+                                json_dict["message"] = comment.body
+                            elif report_message.type == 1:
+                                author_id = report_message.author_id
+                                json_dict["message"] = author_id
+                            json_dict["message_id"] = report_message.id
+                            json_list.append(json_dict)
+                        except Exception as e:
+                            continue
 
-                return JsonResponse({
-                    "error_code": 0,
-                    "data": {
-                        "msgCollection": json_list
-                    }
-                })
+                    return JsonResponse({
+                        "error_code": 0,
+                        "data": {
+                            "msgCollection": json_list
+                        }
+                    })
+                except Exception as e:
+                    return JsonResponse({
+                        "error_code": 1,
+                        "data": {
+                            "msgCollection": "没有举报通知"
+                        }
+                    })
             # 处理错误请求
             else:
                 print(2)
@@ -130,22 +154,34 @@ class Message:
         if request.user.is_authenticated:
             # 处理 POST 请求
             if request.method == 'POST':
-                star_messages = Starmessage.objects.filter(to_user_id=request.user.id)
-                json_list = []
-                for star_message in star_messages:
-                    json_dict = {}
-                    blog = BlogPost.objects.get(id=star_message.blog.id)
-                    profile = Profile.objects.get(id=star_message.user.id)
-                    json_dict["name"] = profile.user.username
-                    json_dict["blog_title"] = blog.title
-                    json_list.append(json_dict)
+                try:
+                    star_messages = Starmessage.objects.filter(to_user_id=request.user.id)
+                    json_list = []
+                    for star_message in star_messages:
+                        try:
+                            json_dict = {}
+                            blog = BlogPost.objects.get(id=star_message.blog.id)
+                            profile = Profile.objects.get(id=star_message.user.id)
+                            json_dict["name"] = profile.user.username
+                            json_dict["blog_title"] = blog.title
+                            json_dict["message_id"] = star_message.id
+                            json_list.append(json_dict)
+                        except Exception as e:
+                            continue
 
-                return JsonResponse({
-                    "error_code": 0,
-                    "data": {
-                        "msgCollection": json_list
-                    }
-                })
+                    return JsonResponse({
+                        "error_code": 0,
+                        "data": {
+                            "msgCollection": json_list
+                        }
+                    })
+                except Exception as e:
+                    return JsonResponse({
+                        "error_code": 1,
+                        "data": {
+                            "msgCollection": "没有收藏通知"
+                        }
+                    })
             # 处理错误请求
             else:
                 print(2)
@@ -167,21 +203,30 @@ class Message:
         if request.user.is_authenticated:
             # 处理 POST 请求
             if request.method == 'POST':
-                imessages = Imessage.objects.filter(to_user_id=request.user.id)
-                json_list = []
-                for imessage in imessages:
-                    json_dict = {}
-                    profile = Profile.objects.get(id=imessage.user.id)
-                    json_dict["user"] = profile.user.username
-                    json_dict["message"] = imessage.message
-                    json_list.append(json_dict)
+                try:
+                    imessages = Imessage.objects.filter(to_user_id=request.user.id)
+                    json_list = []
+                    for imessage in imessages:
+                        json_dict = {}
+                        profile = Profile.objects.get(id=imessage.user.id)
+                        json_dict["user"] = profile.user.username
+                        json_dict["message"] = imessage.message
+                        json_dict["message_id"] = imessage.id
+                        json_list.append(json_dict)
 
-                return JsonResponse({
-                    "error_code": 0,
-                    "data": {
-                        "msgCollection": json_list
-                    }
-                })
+                    return JsonResponse({
+                        "error_code": 0,
+                        "data": {
+                            "msgCollection": json_list
+                        }
+                    })
+                except Exception as e:
+                    return JsonResponse({
+                        "error_code": 1,
+                        "data": {
+                            "msgCollection": "没有私信通知"
+                        }
+                    })
             # 处理错误请求
             else:
                 print(2)
