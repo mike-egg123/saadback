@@ -180,7 +180,6 @@ class CreateReport:
                         user_id = report.author_user_id
                         print(user_id)
                         profile = Profile.objects.get(user_id=user_id)
-                        user_r = Profile.objects.get(user_id=report.user.id)
                         if profile.avatar and hasattr(profile.avatar, 'url'):
                             avatar = "http://182.92.239.145" + str(profile.avatar.url)
                         else:
@@ -191,7 +190,7 @@ class CreateReport:
                         json_dict["user_id"] = user_id
                         json_dict["user_icon"] = avatar
                         json_dict["user_name"] = profile.user.username
-                        json_dict["user_name_r"] = user_r.user.username
+                        json_dict["user_name_r"] = report.user.username
                         json_dict["user_id_r"] = report.user_id
                         json_dict["time"] = report.created
                         json_list.append(json_dict)
