@@ -413,6 +413,7 @@ class Personality:
                     avatar = profile_cd['avatar']
                 else:
                     avatar = profile.avatar
+                profile.avatar = avatar
                 profile.save()
                 return JsonResponse({
                     "status": 0,
