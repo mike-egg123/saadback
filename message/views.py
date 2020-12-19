@@ -241,3 +241,127 @@ class Message:
                 "status": 1,
                 "message": "请登录！"
             })
+
+    @staticmethod
+    # 已读评论通知
+    def read_comment_message(request):
+        if request.user.is_authenticated:
+            # 处理 POST 请求
+            if request.method == 'POST':
+                data = json.loads(request.body)
+                message_id = data.get('message_id')
+                message = Commentmessage.objects.get(id=message_id)
+                message.delete()
+                return JsonResponse({
+                    "error_code": 0,
+                    "data": {
+                        "status": 0
+                    }
+                })
+            # 处理错误请求
+            else:
+                print(2)
+                return JsonResponse({
+                    "status": 2,
+                    "message": "请使用post请求"
+                })
+
+        else:
+            print(1)
+            return JsonResponse({
+                "status": 1,
+                "message": "请登录！"
+            })
+
+    @staticmethod
+    # 已读举报通知
+    def read_report_message(request):
+        if request.user.is_authenticated:
+            # 处理 POST 请求
+            if request.method == 'POST':
+                data = json.loads(request.body)
+                message_id = data.get('message_id')
+                message = Reportmessage.objects.get(id=message_id)
+                message.delete()
+                return JsonResponse({
+                    "error_code": 0,
+                    "data": {
+                        "status": 0
+                    }
+                })
+            # 处理错误请求
+            else:
+                print(2)
+                return JsonResponse({
+                    "status": 2,
+                    "message": "请使用post请求"
+                })
+
+        else:
+            print(1)
+            return JsonResponse({
+                "status": 1,
+                "message": "请登录！"
+            })
+
+    @staticmethod
+    # 已读收藏通知
+    def read_star_message(request):
+        if request.user.is_authenticated:
+            # 处理 POST 请求
+            if request.method == 'POST':
+                data = json.loads(request.body)
+                message_id = data.get('message_id')
+                message = Starmessage.objects.get(id=message_id)
+                message.delete()
+                return JsonResponse({
+                    "error_code": 0,
+                    "data": {
+                        "status": 0
+                    }
+                })
+            # 处理错误请求
+            else:
+                print(2)
+                return JsonResponse({
+                    "status": 2,
+                    "message": "请使用post请求"
+                })
+
+        else:
+            print(1)
+            return JsonResponse({
+                "status": 1,
+                "message": "请登录！"
+            })
+
+    @staticmethod
+    # 已读私信通知
+    def read_i_message(request):
+        if request.user.is_authenticated:
+            # 处理 POST 请求
+            if request.method == 'POST':
+                data = json.loads(request.body)
+                message_id = data.get('message_id')
+                message = Imessage.objects.get(id=message_id)
+                message.delete()
+                return JsonResponse({
+                    "error_code": 0,
+                    "data": {
+                        "status": 0
+                    }
+                })
+            # 处理错误请求
+            else:
+                print(2)
+                return JsonResponse({
+                    "status": 2,
+                    "message": "请使用post请求"
+                })
+
+        else:
+            print(1)
+            return JsonResponse({
+                "status": 1,
+                "message": "请登录！"
+            })
