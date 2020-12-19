@@ -106,6 +106,15 @@ urlpatterns = [
     # 获取私信通知
     path('apis/message/getimessage', Message.get_i_message),
 
+    # 已读评论通知
+    path('apis/message/readcommentmessage', Message.read_comment_message),
+    # 已读举报通知
+    path('apis/message/readreportmessage', Message.read_report_message),
+    # 已读收藏通知
+    path('apis/message/readstarmessage', Message.read_star_message),
+    # 已读私信通知
+    path('apis/message/readimessage', Message.read_i_message),
+
 ]
 
 urlpatterns += router.urls
