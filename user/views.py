@@ -132,6 +132,7 @@ class Users:
                     if login_user:
                         login(request, login_user)
                         print(1)
+                        profile = Profile.objects.create(user=user)
                         return JsonResponse({
                             "status": 0,
                             "userid":user.id,
@@ -289,7 +290,14 @@ class Users:
                 followeds_list = []
                 for followed in followeds:
                     followed_dic = {}
-                    followed_dic['userid'] = followed.id
+                    userid = followed.followed_id
+                    followed_dic['userid'] = userid
+                    profile = Profile.objects.get(user_id=userid)
+                    followed_dic['ava_url'] = str(profile.avatar)
+                    followed_dic['org'] = profile.org
+                    followed_dic['pos'] = profile.position
+                    user = User.objects.get(id=userid)
+                    followed_dic['email'] = user.email
                     followeds_list.append(followed_dic)
                 # followeds_json = json.dump(followeds_list)
                 return JsonResponse({
@@ -357,13 +365,43 @@ class Personality:
     def change_personality(request):
         print(request.FILES)
         if request.method == 'POST':
+            data = json.loads(request.body)
+            id = request.user.id
+            user = User.objects.get(id=id)
+            # profile = Profile.objects.get(user_id = id)
+            if Profile.objects.filter(user_id=id).exists():
+                profile = Profile.objects.get(user_id=id)
+            else:
+                profile = Profile.objects.create(user=user)
+            phone = data.get("phone")
+            bio = data.get("bio")
+            profile.phone = phone
+            profile.bio = bio
+            profile.org = data.get("org")
+            profile.position = data.get("position")
+            profile.gender = data.get("gender")
+            profile.save()
+            print(1)
+            return JsonResponse({
+                "status":0,
+                "message":"修改成功！"
+            })
+        else:
+            print(2)
+            return JsonResponse({
+                "status":2,
+                "message":"请使用post请求"
+            })
+
+    # 修改用户头像
+    @staticmethod
+    def change_avatar(request):
+        print(request.FILES)
+        if request.method == 'POST':
             profile_form = ProfileForm(request.POST, request.FILES)
-            print(profile_form)
             if profile_form.is_valid():
                 profile_cd = profile_form.cleaned_data
-                print(profile_cd['phone'])
                 print(profile_cd['avatar'])
-                print(profile_cd['bio'])
                 id = request.user.id
                 user = User.objects.get(id=id)
                 # profile = Profile.objects.get(user_id = id)
@@ -371,40 +409,26 @@ class Personality:
                     profile = Profile.objects.get(user_id=id)
                 else:
                     profile = Profile.objects.create(user=user)
-                phone = profile_cd['phone']
-                bio = profile_cd['bio']
                 if 'avatar' in request.FILES:
                     avatar = profile_cd['avatar']
                 else:
                     avatar = profile.avatar
-                profile.phone = phone
-                profile.bio = bio
-                profile.avatar = avatar
-                profile.birthday = profile_cd['birthday']
-                profile.address = profile_cd['address']
-                profile.org = profile_cd['org']
-                profile.position = profile_cd['position']
-                profile.gender = profile_cd['gender']
-                profile.is_administrator = profile_cd['is_administrator']
-                profile.is_associated = profile_cd['is_associated']
-                profile.author_id = profile_cd['author_id']
                 profile.save()
-                print(1)
                 return JsonResponse({
-                    "status":0,
-                    "message":"修改成功！"
+                    "status": 0,
+                    "message": "修改成功！"
                 })
             else:
                 print(3)
                 return JsonResponse({
-                    "status":3,
-                    "message":"表格数据不合法"
+                    "status": 3,
+                    "message": "表格数据不合法"
                 })
         else:
             print(2)
             return JsonResponse({
-                "status":2,
-                "message":"请使用post请求"
+                "status": 2,
+                "message": "请使用post请求"
             })
 
     # 查看用户信息

@@ -29,7 +29,7 @@ class Profile(models.Model):
     # 是否认领了门户
     is_associated = models.BooleanField(default=False)
     # 门户id（todo:暂时做成这种id的形式，后面有了门户列表可以用外键关联）
-    author_id = models.CharField(max_length=20, blank=True)
+    author_id = models.CharField(max_length=1000, blank=True)
     # 真实姓名
     realname = models.CharField(max_length=20, blank=True)
 

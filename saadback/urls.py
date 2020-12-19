@@ -36,6 +36,7 @@ urlpatterns = [
     path('apis/user/logout', Users.logout_user),  # 注销
     path('apis/user/register', Users.register),  # 注册
     path('apis/personality/change', Personality.change_personality),  # 修改用户信息
+    path('apis/personality/change_avatar', Personality.change_avatar),  # 修改用户头像
     path('apis/personality/get', Personality.get_personality),  # 得到用户信息
     path('apis/user/modifypassword', Users.modify_password),  # 修改密码
     path('apis/user/change_follow_state', Users.follow),  # 切换关注状态
