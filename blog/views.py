@@ -301,7 +301,13 @@ class Blog:
             userid = data.get("id")
             if userid == 0:
                 userid = requset.user.id
-            user = User.objects.get(id=userid)
+            try:
+                user = User.objects.get(id=userid)
+            except:
+                return JsonResponse({
+                    "status": 2,
+                    "message": "该用户不存在"
+                })
             profile = Profile.objects.get(user_id=userid)
             blogs = BlogPost.objects.filter(user_id=userid)
             blogNum = 0
@@ -321,11 +327,11 @@ class Blog:
                     "likeNum": likeNum,
                     "tipNum": tipNum,
                 })
-            else:
-                return JsonResponse({
-                    "status": 2,
-                    "message": "该用户不存在"
-                })
+            # else:
+            #     return JsonResponse({
+            #         "status": 2,
+            #         "message": "该用户不存在"
+            #     })
         else:
             return JsonResponse({
                 "status": 1,
@@ -465,7 +471,10 @@ class Blog:
             data = json.loads(request.body)
             text = data.get("text")
             type = data.get("type")
-            blogs = BlogPost.objects.filter(type=type)
+            if type == 0:
+                blogs = BlogPost.objects.all()
+            else:
+                blogs = BlogPost.objects.filter(type=type)
             json_list = []
             for blog in blogs:
                 if re.search(text, blog.title):

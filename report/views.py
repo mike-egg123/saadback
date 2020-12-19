@@ -332,11 +332,10 @@ class CreateReport:
                 # Profile.user.objects.get(id=author_user_id)
                 if handle_type == 1:
                     author_user.is_associated = False
-                    print(author_user.is_associated)
                     author_user.author_id = 0
-                    print(author_user.author_id)
-                    print(author_user.org)
-                    report.delete()
+                    reports = Report.objects.filter(author_id=report.author_id)
+                    for a_report in reports:
+                        a_report.delete()
                     return JsonResponse({
                         "data": {
                             "status": 1
@@ -381,12 +380,30 @@ class CreateReport:
                 report = Report.objects.get(id=report_id)
                 blog = BlogPost.objects.get(id=report.blog_id)
                 if handle_type == 1:
+                    try:
+                        # 删除关于该贴评论的举报
+                        comments = Comment.objects.filter(blog_id=report.blog_id)
+                        for comment in comments:
+                            try:
+                                commentreports = Report.objects.filter(comment_id=comment.id)
+                            except Exception as e:
+                                continue
+                            else:
+                                for a_commentreport in commentreports:
+                                    a_commentreport.delete()
+                    except Exception as e:
+                        print("该贴没有评论！")
+                    # 删除关于该贴的举报
+                    reports = Report.objects.filter(blog_id=report.blog_id)
+                    for a_report in reports:
+                        a_report.delete()
+
+                    # 删除该贴
                     blog.delete()
-                    report.delete()
                     return JsonResponse({
-                        "data": {
+                         "data": {
                             "status": 1
-                        }
+                         }
                     })
                 elif handle_type != 0:
                     return JsonResponse({
@@ -427,8 +444,10 @@ class CreateReport:
                 report = Report.objects.get(id=report_id)
                 comment = Comment.objects.get(id=report.comment_id)
                 if handle_type == 1:
+                    reports = Report.objects.filter(comment_id=report.comment_id)
+                    for a_report in reports:
+                        a_report.delete()
                     comment.delete()
-                    report.delete()
                     return JsonResponse({
                         "data": {
                             "status": 1
