@@ -465,7 +465,10 @@ class Blog:
             data = json.loads(request.body)
             text = data.get("text")
             type = data.get("type")
-            blogs = BlogPost.objects.filter(type=type)
+            if type == 0:
+                blogs = BlogPost.objects.all()
+            else:
+                blogs = BlogPost.objects.filter(type=type)
             json_list = []
             for blog in blogs:
                 if re.search(text, blog.title):
