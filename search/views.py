@@ -15,8 +15,7 @@ from elasticsearch import Elasticsearch
 
 host_list = [
     # '49.234.51.41:9200',
-    # "47.95.233.29:9200",
-    # "49.234.51.41:9200",
+    #  "47.95.233.29:9200",
     # "120.26.186.203:9200"
     '123.57.107.14:9200'
 ]
@@ -33,11 +32,17 @@ popularPapers = []
 def update(request):
     data = json.loads(request.body)
     aid = data.get("administratorid")
-    fpath = data.get("filepath")
-    filename = fpath[fpath.rfind("\\") + 1::]
+    # fpath = data.get("filepath")
+    # filename = fpath[fpath.rfind("\\") + 1::]
+    file = data.get("file")
+    if file == 'paper':
+        fpath = '/home/datas/aminer_papers_0.txt'
+    else :
+        fpath = '/home/datas/aminer_papers_0.txt'
+    filename = fpath[fpath.rfind("/") + 1::]
     sline = data.get("startline")
     alines = data.get("linesnumber")
-    ul = Update_Log.objects.create(filename=filename, updateadministrator_id=aid,
+    Update_Log.objects.create(filename=filename, updateadministrator_id=aid,
                                    startlinenum=sline, finishlinenum=sline + alines)
 
     ufile = open(fpath, "r", 10)
@@ -55,6 +60,10 @@ def update(request):
     elif filename.find("papers") != -1:
         for line in ufile.readlines()[sline - 1:(sline + alines - 1)]:
             client.index(index='paper', doc_type='_doc', body=json.loads(line))
+
+    else:
+        for line in ufile.readlines()[sline - 1:(sline + alines - 1)]:
+            client.index(index='venue', doc_type='_doc', body=json.loads(line))
 
     ufile.close()
 
@@ -110,13 +119,15 @@ def getupdatebyfilename(request):
     data = json.loads(request.body)
     aid = data.get("administratorid")
     filename = data.get("filename")
+    pagenum = data.get("pagenumber")
+
     record = Update_Log.objects.filter(filename__icontains=filename).all().order_by("-updatetime")
     record = serialize('json', record)
     record = json.loads(record)
     record_list = []
     for re in record:
         record_list.append(re['fields'])
-    return JsonResponse(record_list, safe=False)
+    return JsonResponse(record_list[(pagenum-1)*10: pagenum*10], safe=False)
 
 
 # 获取可认领的门户
@@ -125,7 +136,7 @@ def getupdatebyfilename(request):
 def getassAuthor(request):
     data = json.loads(request.body)
     name = data.get("name")
-
+    pagenum = data.get("pagenumber")
 
     flag = 0
     for ch in name:
@@ -153,16 +164,19 @@ def getassAuthor(request):
                 "match": {
                     "name": name
                 }
-            }
+            },
+            "from": (pagenum - 1) * 10,
+            "size": 10
         }
 
-    res = client.search(index="author", filter_path=['hits.hits._source'], body=body)
+    res = client.search(index="author", filter_path=[], body=body)
+    total = res['hits']['total']['value']
     res_list = []
-    if len(res) > 0:
+    if len(res['hits']['hits']) > 0:
         hits = res['hits']['hits']
         for re in hits:
             res_list.append(re['_source'])
-    return JsonResponse(res_list, safe=False)
+    return JsonResponse({"total": total, "res": res_list}, safe=False)
 
 
 # 认领门户
@@ -305,6 +319,7 @@ def papernotdisplay(request):
 def getsimilarauthor(request):
     data = json.loads(request.body)
     aid = data.get("authorid")
+    pagenum = data.get("pagenumber")
 
     # 获取发表的论文列表
     client = Elasticsearch(host_list)
@@ -333,6 +348,9 @@ def getsimilarauthor(request):
                 "should": sd
             }
         }
+        ,
+        "from" : (pagenum - 1)*10,
+        "size" : 10
         , "sort": [
             {
                 "_score": "desc"  # 排序字段，desc降序排序
@@ -340,21 +358,22 @@ def getsimilarauthor(request):
         ]
     }
 
-    res = client.search(index="author", filter_path=['hits.hits._source'], body=body)
-
+    res = client.search(index="author", filter_path=[], body=body)
+    total = res['hits']['total']['value']
     res_list = []
-    if len(res) > 0:
+    if len(res['hits']['hits']) > 0:
         hits = res['hits']['hits']
         for re in hits:
             if re['_source']['id'] != aid:
                 res_list.append(re['_source'])
-    return JsonResponse(res_list, safe=False)
+    return JsonResponse({"total":total, "res": res_list}, safe=False)
 
 
 # 相关专家
 def getrelatedauthor(request):
     data = json.loads(request.body)
     aid = data.get("authorid")
+    pagenum = data.get("pagenumber")
 
     # 获取发表的论文列表
     client = Elasticsearch(host_list)
@@ -380,7 +399,6 @@ def getrelatedauthor(request):
             }
         }
         res = client.search(index="paper", filter_path=['hits.hits._source'], body=body)
-        print(res)
         if len(res) > 0:
             authors = res["hits"]["hits"][0]["_source"]["authors"]
             res_list_temp.extend(authors)
@@ -391,7 +409,7 @@ def getrelatedauthor(request):
         if re['name'].replace(" ", "") != name:
             res_list.append(re)
 
-    return JsonResponse(res_list, safe=False)
+    return JsonResponse({"total": len(res_list), "res": res_list[(pagenum - 1)*10 : pagenum*10]}, safe=False)
 
 
 # 基本检索
@@ -422,6 +440,7 @@ def basicsearch(request):
     isran = data.get("isrange")
     lowran = data.get("lowrange")
     highran = data.get("highrange")
+    pagenum = data.get("pagenumber")
 
     client = Elasticsearch(host_list)
 
@@ -443,7 +462,9 @@ def basicsearch(request):
             {
                 order[orderid]: isascend[isasc]  # 排序字段，desc降序排序
             }
-        ]
+        ],
+        "from": (pagenum - 1) * 10
+        , "size":10
     }
 
     if isran == 1:
@@ -457,16 +478,19 @@ def basicsearch(request):
                     })
 
     if typeid <= 3:
-        res = client.search(index="author", filter_path=['hits.hits._source'], body=body)
+        res = client.search(index="author", filter_path=[], body=body)
     else:
-        res = client.search(index="paper", filter_path=['hits.hits._source'], body=body)
+        res = client.search(index="paper", filter_path=[], body=body)
 
+
+    total = res['hits']['total']['value']
     res_list = []
-    if len(res) > 0:
+    if len(res['hits']['hits']) > 0:
         hits = res['hits']['hits']
         for re in hits:
             res_list.append(re['_source'])
-    return JsonResponse(res_list, safe=False)
+    return JsonResponse({"total": total, "res": res_list}, safe=False)
+
 
 
 def popularauthors(request):
@@ -491,7 +515,10 @@ def getpaperbyid(request):
     }
 
     res = client.search(index="paper", filter_path=['hits.hits._source'], body=body)
-    return JsonResponse(res['hits']['hits'][0]['_source'], safe=False)
+    if len(res) > 0:
+        return JsonResponse(res['hits']['hits'][0]['_source'], safe=False)
+    else :
+        return JsonResponse({"result": "no data in DB"})
 
 
 # 根据id获取门户
@@ -509,4 +536,7 @@ def getauthorbyid(request):
     }
 
     res = client.search(index="author", filter_path=['hits.hits._source'], body=body)
-    return JsonResponse(res['hits']['hits'][0]['_source'], safe=False)
+    if len(res) > 0:
+        return JsonResponse(res['hits']['hits'][0]['_source'], safe=False)
+    else:
+        return JsonResponse({"result": "no data in DB"})
