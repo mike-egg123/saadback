@@ -39,7 +39,7 @@ def update(request):
         fpath = '/home/datas/aminer_papers_0.txt'
     else :
         fpath = '/home/datas/aminer_papers_0.txt'
-    filename = fpath[fpath.rfind("/") + 1::]
+    filename = fpath[fpath.rfind("//") + 1::]
     sline = data.get("startline")
     alines = data.get("linesnumber")
     Update_Log.objects.create(filename=filename, updateadministrator_id=aid,
