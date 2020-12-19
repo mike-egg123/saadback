@@ -301,7 +301,13 @@ class Blog:
             userid = data.get("id")
             if userid == 0:
                 userid = requset.user.id
-            user = User.objects.get(id=userid)
+            try:
+                user = User.objects.get(id=userid)
+            except:
+                return JsonResponse({
+                    "status": 2,
+                    "message": "该用户不存在"
+                })
             profile = Profile.objects.get(user_id=userid)
             blogs = BlogPost.objects.filter(user_id=userid)
             blogNum = 0
@@ -321,11 +327,11 @@ class Blog:
                     "likeNum": likeNum,
                     "tipNum": tipNum,
                 })
-            else:
-                return JsonResponse({
-                    "status": 2,
-                    "message": "该用户不存在"
-                })
+            # else:
+            #     return JsonResponse({
+            #         "status": 2,
+            #         "message": "该用户不存在"
+            #     })
         else:
             return JsonResponse({
                 "status": 1,
