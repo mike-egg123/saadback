@@ -10,7 +10,7 @@ from django.http import JsonResponse
 
 from .forms import ProfileForm
 # 载入数据模型Profile
-from .models import Profile, Follow
+from .models import Profile, Follow, StarPaper
 from django.contrib.auth.backends import ModelBackend
 from django.db.models import Q
 
@@ -359,6 +359,35 @@ class Users:
                 "message":"请求方式有误"
             })
 
+    # 收藏学术成果
+    @staticmethod
+    def star_paper(request):
+        if request.method == 'POST':
+            data = json.loads(request.body)
+            userid = data.get('userid')
+            paperid = data.get('paperid')
+            if StarPaper.objects.filter(user_id=userid, paper_id=paperid).exists():
+                starpapers = StarPaper.objects.filter(user_id=userid, paper_id=paperid)
+                for starpaper in starpapers:
+                    starpaper.delete()
+                return JsonResponse({
+                    "status":0,
+                    "message":"取消收藏！"
+                })
+            else:
+                starpaper = StarPaper.objects.create(user_id=userid, paper_id=paperid)
+                starpaper.save()
+                return JsonResponse({
+                    "status": 0,
+                    "message": "收藏成功！"
+                })
+
+        else:
+            return JsonResponse({
+                "status": 1,
+                "message": "请求方式有误"
+            })
+
 class Personality:
     # 修改与完善用户信息
     @staticmethod
@@ -483,6 +512,59 @@ class Personality:
             return JsonResponse({
                 "status":1,
                 "message":"请使用post请求"
+            })
+
+    # 查看用户信息
+    @staticmethod
+    def get_personality_other(request):
+        if request.method == 'POST':
+            data = json.loads(request.body)
+            user_id = data.get("userid")
+            user = User.objects.get(id=user_id)
+            # userprofile = Profile.objects.get(user_id = user_id)
+            if Profile.objects.filter(user_id=user_id).exists():
+                userprofile = Profile.objects.get(user_id=user_id)
+            else:
+                userprofile = Profile.objects.create(user_id=user_id)
+            if userprofile.avatar and hasattr(userprofile.avatar, 'url'):
+                avatar = "http://182.92.239.145" + str(userprofile.avatar.url)
+            else:
+                avatar = ""
+            username = user.username
+            email = user.email
+            phone = userprofile.phone
+            bio = userprofile.bio
+            birthday = userprofile.birthday
+            addr = userprofile.address
+            org = userprofile.org
+            postion = userprofile.position
+            gender = userprofile.gender
+            is_administrator = userprofile.is_administrator
+            is_associated = userprofile.is_associated
+            author_id = userprofile.author_id
+            realname = userprofile.realname
+            return JsonResponse({
+                "status": 0,
+                "username": username,
+                "email": email,
+                "phone": phone,
+                "bio": bio,
+                "avatar": avatar,
+                "userid": user_id,
+                "birthday": birthday,
+                "addr": addr,
+                "org": org,
+                "postion": postion,
+                "gender": gender,
+                "is_admin": is_administrator,
+                "is_associated": is_associated,
+                "author_id": author_id,
+                "realname": realname
+            })
+        else:
+            return JsonResponse({
+                "status": 1,
+                "message": "请使用post请求"
             })
 
     # 全局搜索用户

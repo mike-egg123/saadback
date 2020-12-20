@@ -38,11 +38,13 @@ urlpatterns = [
     path('apis/personality/change', Personality.change_personality),  # 修改用户信息
     path('apis/personality/change_avatar', Personality.change_avatar),  # 修改用户头像
     path('apis/personality/get', Personality.get_personality),  # 得到用户信息
+    path('apis/personality/get_other', Personality.get_personality_other),  # 得到他人信息
     path('apis/user/modifypassword', Users.modify_password),  # 修改密码
     path('apis/user/change_follow_state', Users.follow),  # 切换关注状态
     path('apis/user/getfolloweds', Users.getfolloweds),  # 获取当前用户关注的所有用户
     path('apis/user/get_follow_state', Users.get_follow_state),  # 请求关注状态，即当前用户是否关注了目标用户
     path('apis/user/get_userid_by_authorid', Users.get_userid_by_authorid),  # 根据门户id寻找用户id
+    path('apis/user/star_paper', Users.star_paper),  # 收藏学术成果（切换状态）
 
     # 新建帖子
     path('apis/blog/createblog', Blog.createBlog),

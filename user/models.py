@@ -51,3 +51,11 @@ class Follow(models.Model):
 
     def __str__(self):
         return '{} has followed {}'.format(self.follower.username, self.followed.username)
+
+class StarPaper(models.Model):
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='star_paper'
+    )
+    paper_id = models.CharField(max_length=1000, blank=True)
