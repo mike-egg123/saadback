@@ -16,6 +16,7 @@ import json
 
 from .models import BlogPost, Like, Collect
 
+prefix = "http://49.234.51.41"
 
 class Blog:
     @staticmethod
@@ -116,7 +117,7 @@ class Blog:
                     user_id = int(comment.user.id)
                     userprofile = Profile.objects.get(user_id=user_id)
                     if userprofile.avatar and hasattr(userprofile.avatar, 'url'):
-                        avatar = "http://182.92.239.145" + str(userprofile.avatar.url)
+                        avatar = prefix + str(userprofile.avatar.url)
                     else:
                         avatar = ""
 
@@ -313,7 +314,7 @@ class Blog:
             blogNum = 0
             likeNum = 0
             tipNum = 0
-            avatar = "http://182.92.239.145" + str(profile.avatar.url)
+            avatar = prefix + str(profile.avatar.url)
 
             if user:
                 for blog in blogs:
@@ -354,7 +355,7 @@ class Blog:
                 json_dict = {}
                 profile = Profile.objects.get(user_id=blog.user_id)
                 if profile.avatar and hasattr(profile.avatar, 'url'):
-                    avatar = "http://182.92.239.145" + str(profile.avatar.url)
+                    avatar = prefix + str(profile.avatar.url)
                 else:
                     avatar = ""
                 json_dict['blogname'] = blog.title
@@ -366,6 +367,8 @@ class Blog:
                 json_dict['textcontent'] = blog.content
                 json_dict['htmlcontent'] = blog.htmlcontent
                 json_dict['blogid'] = blog.id
+                user = User.objects.get(id=profile.user_id)
+                json_dict['username'] = user.username
                 json_list.append(json_dict)
             return JsonResponse({
                 "status": 0,
@@ -436,7 +439,7 @@ class Blog:
                 blog = comment.blog
                 profile = Profile.objects.get(user_id=blog.user_id)
                 if profile.avatar and hasattr(profile.avatar, 'url'):
-                    avatar = "http://182.92.239.145" + str(profile.avatar.url)
+                    avatar = prefix + str(profile.avatar.url)
                 else:
                     avatar = ""
                 user = User.objects.get(id=blog.user_id)

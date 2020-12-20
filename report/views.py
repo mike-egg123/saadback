@@ -334,6 +334,7 @@ class CreateReport:
                 if handle_type == 1:
                     author_user.is_associated = False
                     author_user.author_id = 0
+                    author_user.save()
                     reports = Report.objects.filter(author_id=report.author_id)
                     for a_report in reports:
                         a_report.delete()
