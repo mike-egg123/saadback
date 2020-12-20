@@ -8,6 +8,7 @@ urlpatterns = [
 
     #### 更新数据后门
     path('updateacademicdb1', views.update1),
+
     # 根据文件名查找更新记录
     path('getupdatebyfilename', views.getupdatebyfilename),
 

@@ -111,8 +111,7 @@ def update(request):
         "message": "update success"
     })
 
-# 更新数据
-## 只有两种选项可选 Paper和Author （Venue已经全部更新至数据库中）
+# 更新数据后门
 def update1(request):
     data = json.loads(request.body)
     aid = data.get("administratorid")
