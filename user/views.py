@@ -351,7 +351,7 @@ class Users:
             else:
                 return JsonResponse({
                     "status":0,
-                    "userid":profile.id
+                    "userid":profile.user_id
                 })
         else:
             return JsonResponse({
