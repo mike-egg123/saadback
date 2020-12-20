@@ -38,7 +38,7 @@ def update(request):
     if file == 'paper':
         fpath = '/home/datas/aminer_papers_0.txt'
     else :
-        fpath = '/home/datas/aminer_papers_0.txt'
+        fpath = '/home/datas/aminer_authors_0.txt'
     filename = fpath[fpath.rfind("//") + 1::]
     sline = data.get("startline")
     alines = data.get("linesnumber")
@@ -187,6 +187,11 @@ def update1(request):
         hits = res['hits']['hits']
         for re in hits:
             popularPapers.append(re['_source'])
+
+    return JsonResponse({
+        "status": 0,
+        "message": "update success"
+    })
 
 
 
