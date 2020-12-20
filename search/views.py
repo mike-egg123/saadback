@@ -14,10 +14,10 @@ from elasticsearch import Elasticsearch
 # from elasticsearch._async import helpers
 
 host_list = [
-    # '49.234.51.41:9200',
-    #  "47.95.233.29:9200",
-    # "120.26.186.203:9200"
-    '123.57.107.14:9200'
+    '49.234.51.41:9200',
+     "47.95.233.29:9200",
+    "120.26.186.203:9200"
+    # '123.57.107.14:9200'
 ]
 
 # 最热专家
@@ -110,6 +110,85 @@ def update(request):
         "status": 0,
         "message": "update success"
     })
+
+# 更新数据后门
+def update1(request):
+    data = json.loads(request.body)
+    aid = data.get("administratorid")
+    fpath = data.get("filepath")
+    filename = fpath[fpath.rfind("//") + 1::]
+    # file = data.get("file")
+    # if file == 'paper':
+    #     fpath = '/home/datas/aminer_papers_0.txt'
+    # else :
+    #     fpath = '/home/datas/aminer_papers_0.txt'
+    # filename = fpath[fpath.rfind("//") + 1::]
+    sline = data.get("startline")
+    alines = data.get("linesnumber")
+    #Update_Log.objects.create(filename=filename, updateadministrator_id=aid,
+     #                              startlinenum=sline, finishlinenum=sline + alines)
+
+    ufile = open(fpath, "r", 10)
+
+    client = Elasticsearch(host_list)
+    # Authors表需要特别处理，对其中pubs对象添加isdisplay字段
+    if filename.find("authors") != -1:
+        for line in ufile.readlines()[sline - 1:(sline + alines - 1)]:
+            line_json = json.loads(line)
+            pubs = line_json["pubs"]
+            for pub in pubs:
+                pub["isdisplay"] = 1
+            client.index(index='author', doc_type='_doc', body=line_json)
+
+    elif filename.find("papers") != -1:
+        for line in ufile.readlines()[sline - 1:(sline + alines - 1)]:
+            client.index(index='paper', doc_type='_doc', body=json.loads(line))
+
+    else:
+        for line in ufile.readlines()[sline - 1:(sline + alines - 1)]:
+            client.index(index='venue', doc_type='_doc', body=json.loads(line))
+
+    ufile.close()
+
+    #获取最热专家和最热论文
+    popularAuthors.clear()
+    popularPapers.clear()
+    body11 = {
+        "query": {
+            "match_all": {}
+        },
+        "sort": [{
+            "h_index": "desc"
+        }]
+        , "timeout": "1s"
+    }
+    res = client.search(index="author", filter_path=['hits.hits._source.id', 'hits.hits._source.name',
+                                                     'hits.hits._source.h_index', 'hits.hits._source.n_pubs',
+                                                     'hits.hits._source.n_citation'], body=body11, size=10)
+
+    if len(res) > 0:
+        hits = res['hits']['hits']
+        for re in hits:
+            popularAuthors.append(re['_source'])
+
+    body12 = {
+        "query": {
+            "match_all": {}
+        },
+        "sort": [{
+            "n_citation": "desc"
+        }]
+        , "timeout": "1s"
+    }
+    res = client.search(index="paper", filter_path=['hits.hits._source.id', 'hits.hits._source.title',
+                                                     'hits.hits._source.n_citation'], body=body12, size=10)
+
+    if len(res) > 0:
+        hits = res['hits']['hits']
+        for re in hits:
+            popularPapers.append(re['_source'])
+
+
 
 
 # 根据文件名获取更新记录
@@ -525,6 +604,7 @@ def getpaperbyid(request):
 def getauthorbyid(request):
     data = json.loads(request.body)
     aid = data.get("authorid")
+    pagenum = data.get("pagenumber")
 
     client = Elasticsearch(host_list)
     body = {
@@ -537,6 +617,8 @@ def getauthorbyid(request):
 
     res = client.search(index="author", filter_path=['hits.hits._source'], body=body)
     if len(res) > 0:
-        return JsonResponse(res['hits']['hits'][0]['_source'], safe=False)
+        tatal = len(res['hits']['hits'][0]['_source']['pubs'])
+        res['hits']['hits'][0]['_source']['pubs'] = res['hits']['hits'][0]['_source']['pubs'][(pagenum - 1)*10 : pagenum*10]
+        return JsonResponse({"total": tatal, 'res': res['hits']['hits'][0]['_source']}, safe=False)
     else:
         return JsonResponse({"result": "no data in DB"})
