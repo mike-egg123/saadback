@@ -189,7 +189,8 @@ class CreateReport:
                         json_dict["reason"] = report.body
                         json_dict["user_id"] = user_id
                         json_dict["user_icon"] = avatar
-                        json_dict["user_name_r"] = profile.user.username
+                        json_dict["user_name"] = profile.user.username
+                        json_dict["user_name_r"] = report.user.username
                         json_dict["user_id_r"] = report.user_id
                         json_dict["time"] = report.created
                         json_list.append(json_dict)
