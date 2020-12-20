@@ -14,6 +14,8 @@ from .models import Profile, Follow, StarPaper
 from django.contrib.auth.backends import ModelBackend
 from django.db.models import Q
 
+prefix = "http://49.234.51.41"
+
 
 class CustomBackend(ModelBackend):
     """邮箱也能登录"""
@@ -38,7 +40,7 @@ class Users:
             else:
                 userprofile = Profile.objects.create(user_id=user_id)
             if userprofile.avatar and hasattr(userprofile.avatar, 'url'):
-                avatar = "http://182.92.239.145" + str(userprofile.avatar.url)
+                avatar = prefix + str(userprofile.avatar.url)
             else:
                 avatar = ""
             return JsonResponse({
@@ -73,7 +75,7 @@ class Users:
                     else:
                         userprofile = Profile.objects.create(user_id=user_id)
                     if userprofile.avatar and hasattr(userprofile.avatar, 'url'):
-                        avatar = "http://182.92.239.145" + str(userprofile.avatar.url)
+                        avatar = prefix + str(userprofile.avatar.url)
                     else:
                         avatar = ""
                     return JsonResponse({
@@ -474,7 +476,7 @@ class Personality:
             else:
                 userprofile = Profile.objects.create(user_id = user_id)
             if userprofile.avatar and hasattr(userprofile.avatar, 'url'):
-                avatar = "http://182.92.239.145" + str(userprofile.avatar.url)
+                avatar = prefix + str(userprofile.avatar.url)
             else:
                 avatar = ""
             username = user.username
@@ -527,7 +529,7 @@ class Personality:
             else:
                 userprofile = Profile.objects.create(user_id=user_id)
             if userprofile.avatar and hasattr(userprofile.avatar, 'url'):
-                avatar = "http://182.92.239.145" + str(userprofile.avatar.url)
+                avatar = prefix + str(userprofile.avatar.url)
             else:
                 avatar = ""
             username = user.username
@@ -582,7 +584,7 @@ class Personality:
                     json_dict['userid'] = str(user.id)
                     json_dict['username'] = username
                     profile = Profile.objects.get(user = user)
-                    json_dict['avatar'] = "http://182.92.239.145" + str(profile.avatar.url)
+                    json_dict['avatar'] = prefix + str(profile.avatar.url)
                     json_list.append(json_dict)
             return JsonResponse(json_list, safe = False)
         else:
