@@ -390,6 +390,29 @@ class Users:
                 "message": "请求方式有误"
             })
 
+    # 获取收藏状态
+    @staticmethod
+    def get_star_status(request):
+        if request.method == 'POST':
+            data = json.loads(request.body)
+            userid = data.get('userid')
+            paperid = data.get('paperid')
+            if StarPaper.objects.filter(user_id=userid, paper_id=paperid).exists():
+                return JsonResponse({
+                    "status":0,
+                    "is_star":True
+                })
+            else:
+                return JsonResponse({
+                    "status": 0,
+                    "is_star": False
+                })
+        else:
+            return JsonResponse({
+                "status": 1,
+                "message": "请求方式有误"
+            })
+
 class Personality:
     # 修改与完善用户信息
     @staticmethod
