@@ -201,7 +201,7 @@ def update1(request):
 ## 结果按时间排序
 def getupdatebyfilename(request):
     data = json.loads(request.body)
-    aid = data.get("administratorid")
+    # aid = data.get("administratorid")
     filename = data.get("filename")
     pagenum = data.get("pagenumber")
 
