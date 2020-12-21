@@ -314,7 +314,10 @@ class Blog:
             blogNum = 0
             likeNum = 0
             tipNum = 0
-            avatar = prefix + str(profile.avatar.url)
+            if profile.avatar:
+                avatar = prefix + str(profile.avatar.url)
+            else:
+                avatar = ""
 
             if user:
                 for blog in blogs:
