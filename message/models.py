@@ -63,9 +63,6 @@ class Starmessage(models.Model):
         # ordering 指定模型返回的数据的排列顺序
         # '-created' 表明数据应该以倒序排列
         ordering = ('-time',)
-    def __str__(self):
-        return 'message {}'.format(self.message)
-        # 内部类 class Meta 用于给 model 定义元数据
 
 
 
