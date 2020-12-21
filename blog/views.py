@@ -523,7 +523,7 @@ class Blog:
                 json_dict["title"] = blog.title
                 json_dict["content"] = blog.content
                 json_dict["created"] = blog.created
-                profile = Profile.objects.get(id=blog.user_id)
+                profile = Profile.objects.get(user_id=blog.user_id)
                 json_dict["author"] = profile.user.username
                 json_dict["authorid"] = profile.id
                 json_dict["bio"] = profile.bio
@@ -563,7 +563,7 @@ class Blog:
                 json_dict["title"] = blog.title
                 json_dict["content"] = blog.content
                 json_dict["created"] = blog.created
-                profile = Profile.objects.get(id=blog.user_id)
+                profile = Profile.objects.get(user_id=blog.user_id)
                 json_dict["author"] = profile.user.username
                 json_dict["authorid"] = profile.id
                 json_dict["bio"] = profile.bio

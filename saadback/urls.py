@@ -99,7 +99,7 @@ urlpatterns = [
     path('apis/report/handlecommentreport', CreateReport.handle_report_comment),
 
     # 发送私信
-    path('apis/message/sendmeaasge', Message.create_message),
+    path('apis/message/sendimessage', Message.create_message),
     # 获取评论通知
     path('apis/message/getcommentmessage', Message.get_comment_message),
     # 获取举报通知
