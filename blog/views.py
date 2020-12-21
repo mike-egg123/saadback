@@ -539,7 +539,7 @@ class Blog:
                 json_dict["created"] = blog.created
                 profile = blog.user
                 json_dict["author"] = profile.user.username
-                json_dict["authorid"] = profile.author_id
+                json_dict["userid"] = profile.user_id
                 json_dict["bio"] = profile.bio
                 # if Collect.objects.filter(collector_id=userid, collectBlog_id=blogid):
                 #     json_dict["is_collect"] = 0
