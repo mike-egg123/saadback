@@ -288,7 +288,7 @@ class Blog:
                     blog.save()
 
                     # 生成消息通知并保存
-                    starmessage = Starmessage.objects.create(user_id=request.user.id, blog_id=blog.id, to_user_id=blog.user.id)
+                    starmessage = Starmessage.objects.create(user_id=request.user.id, blog_id=blog.id, to_user_id=blog.user.user.id)
                     # commentmessage.message = comment_body
                     starmessage.save()
 

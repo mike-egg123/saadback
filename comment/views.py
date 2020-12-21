@@ -38,7 +38,7 @@ class CreateComment:
 
                 # 生成消息通知并保存
                 print(blog.user.id)
-                commentmessage = Commentmessage.objects.create(user_id=request.user.id, blog_id=blog_id, to_user_id=blog.user.id)
+                commentmessage = Commentmessage.objects.create(user_id=request.user.id, blog_id=blog_id, to_user_id=blog.user.user.id)
                 # commentmessage.message = comment_body
                 commentmessage.save()
 
