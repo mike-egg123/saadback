@@ -17,5 +17,8 @@ urlpatterns = [
     path('get_follow_state', Users.get_follow_state),  # 请求关注状态，即当前用户是否关注了目标用户
     path('get_userid_by_authorid', Users.get_userid_by_authorid),  # 根据门户id寻找用户id
     path('star_paper', Users.star_paper),  # 收藏学术成果（切换状态）
+    path('get_star_paper_by_userid', Users.get_star_paper_by_userid),  # 根据用户id获取收藏学术成果列表
     path('get_star_status', Users.get_star_status),  # 获取收藏状态
+    path('get_authorid_by_userid', Users.get_authorid_by_userid),  # 根据用户id寻找门户id
+
 ]

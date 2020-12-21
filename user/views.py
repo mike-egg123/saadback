@@ -361,6 +361,30 @@ class Users:
                 "message":"请求方式有误"
             })
 
+    # 根据传入的用户id寻找门户id
+    @staticmethod
+    def get_authorid_by_userid(request):
+        if request.method == 'POST':
+            data = json.loads(request.body)
+            userid = data.get('userid')
+            try:
+                profile = Profile.objects.get(user_id=userid)
+            except Exception as e:
+                return JsonResponse({
+                    "status": 0,
+                    "authorid": -1
+                })
+            else:
+                return JsonResponse({
+                    "status": 0,
+                    "authorid": profile.author_id
+                })
+        else:
+            return JsonResponse({
+                "status": 1,
+                "message": "请求方式有误"
+            })
+
     # 收藏学术成果
     @staticmethod
     def star_paper(request):
@@ -389,6 +413,34 @@ class Users:
                 "status": 1,
                 "message": "请求方式有误"
             })
+
+    # 根据用户id获取收藏学术成果列表
+    @staticmethod
+    def get_star_paper_by_userid(request):
+        if request.method == 'POST':
+            data = json.loads(request.body)
+            userid = data.get("userid")
+            star_paper_list = []
+            if StarPaper.objects.filter(user_id=userid).exists():
+                starpapers = StarPaper.objects.filter(user_id=userid)
+                for starpaper in starpapers:
+                    id = starpaper.paper_id
+                    star_paper_list.append(id)
+                return JsonResponse({
+                    "status":0,
+                    "paper_id_list":star_paper_list
+                })
+            else:
+                return JsonResponse({
+                    "status":0,
+                    "paper_id_list":star_paper_list
+                })
+        else:
+            return JsonResponse({
+                "status":1,
+                "message":"请求方式有误"
+            })
+
 
     # 获取收藏状态
     @staticmethod

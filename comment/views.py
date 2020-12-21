@@ -25,7 +25,8 @@ class CreateComment:
                 # 创建新的评论对象
                 print(blog_id)
                 print(request.user.id)
-                comment = Comment.objects.create(user_id=request.user.id, blog_id=blog_id)
+                profile = Profile.objects.get(user_id=request.user.id)
+                comment = Comment.objects.create(user=profile, blog_id=blog_id)
                 comment.body = comment_body
                 # 保存后提交
                 comment.save()

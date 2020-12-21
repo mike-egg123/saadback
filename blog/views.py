@@ -31,7 +31,8 @@ class Blog:
                 })
             data = json.loads(request.body)
             type = data.get("type")
-            blog = BlogPost.objects.create(user_id=request.user.id)
+            profile = Profile.objects.get(user_id = request.user.id)
+            blog = BlogPost.objects.create(user=profile)
             blog.type = type
             blog.save()
             # 完成后返回到文章列表
@@ -225,7 +226,8 @@ class Blog:
                         "isrepeat": "already like"
                     })
                 else:
-                    like = Like.objects.create(liker_id=request.user.id, liked_id=blogid)
+                    profile = Profile.objects.get(user_id=request.user.id)
+                    like = Like.objects.create(liker=profile, liked_id=blogid)
                     like.save()
                     blog.likenum = blog.likenum + 1
                     blog.save()
@@ -274,7 +276,8 @@ class Blog:
                         "isrepeat": "already collect"
                     })
                 else:
-                    collect = Collect.objects.create(collector_id=request.user.id, collectBlog_id=blogid)
+                    profile = Profile.objects.get(user_id=request.user.id)
+                    collect = Collect.objects.create(collector=profile, collectBlog_id=blogid)
                     collect.save()
                     blog.is_collect = 0
                     blog.save()
@@ -528,7 +531,7 @@ class Blog:
                 json_dict["created"] = blog.created
                 profile = Profile.objects.get(user_id=blog.user_id)
                 json_dict["author"] = profile.user.username
-                json_dict["authorid"] = profile.id
+                json_dict["authorid"] = profile.author_id
                 json_dict["bio"] = profile.bio
                 # if Collect.objects.filter(collector_id=userid, collectBlog_id=blogid):
                 #     json_dict["is_collect"] = 0
@@ -568,7 +571,7 @@ class Blog:
                 json_dict["created"] = blog.created
                 profile = Profile.objects.get(user_id=blog.user_id)
                 json_dict["author"] = profile.user.username
-                json_dict["authorid"] = profile.id
+                json_dict["authorid"] = profile.author_id
                 json_dict["bio"] = profile.bio
                 # if Collect.objects.filter(collector_id=userid, collectBlog_id=blogid):
                 #     json_dict["is_collect"] = 0
