@@ -85,7 +85,7 @@ class CreateReport:
                 # 生成消息通知并保存
                 blog = BlogPost.objects.get(id=blog_id)
                 reportmessage = Reportmessage.objects.create(blog=blog.id,
-                                                             to_user_id=blog.user.id)
+                                                             to_user_id=blog.user.user.id)
                 # commentmessage.message = comment_body
                 reportmessage.type = 2
                 reportmessage.save()
@@ -132,7 +132,7 @@ class CreateReport:
                 # 生成消息通知并保存
                 comment = Comment.objects.get(id=comment_id)
                 reportmessage = Reportmessage.objects.create(comment=comment.id,
-                                                             to_user_id=comment.user.id)
+                                                             to_user_id=comment.user.user.id)
                 # commentmessage.message = comment_body
                 reportmessage.type = 3
                 reportmessage.save()
