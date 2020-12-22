@@ -304,6 +304,7 @@ class Users:
                     followed_dic['pos'] = profile.position
                     user = User.objects.get(id=userid)
                     followed_dic['email'] = user.email
+                    followed_dic['username'] = profile.user.username
                     followeds_list.append(followed_dic)
                 # followeds_json = json.dump(followeds_list)
                 return JsonResponse({
