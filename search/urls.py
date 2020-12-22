@@ -6,9 +6,6 @@ urlpatterns = [
     # 更新学术数据库
     path('updateacademicdb', views.update),
 
-    #### 更新数据后门
-    # path('updateacademicdb1', views.update1),
-
     # 根据文件名查找更新记录
     path('getupdatebyfilename', views.getupdatebyfilename),
 
@@ -43,6 +40,9 @@ urlpatterns = [
 
     #基本检索（单字段，单关键词）
     path('basicsearch', views.basicsearch),
+
+    #高级检索（单字段，单关键词）
+    path('multisearch', views.multisearch),
 
     # 最热专家
     path('popularauthors', views.popularauthors),
