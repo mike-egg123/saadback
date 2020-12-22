@@ -40,7 +40,7 @@ def update(request):
     else :
         fpath = '/home/datas/aminer_authors_0.txt'
 
-    filename = fpath[fpath.rfind("//") + 1::]
+    filename = fpath[fpath.rfind("/") + 1::]
     sline = data.get("startline")
     alines = data.get("linesnumber")
     Update_Log.objects.create(filename=filename, updateadministrator_id=aid,
@@ -146,8 +146,10 @@ def getupdatebyfilename(request):
     record = json.loads(record)
     record_list = []
     for re in record:
+        re['fields']['updateadministrator'] = User.objects.get(id=re['fields']["updateadministrator"]).username
         record_list.append(re['fields'])
     return JsonResponse(record_list[(pagenum-1)*10: pagenum*10], safe=False)
+    # return JsonResponse(record, safe=False)
 
 
 # 获取可认领的门户
