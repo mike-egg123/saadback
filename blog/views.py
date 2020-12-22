@@ -132,6 +132,15 @@ class Blog:
                     json_tiplist.append(json_dict)
                 blog.tipnum = len(json_tiplist)
                 blog.save()
+                profile = Profile.objects.get(user_id=request.user.id)
+                if Like.objects.filter(liker=profile, liked_id=blogid).exists():
+                    is_like = 0
+                else:
+                    is_like = 1
+                if Collect.objects.filter(collector=profile, collectBlog_id=blogid).exists():
+                    is_collect = 0
+                else:
+                    is_collect = 1
                 return JsonResponse({
                     "status": 0,
                     "message": "帖子详情查看成功！",
@@ -144,8 +153,8 @@ class Blog:
                         "readnum": blog.readnum,
                         "tipnum": blog.tipnum,
                         "likenum": blog.likenum,
-                        "is_like": blog.is_like,
-                        "is_collect": blog.is_collect,
+                        "is_like": is_like,
+                        "is_collect": is_collect,
                         "tiplist": json_tiplist
                     }
                 })
@@ -173,6 +182,16 @@ class Blog:
             blogs = BlogPost.objects.filter(user=profile)
             json_list = []
             for blog in blogs:
+                is_like = 0
+                profile = Profile.objects.get(user_id=request.user.id)
+                if Like.objects.filter(liker=profile, liked_id=blog.id).exists():
+                    is_like = 0
+                else:
+                    is_like = 1
+                if Collect.objects.filter(collector=profile, collectBlog_id=blog.id).exists():
+                    is_collect = 0
+                else:
+                    is_collect = 1
                 json_dict = {}
                 json_dict["blogid"] = blog.id
                 json_dict["title"] = blog.title
@@ -182,8 +201,8 @@ class Blog:
                 json_dict["readnum"] = blog.readnum
                 json_dict["likenum"] = blog.likenum
                 json_dict["tipnum"] = blog.tipnum
-                json_dict["is_like"] = blog.is_like
-                json_dict["is_collect"] = blog.is_collect
+                json_dict["is_like"] = is_like
+                json_dict["is_collect"] = is_collect
                 json_list.append(json_dict)
             return JsonResponse({
                 "status": 0,
