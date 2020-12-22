@@ -23,7 +23,7 @@ host_list = [
 # 最热专家
 popularAuthors = []
 
-#最热论文
+# 最热论文
 popularPapers = []
 
 
@@ -37,13 +37,13 @@ def update(request):
     file = data.get("file")
     if file == 'paper':
         fpath = '/home/datas/aminer_papers_0.txt'
-    else :
+    else:
         fpath = '/home/datas/aminer_authors_0.txt'
     filename = fpath[fpath.rfind("//") + 1::]
     sline = data.get("startline")
     alines = data.get("linesnumber")
     Update_Log.objects.create(filename=filename, updateadministrator_id=aid,
-                                   startlinenum=sline, finishlinenum=sline + alines)
+                              startlinenum=sline, finishlinenum=sline + alines)
 
     ufile = open(fpath, "r", 10)
 
@@ -67,7 +67,7 @@ def update(request):
 
     ufile.close()
 
-    #获取最热专家和最热论文
+    # 获取最热专家和最热论文
     popularAuthors.clear()
     popularPapers.clear()
     body11 = {
@@ -98,18 +98,18 @@ def update(request):
         , "timeout": "1s"
     }
     res = client.search(index="paper", filter_path=['hits.hits._source.id', 'hits.hits._source.title',
-                                                     'hits.hits._source.n_citation'], body=body12, size=10)
+                                                    'hits.hits._source.n_citation'], body=body12, size=10)
 
     if len(res) > 0:
         hits = res['hits']['hits']
         for re in hits:
             popularPapers.append(re['_source'])
 
-
     return JsonResponse({
         "status": 0,
         "message": "update success"
     })
+
 
 # 更新数据后门
 def update1(request):
@@ -125,8 +125,8 @@ def update1(request):
     # filename = fpath[fpath.rfind("//") + 1::]
     sline = data.get("startline")
     alines = data.get("linesnumber")
-    #Update_Log.objects.create(filename=filename, updateadministrator_id=aid,
-     #                              startlinenum=sline, finishlinenum=sline + alines)
+    # Update_Log.objects.create(filename=filename, updateadministrator_id=aid,
+    #                              startlinenum=sline, finishlinenum=sline + alines)
 
     ufile = open(fpath, "r", 10)
 
@@ -150,7 +150,7 @@ def update1(request):
 
     ufile.close()
 
-    #获取最热专家和最热论文
+    # 获取最热专家和最热论文
     popularAuthors.clear()
     popularPapers.clear()
     body11 = {
@@ -181,7 +181,7 @@ def update1(request):
         , "timeout": "1s"
     }
     res = client.search(index="paper", filter_path=['hits.hits._source.id', 'hits.hits._source.title',
-                                                     'hits.hits._source.n_citation'], body=body12, size=10)
+                                                    'hits.hits._source.n_citation'], body=body12, size=10)
 
     if len(res) > 0:
         hits = res['hits']['hits']
@@ -192,8 +192,6 @@ def update1(request):
         "status": 0,
         "message": "update success"
     })
-
-
 
 
 # 根据文件名获取更新记录
@@ -211,7 +209,7 @@ def getupdatebyfilename(request):
     record_list = []
     for re in record:
         record_list.append(re['fields'])
-    return JsonResponse(record_list[(pagenum-1)*10: pagenum*10], safe=False)
+    return JsonResponse(record_list[(pagenum - 1) * 10: pagenum * 10], safe=False)
 
 
 # 获取可认领的门户
@@ -287,7 +285,7 @@ def disassociatetoAuthor(request):
     uid = data.get("userid")
 
     user_profile = Profile.objects.get(user_id=uid)
-    aid =user_profile.author_id
+    aid = user_profile.author_id
     user_profile.is_associated = False
     user_profile.author_id = ""
     user_profile.save()
@@ -433,8 +431,8 @@ def getsimilarauthor(request):
             }
         }
         ,
-        "from" : (pagenum - 1)*10,
-        "size" : 10
+        "from": (pagenum - 1) * 10,
+        "size": 10
         , "sort": [
             {
                 "_score": "desc"  # 排序字段，desc降序排序
@@ -450,7 +448,7 @@ def getsimilarauthor(request):
         for re in hits:
             if re['_source']['id'] != aid:
                 res_list.append(re['_source'])
-    return JsonResponse({"total":total, "res": res_list}, safe=False)
+    return JsonResponse({"total": total, "res": res_list}, safe=False)
 
 
 # 相关专家
@@ -493,7 +491,7 @@ def getrelatedauthor(request):
         if re['name'].replace(" ", "") != name:
             res_list.append(re)
 
-    return JsonResponse({"total": len(res_list), "res": res_list[(pagenum - 1)*10 : pagenum*10]}, safe=False)
+    return JsonResponse({"total": len(res_list), "res": res_list[(pagenum - 1) * 10: pagenum * 10]}, safe=False)
 
 
 # 基本检索
@@ -548,24 +546,23 @@ def basicsearch(request):
             }
         ],
         "from": (pagenum - 1) * 10
-        , "size":10
+        , "size": 10
     }
 
     if isran == 1:
         body['query']['bool']['must'].append({
-                        "range": {
-                            "year": {
-                                "gte": lowran,
-                                "lte": highran
-                            }
-                        }
-                    })
+            "range": {
+                "year": {
+                    "gte": lowran,
+                    "lte": highran
+                }
+            }
+        })
 
     if typeid <= 3:
         res = client.search(index="author", filter_path=[], body=body)
     else:
         res = client.search(index="paper", filter_path=[], body=body)
-
 
     total = res['hits']['total']['value']
     res_list = []
@@ -576,9 +573,9 @@ def basicsearch(request):
     return JsonResponse({"total": total, "res": res_list}, safe=False)
 
 
-
 def popularauthors(request):
     return JsonResponse(popularAuthors, safe=False)
+
 
 def popularpapers(request):
     return JsonResponse(popularPapers, safe=False)
@@ -601,7 +598,7 @@ def getpaperbyid(request):
     res = client.search(index="paper", filter_path=['hits.hits._source'], body=body)
     if len(res) > 0:
         return JsonResponse(res['hits']['hits'][0]['_source'], safe=False)
-    else :
+    else:
         return JsonResponse({"result": "no data in DB"})
 
 
@@ -623,7 +620,8 @@ def getauthorbyid(request):
     res = client.search(index="author", filter_path=['hits.hits._source'], body=body)
     if len(res) > 0:
         tatal = len(res['hits']['hits'][0]['_source']['pubs'])
-        res['hits']['hits'][0]['_source']['pubs'] = res['hits']['hits'][0]['_source']['pubs'][(pagenum - 1)*10 : pagenum*10]
+        res['hits']['hits'][0]['_source']['pubs'] = res['hits']['hits'][0]['_source']['pubs'][
+                                                    (pagenum - 1) * 10: pagenum * 10]
         return JsonResponse({"total": tatal, 'res': res['hits']['hits'][0]['_source']}, safe=False)
     else:
         return JsonResponse({"result": "no data in DB"})
