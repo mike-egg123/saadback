@@ -374,7 +374,7 @@ class Blog:
                 json_dict['readnum'] = blog.readnum
                 json_dict['likenum'] = blog.likenum
                 json_dict['tipnum'] = blog.tipnum
-                json_dict['userid'] = blog.user_id
+                json_dict['userid'] = blog.user.user_id
                 json_dict['textcontent'] = blog.content
                 json_dict['htmlcontent'] = blog.htmlcontent
                 json_dict['blogid'] = blog.id
