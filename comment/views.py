@@ -10,6 +10,7 @@ from message.models import Commentmessage
 from user.models import Profile
 # Create your views here.
 
+prefix = "http://49.234.51.41"
 
 class CreateComment:
     @staticmethod
@@ -46,7 +47,7 @@ class CreateComment:
                 user_id = int(request.user.id)
                 userprofile = Profile.objects.get(user_id=user_id)
                 if userprofile.avatar and hasattr(userprofile.avatar, 'url'):
-                    avatar = "http://182.92.239.145" + str(userprofile.avatar.url)
+                    avatar = prefix + str(userprofile.avatar.url)
                 else:
                     avatar = ""
                 return JsonResponse({

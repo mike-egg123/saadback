@@ -16,7 +16,7 @@ import json
 
 from .models import BlogPost, Like, Collect
 
-prefix = "http://182.92.239.145"
+prefix = "http://49.234.51.41"
 
 class Blog:
     @staticmethod

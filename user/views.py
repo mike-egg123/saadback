@@ -14,7 +14,7 @@ from .models import Profile, Follow, StarPaper
 from django.contrib.auth.backends import ModelBackend
 from django.db.models import Q
 
-prefix = "http://182.92.239.145"
+prefix = "http://49.234.51.41"
 
 
 class CustomBackend(ModelBackend):

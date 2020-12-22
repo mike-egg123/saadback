@@ -13,6 +13,8 @@ from user.models import Profile
 
 # Create your views here.
 
+prefix = "http://49.234.51.41"
+
 
 class CreateReport:
     @staticmethod
@@ -181,7 +183,7 @@ class CreateReport:
                         print(user_id)
                         profile = Profile.objects.get(user_id=user_id)
                         if profile.avatar and hasattr(profile.avatar, 'url'):
-                            avatar = "http://182.92.239.145" + str(profile.avatar.url)
+                            avatar = prefix + str(profile.avatar.url)
                         else:
                             avatar = ""
                         json_dict["report_id"] = report.id
@@ -230,7 +232,7 @@ class CreateReport:
                     user_id = BlogPost.objects.get(id=report.blog_id).user_id
                     profile = Profile.objects.get(user_id=user_id)
                     if profile.avatar and hasattr(profile.avatar, 'url'):
-                        avatar = "http://182.92.239.145" + str(profile.avatar.url)
+                        avatar = prefix + str(profile.avatar.url)
                     else:
                         avatar = ""
                     json_dict["report_id"] = report.id
@@ -281,7 +283,7 @@ class CreateReport:
                     profile = Profile.objects.get(user_id=user_id)
                     blog = BlogPost.objects.get(id=Comment.objects.get(id=report.comment_id).blog_id)
                     if profile.avatar and hasattr(profile.avatar, 'url'):
-                        avatar = "http://182.92.239.145" + str(profile.avatar.url)
+                        avatar = prefix + str(profile.avatar.url)
                     else:
                         avatar = ""
                     json_dict["report_id"] = report.id
