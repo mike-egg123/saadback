@@ -245,7 +245,7 @@ class Blog:
             })
 
     @staticmethod
-    # 点赞/取消收藏
+    # 收藏/取消收藏
     def setBlogCollect(request):
         if request.method == "POST":
             if not request.user.is_authenticated:
