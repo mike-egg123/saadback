@@ -39,6 +39,7 @@ def update(request):
         fpath = '/home/datas/aminer_papers_0.txt'
     else :
         fpath = '/home/datas/aminer_authors_0.txt'
+
     filename = fpath[fpath.rfind("//") + 1::]
     sline = data.get("startline")
     alines = data.get("linesnumber")
@@ -51,19 +52,38 @@ def update(request):
     client = Elasticsearch(host_list)
     # Authors表需要特别处理，对其中pubs对象添加isdisplay字段
 
-    for line in islice(ufile, sline-1, sline+alines-1):
-        line_json = json.loads(line)
-        action = ({
-            "_index": "paper",
-            "_type": "_doc",
-            "_source": line_json
-        })
-        bulks.append(action)
-        i = i + 1
-        if i % 10 == 0:
-            i = 0
-            helpers.bulk(client, bulks)
-            bulks.clear()
+    if(file == "paper"):
+        for line in islice(ufile, sline-1, sline+alines-1):
+            line_json = json.loads(line)
+            action = ({
+                "_index": "paper",
+                "_type": "_doc",
+                "_source": line_json
+            })
+            bulks.append(action)
+            i = i + 1
+            if i % 100 == 0:
+                i = 0
+
+                helpers.bulk(client, bulks)
+                bulks.clear()
+    else :
+        for line in islice(ufile, sline-1, sline+alines-1):
+            line_json = json.loads(line)
+            for pub in line_json['pubs']:
+                pub['isdisplay'] = 1
+            action = ({
+                "_index": "paper",
+                "_type": "_doc",
+                "_source": line_json
+            })
+            bulks.append(action)
+            i = i + 1
+            if i % 100 == 0:
+                i = 0
+
+                helpers.bulk(client, bulks)
+                bulks.clear()
 
     ufile.close()
 
@@ -492,6 +512,126 @@ def basicsearch(request):
     return JsonResponse({"total": total, "res": res_list}, safe=False)
 
 
+# 高级检索，两个基本检索，用es的bool查询
+# 前端多了三个参数，type1,content1,boolop
+# 与基本检索相比，请求体有所变化
+def multisearch(request):
+    data = json.loads(request.body)
+    typeid = data.get("type")
+    content = data.get("content")
+    typeid1 = data.get("type1")
+    content1 = data.get("content1")
+    boolop = data.get("boolop")
+    orderid = data.get("order")
+    isasc = data.get("isasc")
+    isran = data.get("isrange")
+    lowran = data.get("lowrange")
+    highran = data.get("highrange")
+    pagenum = data.get("pagenumber")
+
+    client = Elasticsearch(host_list)
+
+    if boolop == 'and':
+        body = {
+            "query": {
+                "bool": {
+                    "must": [
+                        {
+                            "match": {
+                                type[typeid]: content
+                            },
+                            "match": {
+                                type[typeid1]: content1
+                            }
+                        }
+
+                    ]
+                }
+            },
+            "sort": [
+                {
+                    order[orderid]: isascend[isasc]  # 排序字段，desc降序排序
+                }
+            ],
+            "from": (pagenum - 1) * 10
+            , "size":10
+        }
+    elif boolop == 'or':
+        body = {
+            "query": {
+                "bool": {
+                    "must": [],
+                    "should": [
+                        {
+                            "match": {
+                                type[typeid]: content
+                            },
+                            "match": {
+                                type[typeid1]: content1
+                            }
+                        }
+
+                    ]
+                }
+            },
+            "sort": [
+                {
+                    order[orderid]: isascend[isasc]  # 排序字段，desc降序排序
+                }
+            ],
+            "from": (pagenum - 1) * 10
+            , "size":10
+        }
+    else:# if boolop == not:
+        body = {
+            "query": {
+                "bool": {
+                    "must": [],
+                    "must_not": [
+                        {
+                            "match": {
+                                type[typeid]: content
+                            },
+                            "match": {
+                                type[typeid1]: content1
+                            }
+                        }
+
+                    ]
+                }
+            },
+            "sort": [
+                {
+                    order[orderid]: isascend[isasc]  # 排序字段，desc降序排序
+                }
+            ],
+            "from": (pagenum - 1) * 10
+            , "size":10
+        }
+
+    if isran == 1:
+        body['query']['bool']['must'].append({
+                        "range": {
+                            "year": {
+                                "gte": lowran,
+                                "lte": highran
+                            }
+                        }
+                    })
+
+    if typeid <= 3:
+        res = client.search(index="author", filter_path=[], body=body)
+    else:
+        res = client.search(index="paper", filter_path=[], body=body)
+
+
+    total = res['hits']['total']['value']
+    res_list = []
+    if len(res['hits']['hits']) > 0:
+        hits = res['hits']['hits']
+        for re in hits:
+            res_list.append(re['_source'])
+    return JsonResponse({"total": total, "res": res_list}, safe=False)
 
 def popularauthors(request):
     return JsonResponse(popularAuthors, safe=False)
