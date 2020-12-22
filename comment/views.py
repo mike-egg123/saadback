@@ -10,7 +10,7 @@ from message.models import Commentmessage
 from user.models import Profile
 # Create your views here.
 
-prefix = "http://49.234.51.41"
+prefix = "http://49.234.51.41/"
 
 class CreateComment:
     @staticmethod

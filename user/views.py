@@ -14,7 +14,7 @@ from .models import Profile, Follow, StarPaper
 from django.contrib.auth.backends import ModelBackend
 from django.db.models import Q
 
-prefix = "http://49.234.51.41"
+prefix = "http://49.234.51.41/"
 
 
 class CustomBackend(ModelBackend):
@@ -295,7 +295,7 @@ class Users:
                     userid = followed.followed_id
                     followed_dic['userid'] = userid
                     profile = Profile.objects.get(user_id=userid)
-                    followed_dic['ava_url'] = str(profile.avatar)
+                    followed_dic['ava_url'] = prefix + str(profile.avatar)
                     followed_dic['org'] = profile.org
                     followed_dic['pos'] = profile.position
                     user = User.objects.get(id=userid)
