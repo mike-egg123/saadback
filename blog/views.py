@@ -211,19 +211,26 @@ class Blog:
                     "message": "不存在该作者或者该帖子"
                 })
             if like == 1:
+                blog.is_like = 1
+                blog.save()
                 profile = Profile.objects.get(user_id=request.user.id)
                 likes = Like.objects.filter(liker=profile, liked_id=blogid)
                 for like in likes:
                     like.delete()
                     blog.likenum = blog.likenum - 1
+                    blog.is_like = 1
                     blog.save()
                 return JsonResponse({
                     "status": 0,
                     "message": "dislike success"
                 })
             else:
+                blog.is_like = 0
+                blog.save()
                 profile = Profile.objects.get(user_id=request.user.id)
                 if Like.objects.filter(liker=profile, liked_id=blogid):
+                    blog.is_like = 0
+                    blog.save()
                     return JsonResponse({
                         "status": 2,
                         "isrepeat": "already like"
@@ -233,6 +240,7 @@ class Blog:
                     like = Like.objects.create(liker=profile, liked_id=blogid)
                     like.save()
                     blog.likenum = blog.likenum + 1
+                    blog.is_like = 0
                     blog.save()
                     return JsonResponse({
                         "status": 0,
