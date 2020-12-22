@@ -295,7 +295,11 @@ class Users:
                     userid = followed.followed_id
                     followed_dic['userid'] = userid
                     profile = Profile.objects.get(user_id=userid)
-                    followed_dic['ava_url'] = prefix + str(profile.avatar.url)
+                    if profile.avatar and hasattr(profile.avatar, 'url'):
+                        avatar = prefix + str(profile.avatar.url)
+                    else:
+                        avatar = ""
+                    followed_dic['ava_url'] = avatar
                     followed_dic['org'] = profile.org
                     followed_dic['pos'] = profile.position
                     user = User.objects.get(id=userid)
@@ -659,7 +663,11 @@ class Personality:
                     json_dict['userid'] = str(user.id)
                     json_dict['username'] = username
                     profile = Profile.objects.get(user = user)
-                    json_dict['avatar'] = prefix + str(profile.avatar.url)
+                    if profile.avatar and hasattr(profile.avatar, 'url'):
+                        avatar = prefix + str(profile.avatar.url)
+                    else:
+                        avatar = ""
+                    json_dict['avatar'] = avatar
                     json_list.append(json_dict)
             return JsonResponse(json_list, safe = False)
         else:
