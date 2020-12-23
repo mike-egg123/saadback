@@ -229,7 +229,7 @@ class CreateReport:
                 json_list = []
                 for report in reports:
                     json_dict = {}
-                    user_id = BlogPost.objects.get(id=report.blog_id).user_id
+                    user_id = BlogPost.objects.get(id=report.blog_id).user.user_id
                     profile = Profile.objects.get(user_id=user_id)
                     if profile.avatar and hasattr(profile.avatar, 'url'):
                         avatar = prefix + str(profile.avatar.url)
