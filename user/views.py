@@ -135,7 +135,6 @@ class Users:
                         login(request, login_user)
                         print(1)
                         profile = Profile.objects.create(user=user)
-                        profile.avatar = "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"
                         profile.save()
                         return JsonResponse({
                             "status": 0,
