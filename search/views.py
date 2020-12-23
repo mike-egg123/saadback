@@ -527,8 +527,8 @@ def multisearch(request):
     content = data.get("content")
     typeid1 = data.get("type1")
     content1 = data.get("content1")
-    is_acc = data.get("is_acc",0)
-    is_acc1 = data.get("is_acc1",0)
+    is_acc = data.get("is_acc", 0)
+    is_acc1 = data.get("is_acc1", 0)
     boolop = data.get("boolop")
     orderid = data.get("order")
     isasc = data.get("isasc")
@@ -536,38 +536,97 @@ def multisearch(request):
     lowran = data.get("lowrange")
     highran = data.get("highrange")
     pagenum = data.get("pagenumber")
-    dic={"and":"must","or":"should","not":"must_not"}
     client = Elasticsearch(host_list)
     cur = ["match", "match_phrase"]
-
-    body = {
-        "query": {
-            "bool": {
-                dic[boolop]: [
-                    {
-                        cur[is_acc]: {
-                            type[typeid]: content
+    if boolop == "not":
+        body = {
+            "query": {
+                "bool": {
+                    "must": [
+                        {
+                            cur[is_acc]: {
+                                type[typeid]: content
+                            }
+                        },
+                    ],
+                    "must_not": [
+                        {
+                            cur[is_acc1]: {
+                                type[typeid1]: content1
+                            }
+                        },
+                    ]
+                }
+            },
+            "sort": [
+                {
+                    order[orderid]: isascend[isasc]  # 排序字段，desc降序排序
+                }
+            ],
+            "from": (pagenum - 1) * 10
+            , "size": 10
+        }
+    elif boolop == "and":
+        body = {
+            "query": {
+                "bool": {
+                    "must": [
+                        {
+                            cur[is_acc]: {
+                                type[typeid]: content
+                            }
+                        },
+                        {
+                            cur[is_acc1]: {
+                                type[typeid1]: content1
+                            }
                         }
-                    },
-                    {
-                        cur[is_acc1]: {
-                            type[typeid1]: content1
+                    ],
+                }
+            },
+            "sort": [
+                {
+                    order[orderid]: isascend[isasc]  # 排序字段，desc降序排序
+                }
+            ],
+            "from": (pagenum - 1) * 10
+            , "size": 10
+        }
+    else:
+        body = {
+            "query": {
+                "bool": {
+                    "must": [
+                        {
+                            "bool": {
+                                "should": [
+                                    {
+                                        cur[is_acc]: {
+                                            type[typeid]: content
+                                        }
+                                    },
+                                    {
+                                        cur[is_acc1]: {
+                                            type[typeid1]: content1
+                                        }
+                                    }
+                                ]
+                            }
                         }
-                    }
-                ]
-            }
-        },
-        "sort": [
-            {
-                order[orderid]: isascend[isasc]  # 排序字段，desc降序排序
-            }
-        ],
-        "from": (pagenum - 1) * 10
-        , "size": 10
-    }
+                    ]
+                }
+            },
+            "sort": [
+                {
+                    order[orderid]: isascend[isasc]  # 排序字段，desc降序排序
+                }
+            ],
+            "from": (pagenum - 1) * 10
+            , "size": 10
+        }
 
     if isran == 1:
-        body['query']['bool'][dic[boolop]].append({
+        body['query']['bool']["must"].append({
             "range": {
                 "year": {
                     "gte": lowran,
@@ -575,12 +634,12 @@ def multisearch(request):
                 }
             }
         })
+        print(body)
 
     if typeid <= 3:
         res = client.search(index="author", body=body)
     else:
         res = client.search(index="paper", body=body)
-
     total = res['hits']['total']['value']
     res_list = []
     if len(res['hits']['hits']) > 0:
