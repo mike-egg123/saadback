@@ -240,7 +240,7 @@ class CreateReport:
                     json_dict["title"] = BlogPost.objects.get(id=report.blog_id).title
                     json_dict["content"] = "<p>" + BlogPost.objects.get(id=report.blog_id).htmlcontent + "</p>"
                     json_dict["reason"] = report.body
-                    json_dict["user_id"] = BlogPost.objects.get(id=report.blog_id).user_id
+                    json_dict["user_id"] = user_id
                     json_dict["user_icon"] = avatar
                     json_dict["user_name_r"] = profile.user.username
                     json_dict["user_id_r"] = report.user_id
@@ -279,7 +279,7 @@ class CreateReport:
                 json_list = []
                 for report in reports:
                     json_dict = {}
-                    user_id = Comment.objects.get(id=report.comment_id).user_id
+                    user_id = Comment.objects.get(id=report.comment_id).user.user_id
                     profile = Profile.objects.get(user_id=user_id)
                     blog = BlogPost.objects.get(id=Comment.objects.get(id=report.comment_id).blog_id)
                     if profile.avatar and hasattr(profile.avatar, 'url'):
@@ -291,7 +291,7 @@ class CreateReport:
                     json_dict["title"] = blog.title
                     json_dict["content"] = Comment.objects.get(id=report.comment_id).body
                     json_dict["reason"] = report.body
-                    json_dict["user_id"] = Comment.objects.get(id=report.comment_id).user_id
+                    json_dict["user_id"] = user_id
                     json_dict["user_icon"] = avatar
                     json_dict["user_name_r"] = profile.user.username
                     json_dict["user_id_r"] = report.user_id
