@@ -17,13 +17,13 @@ from elasticsearch import helpers
 # from elasticsearch._async import helpers
 
 host_list = [
-    '127.0.0.1:9200'
+    "49.234.51.41:9200"
 ]
 
 # 最热专家
 popularAuthors = []
 
-#最热论文
+# 最热论文
 popularPapers = []
 
 
@@ -37,14 +37,14 @@ def update(request):
     file = data.get("file")
     if file == 'paper':
         fpath = '/home/datas/aminer_papers_0.txt'
-    else :
+    else:
         fpath = '/home/datas/aminer_authors_0.txt'
 
     filename = fpath[fpath.rfind("/") + 1::]
     sline = data.get("startline")
     alines = data.get("linesnumber")
     Update_Log.objects.create(filename=filename, updateadministrator_id=aid,
-                                   startlinenum=sline, finishlinenum=sline + alines)
+                              startlinenum=sline, finishlinenum=sline + alines)
 
     ufile = open(fpath, "r")
     bulks = []
@@ -52,8 +52,8 @@ def update(request):
     client = Elasticsearch(host_list)
     # Authors表需要特别处理，对其中pubs对象添加isdisplay字段
 
-    if(file == "paper"):
-        for line in islice(ufile, sline-1, sline+alines-1):
+    if (file == "paper"):
+        for line in islice(ufile, sline - 1, sline + alines - 1):
             line_json = json.loads(line)
             action = ({
                 "_index": "paper",
@@ -67,8 +67,8 @@ def update(request):
 
                 helpers.bulk(client, bulks)
                 bulks.clear()
-    else :
-        for line in islice(ufile, sline-1, sline+alines-1):
+    else:
+        for line in islice(ufile, sline - 1, sline + alines - 1):
             line_json = json.loads(line)
             for pub in line_json['pubs']:
                 pub['isdisplay'] = 1
@@ -87,9 +87,20 @@ def update(request):
 
     ufile.close()
 
-    #获取最热专家和最热论文
+    # 获取最热专家和最热论文
     popularAuthors.clear()
     popularPapers.clear()
+    update_hots()
+
+    return JsonResponse({
+        "status": 0,
+        "message": "update success"
+    })
+
+
+#  更新热门论文和专家
+def update_hots():
+    client = Elasticsearch(host_list)
     body11 = {
         "query": {
             "match_all": {}
@@ -118,18 +129,12 @@ def update(request):
         , "timeout": "1s"
     }
     res = client.search(index="paper", filter_path=['hits.hits._source.id', 'hits.hits._source.title',
-                                                     'hits.hits._source.n_citation'], body=body12, size=10)
+                                                    'hits.hits._source.n_citation'], body=body12, size=10)
 
     if len(res) > 0:
         hits = res['hits']['hits']
         for re in hits:
             popularPapers.append(re['_source'])
-
-
-    return JsonResponse({
-        "status": 0,
-        "message": "update success"
-    })
 
 
 # 根据文件名获取更新记录
@@ -148,7 +153,7 @@ def getupdatebyfilename(request):
     for re in record:
         re['fields']['updateadministrator'] = User.objects.get(id=re['fields']["updateadministrator"]).username
         record_list.append(re['fields'])
-    return JsonResponse(record_list[(pagenum-1)*10: pagenum*10], safe=False)
+    return JsonResponse(record_list[(pagenum - 1) * 10: pagenum * 10], safe=False)
     # return JsonResponse(record, safe=False)
 
 
@@ -225,7 +230,7 @@ def disassociatetoAuthor(request):
     uid = data.get("userid")
 
     user_profile = Profile.objects.get(user_id=uid)
-    aid =user_profile.author_id
+    aid = user_profile.author_id
     user_profile.is_associated = False
     user_profile.author_id = ""
     user_profile.save()
@@ -371,8 +376,8 @@ def getsimilarauthor(request):
             }
         }
         ,
-        "from" : (pagenum - 1)*10,
-        "size" : 10
+        "from": (pagenum - 1) * 10,
+        "size": 10
         , "sort": [
             {
                 "_score": "desc"  # 排序字段，desc降序排序
@@ -388,7 +393,7 @@ def getsimilarauthor(request):
         for re in hits:
             if re['_source']['id'] != aid:
                 res_list.append(re['_source'])
-    return JsonResponse({"total":total, "res": res_list}, safe=False)
+    return JsonResponse({"total": total, "res": res_list}, safe=False)
 
 
 # 相关专家
@@ -431,7 +436,7 @@ def getrelatedauthor(request):
         if re['name'].replace(" ", "") != name:
             res_list.append(re)
 
-    return JsonResponse({"total": len(res_list), "res": res_list[(pagenum - 1)*10 : pagenum*10]}, safe=False)
+    return JsonResponse({"total": len(res_list), "res": res_list[(pagenum - 1) * 10: pagenum * 10]}, safe=False)
 
 
 # 基本检索
@@ -486,24 +491,23 @@ def basicsearch(request):
             }
         ],
         "from": (pagenum - 1) * 10
-        , "size":10
+        , "size": 10
     }
 
     if isran == 1:
         body['query']['bool']['must'].append({
-                        "range": {
-                            "year": {
-                                "gte": lowran,
-                                "lte": highran
-                            }
-                        }
-                    })
+            "range": {
+                "year": {
+                    "gte": lowran,
+                    "lte": highran
+                }
+            }
+        })
 
     if typeid <= 3:
         res = client.search(index="author", filter_path=[], body=body)
     else:
         res = client.search(index="paper", filter_path=[], body=body)
-
 
     total = res['hits']['total']['value']
     res_list = []
@@ -523,6 +527,8 @@ def multisearch(request):
     content = data.get("content")
     typeid1 = data.get("type1")
     content1 = data.get("content1")
+    is_acc = data.get("is_acc",0)
+    is_acc1 = data.get("is_acc1",0)
     boolop = data.get("boolop")
     orderid = data.get("order")
     isasc = data.get("isasc")
@@ -530,108 +536,50 @@ def multisearch(request):
     lowran = data.get("lowrange")
     highran = data.get("highrange")
     pagenum = data.get("pagenumber")
-
+    dic={"and":"must","or":"should","not":"must_not"}
     client = Elasticsearch(host_list)
+    cur = ["match", "match_phrase"]
 
-    if boolop == 'and':
-        body = {
-            "query": {
-                "bool": {
-                    "must": [
-                        {
-                            "match": {
-                                type[typeid]: content
-                            }
-                        },
-                        {
-                            "match": {
-                                type[typeid1]: content1
-                            }
+    body = {
+        "query": {
+            "bool": {
+                dic[boolop]: [
+                    {
+                        cur[is_acc]: {
+                            type[typeid]: content
                         }
-
-                    ]
-                }
-            },
-            "sort": [
-                {
-                    order[orderid]: isascend[isasc]  # 排序字段，desc降序排序
-                }
-            ],
-            "from": (pagenum - 1) * 10
-            , "size":10
-        }
-    elif boolop == 'or':
-        body = {
-            "query": {
-                "bool": {
-                    "must": [],
-                    "should": [
-                        {
-                            "match": {
-                                type[typeid]: content
-                            }
-                        },
-                        {
-                            "match": {
-                                type[typeid1]: content1
-                            }
+                    },
+                    {
+                        cur[is_acc1]: {
+                            type[typeid1]: content1
                         }
-
-                    ]
-                }
-            },
-            "sort": [
-                {
-                    order[orderid]: isascend[isasc]  # 排序字段，desc降序排序
-                }
-            ],
-            "from": (pagenum - 1) * 10
-            , "size":10
-        }
-    else:# if boolop == not:
-        body = {
-            "query": {
-                "bool": {
-                    "must": [],
-                    "must_not": [
-                        {
-                            "match": {
-                                type[typeid]: content
-                            }
-                        },
-                        {
-                            "match": {
-                                type[typeid1]: content1
-                            }
-                        }
-
-                    ]
-                }
-            },
-            "sort": [
-                {
-                    order[orderid]: isascend[isasc]  # 排序字段，desc降序排序
-                }
-            ],
-            "from": (pagenum - 1) * 10
-            , "size":10
-        }
+                    }
+                ]
+            }
+        },
+        "sort": [
+            {
+                order[orderid]: isascend[isasc]  # 排序字段，desc降序排序
+            }
+        ],
+        "from": (pagenum - 1) * 10
+        , "size": 10
+    }
 
     if isran == 1:
-        body['query']['bool']['must'].append({
-                        "range": {
-                            "year": {
-                                "gte": lowran,
-                                "lte": highran
-                            }
-                        }
-                    })
+        body['query']['bool'][dic[boolop]].append({
+            "range": {
+                "year": {
+                    "gte": lowran,
+                    "lte": highran
+                }
+            }
+        })
 
     if typeid <= 3:
-        res = client.search(index="author", filter_path=[], body=body)
+        res = client.search(index="author", body=body)
     else:
-        res = client.search(index="paper", filter_path=[], body=body)
-
+        res = client.search(index="paper", body=body)
 
     total = res['hits']['total']['value']
     res_list = []
@@ -641,10 +589,16 @@ def multisearch(request):
             res_list.append(re['_source'])
     return JsonResponse({"total": total, "res": res_list}, safe=False)
 
+
 def popularauthors(request):
+    if not popularAuthors:
+        update_hots()
     return JsonResponse(popularAuthors, safe=False)
 
+
 def popularpapers(request):
+    if not popularPapers:
+        update_hots()
     return JsonResponse(popularPapers, safe=False)
 
 
@@ -665,7 +619,7 @@ def getpaperbyid(request):
     res = client.search(index="paper", filter_path=['hits.hits._source'], body=body)
     if len(res) > 0:
         return JsonResponse(res['hits']['hits'][0]['_source'], safe=False)
-    else :
+    else:
         return JsonResponse({"result": "no data in DB"})
 
 
@@ -687,7 +641,8 @@ def getauthorbyid(request):
     res = client.search(index="author", filter_path=['hits.hits._source'], body=body)
     if len(res) > 0:
         tatal = len(res['hits']['hits'][0]['_source']['pubs'])
-        res['hits']['hits'][0]['_source']['pubs'] = res['hits']['hits'][0]['_source']['pubs'][(pagenum - 1)*10 : pagenum*10]
+        res['hits']['hits'][0]['_source']['pubs'] = res['hits']['hits'][0]['_source']['pubs'][
+                                                    (pagenum - 1) * 10: pagenum * 10]
         return JsonResponse({"total": tatal, 'res': res['hits']['hits'][0]['_source']}, safe=False)
     else:
         return JsonResponse({"result": "no data in DB"})
