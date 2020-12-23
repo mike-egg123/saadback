@@ -575,49 +575,55 @@ class Personality:
     @staticmethod
     def get_personality(request):
         if request.method == 'POST':
-            # data = json.loads(request.body)
-            user_id = request.user.id
-            user = User.objects.get(id=user_id)
-            # userprofile = Profile.objects.get(user_id = user_id)
-            if Profile.objects.filter(user_id = user_id).exists():
-                userprofile = Profile.objects.get(user_id=user_id)
+            if request.user.is_authenticated:
+                # data = json.loads(request.body)
+                user_id = request.user.id
+                user = User.objects.get(id=user_id)
+                # userprofile = Profile.objects.get(user_id = user_id)
+                if Profile.objects.filter(user_id = user_id).exists():
+                    userprofile = Profile.objects.get(user_id=user_id)
+                else:
+                    userprofile = Profile.objects.create(user_id = user_id)
+                if userprofile.avatar and hasattr(userprofile.avatar, 'url'):
+                    avatar = prefix + str(userprofile.avatar.url)
+                else:
+                    avatar = "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"
+                username = user.username
+                email = user.email
+                phone = userprofile.phone
+                bio = userprofile.bio
+                birthday = userprofile.birthday
+                addr = userprofile.address
+                org = userprofile.org
+                postion = userprofile.position
+                gender = userprofile.gender
+                is_administrator = userprofile.is_administrator
+                is_associated = userprofile.is_associated
+                author_id = userprofile.author_id
+                realname = userprofile.realname
+                return JsonResponse({
+                    "status":0,
+                    "username":username,
+                    "email":email,
+                    "phone":phone,
+                    "bio":bio,
+                    "avatar":avatar,
+                    "userid":user_id,
+                    "birthday":birthday,
+                    "addr":addr,
+                    "org":org,
+                    "postion":postion,
+                    "gender":gender,
+                    "is_admin":is_administrator,
+                    "is_associated":is_associated,
+                    "author_id":author_id,
+                    "realname":realname
+                })
             else:
-                userprofile = Profile.objects.create(user_id = user_id)
-            if userprofile.avatar and hasattr(userprofile.avatar, 'url'):
-                avatar = prefix + str(userprofile.avatar.url)
-            else:
-                avatar = "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"
-            username = user.username
-            email = user.email
-            phone = userprofile.phone
-            bio = userprofile.bio
-            birthday = userprofile.birthday
-            addr = userprofile.address
-            org = userprofile.org
-            postion = userprofile.position
-            gender = userprofile.gender
-            is_administrator = userprofile.is_administrator
-            is_associated = userprofile.is_associated
-            author_id = userprofile.author_id
-            realname = userprofile.realname
-            return JsonResponse({
-                "status":0,
-                "username":username,
-                "email":email,
-                "phone":phone,
-                "bio":bio,
-                "avatar":avatar,
-                "userid":user_id,
-                "birthday":birthday,
-                "addr":addr,
-                "org":org,
-                "postion":postion,
-                "gender":gender,
-                "is_admin":is_administrator,
-                "is_associated":is_associated,
-                "author_id":author_id,
-                "realname":realname
-            })
+                return JsonResponse({
+                    "status":2,
+                    "message":"请先登录！"
+                })
         else:
             return JsonResponse({
                 "status":1,

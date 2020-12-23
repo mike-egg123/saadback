@@ -144,7 +144,7 @@ class Blog:
                 blog = BlogPost.objects.get(id=blogid)
                 blog.readnum = blog.readnum + 1
                 blog.save(update_fields=['readnum'])
-                comments = Comment.objects.filter(blog=blogid)
+                comments = Comment.objects.filter(blog=blogid).order_by("-created")
                 print(9)
                 print(blogid)
                 json_tiplist = []
@@ -215,7 +215,7 @@ class Blog:
             if userid == 0:
                 userid = request.user.id
             profile = Profile.objects.get(user_id=userid)
-            blogs = BlogPost.objects.filter(user=profile)
+            blogs = BlogPost.objects.filter(user=profile).order_by("-created")
             json_list = []
             for blog in blogs:
                 is_like = 0
@@ -508,7 +508,7 @@ class Blog:
                 })
             userid = request.user.id
             profile = Profile.objects.get(user_id=userid)
-            comments = Comment.objects.filter(user=profile)
+            comments = Comment.objects.filter(user=profile).order_by("-created")
             json_list = []
             for comment in comments:
                 json_dict = {}
@@ -551,9 +551,9 @@ class Blog:
             text = data.get("text")
             type = data.get("type")
             if type == 0:
-                blogs = BlogPost.objects.all()
+                blogs = BlogPost.objects.all().order_by("-created")
             else:
-                blogs = BlogPost.objects.filter(type=type)
+                blogs = BlogPost.objects.filter(type=type).order_by("-created")
             json_list = []
             for blog in blogs:
                 if re.search(text, blog.title):
