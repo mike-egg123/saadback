@@ -470,6 +470,33 @@ class Users:
                 "status": 1,
                 "message": "请求方式有误"
             })
+    # 切换管理员状态
+    @staticmethod
+    def change_is_admin(request):
+        if request.method == 'POST':
+            data = json.loads(request.body)
+            email = data.get('email')
+            if User.objects.filter(email=email).exists():
+                user = User.objects.get(email=email)
+                profile = Profile.objects.get(user=user)
+                is_admin = profile.is_administrator
+                profile.is_administrator = not is_admin
+                is_admin = profile.is_administrator
+                profile.save()
+                return JsonResponse({
+                    "status":0,
+                    "new_is_admin":is_admin
+                })
+            else:
+                return JsonResponse({
+                    "status": 1,
+                    "message": "用户不存在"
+                })
+        else:
+            return JsonResponse({
+                "status": 1,
+                "message": "请求方式有误"
+            })
 
 class Personality:
     # 修改与完善用户信息
