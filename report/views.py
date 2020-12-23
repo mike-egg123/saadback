@@ -185,7 +185,7 @@ class CreateReport:
                         if profile.avatar and hasattr(profile.avatar, 'url'):
                             avatar = prefix + str(profile.avatar.url)
                         else:
-                            avatar = ""
+                            avatar = "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"
                         json_dict["report_id"] = report.id
                         json_dict["author_id"] = report.author_id
                         json_dict["reason"] = report.body
@@ -234,7 +234,7 @@ class CreateReport:
                     if profile.avatar and hasattr(profile.avatar, 'url'):
                         avatar = prefix + str(profile.avatar.url)
                     else:
-                        avatar = ""
+                        avatar = "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"
                     json_dict["report_id"] = report.id
                     json_dict["blog_id"] = report.blog_id
                     json_dict["title"] = BlogPost.objects.get(id=report.blog_id).title
@@ -285,7 +285,7 @@ class CreateReport:
                     if profile.avatar and hasattr(profile.avatar, 'url'):
                         avatar = prefix + str(profile.avatar.url)
                     else:
-                        avatar = ""
+                        avatar = "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"
                     json_dict["report_id"] = report.id
                     json_dict["comment_id"] = report.comment_id
                     json_dict["title"] = blog.title

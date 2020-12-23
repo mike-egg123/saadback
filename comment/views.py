@@ -49,7 +49,7 @@ class CreateComment:
                 if userprofile.avatar and hasattr(userprofile.avatar, 'url'):
                     avatar = prefix + str(userprofile.avatar.url)
                 else:
-                    avatar = ""
+                    avatar = "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"
                 return JsonResponse({
                         "error_code": 0,
                         "data": {

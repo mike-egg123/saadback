@@ -42,7 +42,7 @@ class Users:
             if userprofile.avatar and hasattr(userprofile.avatar, 'url'):
                 avatar = prefix + str(userprofile.avatar.url)
             else:
-                avatar = ""
+                avatar = "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"
             return JsonResponse({
                 "status": 0,
                 "username": str(request.user),
@@ -77,7 +77,7 @@ class Users:
                     if userprofile.avatar and hasattr(userprofile.avatar, 'url'):
                         avatar = prefix + str(userprofile.avatar.url)
                     else:
-                        avatar = ""
+                        avatar = "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"
                     return JsonResponse({
                         "status": 0,
                         "message": "Login Success",
@@ -135,6 +135,8 @@ class Users:
                         login(request, login_user)
                         print(1)
                         profile = Profile.objects.create(user=user)
+                        profile.avatar = "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"
+                        profile.save()
                         return JsonResponse({
                             "status": 0,
                             "userid":user.id,
@@ -298,7 +300,7 @@ class Users:
                     if profile.avatar and hasattr(profile.avatar, 'url'):
                         avatar = prefix + str(profile.avatar.url)
                     else:
-                        avatar = ""
+                        avatar = "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"
                     followed_dic['ava_url'] = avatar
                     followed_dic['org'] = profile.org
                     followed_dic['pos'] = profile.position
@@ -558,7 +560,7 @@ class Personality:
             if userprofile.avatar and hasattr(userprofile.avatar, 'url'):
                 avatar = prefix + str(userprofile.avatar.url)
             else:
-                avatar = ""
+                avatar = "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"
             username = user.username
             email = user.email
             phone = userprofile.phone
@@ -611,7 +613,7 @@ class Personality:
             if userprofile.avatar and hasattr(userprofile.avatar, 'url'):
                 avatar = prefix + str(userprofile.avatar.url)
             else:
-                avatar = ""
+                avatar = "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"
             username = user.username
             email = user.email
             phone = userprofile.phone
@@ -667,7 +669,7 @@ class Personality:
                     if profile.avatar and hasattr(profile.avatar, 'url'):
                         avatar = prefix + str(profile.avatar.url)
                     else:
-                        avatar = ""
+                        avatar = "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"
                     json_dict['avatar'] = avatar
                     json_list.append(json_dict)
             return JsonResponse(json_list, safe = False)

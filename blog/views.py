@@ -120,7 +120,7 @@ class Blog:
                     if userprofile.avatar and hasattr(userprofile.avatar, 'url'):
                         avatar = prefix + str(userprofile.avatar.url)
                     else:
-                        avatar = ""
+                        avatar = "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"
 
                     json_dict = {}
                     json_dict["user_id"] = user_id
@@ -352,7 +352,7 @@ class Blog:
             if profile.avatar:
                 avatar = prefix + str(profile.avatar.url)
             else:
-                avatar = ""
+                avatar = "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"
 
             if user:
                 for blog in blogs:
@@ -395,7 +395,7 @@ class Blog:
                 if profile.avatar and hasattr(profile.avatar, 'url'):
                     avatar = prefix + str(profile.avatar.url)
                 else:
-                    avatar = ""
+                    avatar = "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"
                 json_dict['blogname'] = blog.title
                 json_dict['avatar'] = avatar
                 json_dict['readnum'] = blog.readnum
@@ -481,7 +481,7 @@ class Blog:
                 if profile.avatar and hasattr(profile.avatar, 'url'):
                     avatar = prefix + str(profile.avatar.url)
                 else:
-                    avatar = ""
+                    avatar = "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"
                 user = User.objects.get(id=profile.user_id)
                 json_dict['date'] = comment.created
                 json_dict['blogid'] = blog.id
