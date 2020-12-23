@@ -54,10 +54,4 @@ urlpatterns = [
     path('getpaperbyid', views.getpaperbyid),
     #根据id获取门户
     path('getauthorbyid', views.getauthorbyid)
-
-    #高级检索
-
-
-
-
 ]
