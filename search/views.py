@@ -541,7 +541,9 @@ def multisearch(request):
                         {
                             "match": {
                                 type[typeid]: content
-                            },
+                            }
+                        },
+                        {
                             "match": {
                                 type[typeid1]: content1
                             }
@@ -567,7 +569,9 @@ def multisearch(request):
                         {
                             "match": {
                                 type[typeid]: content
-                            },
+                            }
+                        },
+                        {
                             "match": {
                                 type[typeid1]: content1
                             }
@@ -593,7 +597,9 @@ def multisearch(request):
                         {
                             "match": {
                                 type[typeid]: content
-                            },
+                            }
+                        },
+                        {
                             "match": {
                                 type[typeid1]: content1
                             }
