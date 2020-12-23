@@ -210,6 +210,7 @@ class Message:
                         json_dict = {}
                         profile = Profile.objects.get(user_id=imessage.user.id)
                         json_dict["user"] = profile.user.username
+                        json_dict["userid"] = imessage.user.id
                         json_dict["message"] = imessage.message
                         json_dict["message_id"] = imessage.id
                         json_list.append(json_dict)
