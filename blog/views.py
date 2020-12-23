@@ -31,7 +31,7 @@ class Blog:
                 })
             data = json.loads(request.body)
             type = data.get("type")
-            profile = Profile.objects.get(user_id = request.user.id)
+            profile = Profile.objects.get(user_id=request.user.id)
             blog = BlogPost.objects.create(user=profile)
             blog.type = type
             blog.save()
@@ -40,6 +40,42 @@ class Blog:
                 "status": 0,
                 "message": "创建帖子成功",
                 "blogid": blog.id
+            })
+        # 如果用户请求获取数据
+        else:
+            return JsonResponse({
+                "status": 1,
+                "message": "error method"
+            })
+
+    @staticmethod
+    # 删除帖子
+    def deleteBlog(request):
+        # 判断用户是否提交数据
+        if request.method == "POST":
+            if not request.user.is_authenticated:
+                return JsonResponse({
+                    "status": 2,
+                    "massage": "请先登录"
+                })
+            data = json.loads(request.body)
+            blogid = data.get("blogid")
+            profile = Profile.objects.get(user_id=request.user.id)
+            try:
+                blog = BlogPost.objects.filter(user=profile, id=blogid)
+            except:
+                # 不存在这样的帖子
+                return JsonResponse({
+                    "status": 2,
+                    "message": "不存在该帖子",
+                    "blogid": blogid,
+                    "userid": profile.user_id
+                })
+            blog.delete()
+            return JsonResponse({
+                "status": 0,
+                "message": "已删除该帖子",
+                "userid": profile.user_id
             })
         # 如果用户请求获取数据
         else:
@@ -222,7 +258,7 @@ class Blog:
         if request.method == "POST":
             data = json.loads(request.body)
             blogid = data.get("id")
-            like = data.get("type")  # 0 点赞，1 取消点赞
+            like = data.get("type")  # 0 点赞，1取消点赞
             blog = BlogPost.objects.get(id=blogid)
             if not blog:
                 return JsonResponse({

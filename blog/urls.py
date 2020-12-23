@@ -32,4 +32,6 @@ urlpatterns = [
     path('othercollectblog', Blog.get_other_collect_blog),
     # 收藏或者取消收藏帖子
     path('setblogcollect', Blog.setBlogCollect),
+    # 删除帖子
+    path('deleteblog', Blog.deleteBlog)
 ]
