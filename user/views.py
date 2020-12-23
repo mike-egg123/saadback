@@ -14,7 +14,7 @@ from .models import Profile, Follow, StarPaper
 from django.contrib.auth.backends import ModelBackend
 from django.db.models import Q
 
-prefix = "http://49.234.51.41"
+prefix = "http://49.234.51.41/"
 
 
 class CustomBackend(ModelBackend):
@@ -42,7 +42,7 @@ class Users:
             if userprofile.avatar and hasattr(userprofile.avatar, 'url'):
                 avatar = prefix + str(userprofile.avatar.url)
             else:
-                avatar = ""
+                avatar = "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"
             return JsonResponse({
                 "status": 0,
                 "username": str(request.user),
@@ -77,7 +77,7 @@ class Users:
                     if userprofile.avatar and hasattr(userprofile.avatar, 'url'):
                         avatar = prefix + str(userprofile.avatar.url)
                     else:
-                        avatar = ""
+                        avatar = "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"
                     return JsonResponse({
                         "status": 0,
                         "message": "Login Success",
@@ -135,6 +135,7 @@ class Users:
                         login(request, login_user)
                         print(1)
                         profile = Profile.objects.create(user=user)
+                        profile.save()
                         return JsonResponse({
                             "status": 0,
                             "userid":user.id,
@@ -295,11 +296,16 @@ class Users:
                     userid = followed.followed_id
                     followed_dic['userid'] = userid
                     profile = Profile.objects.get(user_id=userid)
-                    followed_dic['ava_url'] = str(profile.avatar)
+                    if profile.avatar and hasattr(profile.avatar, 'url'):
+                        avatar = prefix + str(profile.avatar.url)
+                    else:
+                        avatar = "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"
+                    followed_dic['ava_url'] = avatar
                     followed_dic['org'] = profile.org
                     followed_dic['pos'] = profile.position
                     user = User.objects.get(id=userid)
                     followed_dic['email'] = user.email
+                    followed_dic['username'] = profile.user.username
                     followeds_list.append(followed_dic)
                 # followeds_json = json.dump(followeds_list)
                 return JsonResponse({
@@ -361,6 +367,30 @@ class Users:
                 "message":"请求方式有误"
             })
 
+    # 根据传入的用户id寻找门户id
+    @staticmethod
+    def get_authorid_by_userid(request):
+        if request.method == 'POST':
+            data = json.loads(request.body)
+            userid = data.get('userid')
+            try:
+                profile = Profile.objects.get(user_id=userid)
+            except Exception as e:
+                return JsonResponse({
+                    "status": 0,
+                    "authorid": -1
+                })
+            else:
+                return JsonResponse({
+                    "status": 0,
+                    "authorid": profile.author_id
+                })
+        else:
+            return JsonResponse({
+                "status": 1,
+                "message": "请求方式有误"
+            })
+
     # 收藏学术成果
     @staticmethod
     def star_paper(request):
@@ -384,6 +414,84 @@ class Users:
                     "message": "收藏成功！"
                 })
 
+        else:
+            return JsonResponse({
+                "status": 1,
+                "message": "请求方式有误"
+            })
+
+    # 根据用户id获取收藏学术成果列表
+    @staticmethod
+    def get_star_paper_by_userid(request):
+        if request.method == 'POST':
+            data = json.loads(request.body)
+            userid = data.get("userid")
+            star_paper_list = []
+            if StarPaper.objects.filter(user_id=userid).exists():
+                starpapers = StarPaper.objects.filter(user_id=userid)
+                for starpaper in starpapers:
+                    id = starpaper.paper_id
+                    star_paper_list.append(id)
+                return JsonResponse({
+                    "status":0,
+                    "paper_id_list":star_paper_list
+                })
+            else:
+                return JsonResponse({
+                    "status":0,
+                    "paper_id_list":star_paper_list
+                })
+        else:
+            return JsonResponse({
+                "status":1,
+                "message":"请求方式有误"
+            })
+
+
+    # 获取收藏状态
+    @staticmethod
+    def get_star_status(request):
+        if request.method == 'POST':
+            data = json.loads(request.body)
+            userid = data.get('userid')
+            paperid = data.get('paperid')
+            if StarPaper.objects.filter(user_id=userid, paper_id=paperid).exists():
+                return JsonResponse({
+                    "status":0,
+                    "is_star":True
+                })
+            else:
+                return JsonResponse({
+                    "status": 0,
+                    "is_star": False
+                })
+        else:
+            return JsonResponse({
+                "status": 1,
+                "message": "请求方式有误"
+            })
+    # 切换管理员状态
+    @staticmethod
+    def change_is_admin(request):
+        if request.method == 'POST':
+            data = json.loads(request.body)
+            email = data.get('email')
+            if User.objects.filter(email=email).exists():
+                user = User.objects.get(email=email)
+                profile = Profile.objects.get(user=user)
+                is_admin = profile.is_administrator
+                profile.is_administrator = not is_admin
+                is_admin = profile.is_administrator
+                profile.save()
+                return JsonResponse({
+                    "status":0,
+                    "new_is_admin":is_admin
+                })
+            else:
+                return JsonResponse({
+                    "status": 1,
+                    "message": "用户不存在"
+                })
         else:
             return JsonResponse({
                 "status": 1,
@@ -478,7 +586,7 @@ class Personality:
             if userprofile.avatar and hasattr(userprofile.avatar, 'url'):
                 avatar = prefix + str(userprofile.avatar.url)
             else:
-                avatar = ""
+                avatar = "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"
             username = user.username
             email = user.email
             phone = userprofile.phone
@@ -531,7 +639,7 @@ class Personality:
             if userprofile.avatar and hasattr(userprofile.avatar, 'url'):
                 avatar = prefix + str(userprofile.avatar.url)
             else:
-                avatar = ""
+                avatar = "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"
             username = user.username
             email = user.email
             phone = userprofile.phone
@@ -584,7 +692,11 @@ class Personality:
                     json_dict['userid'] = str(user.id)
                     json_dict['username'] = username
                     profile = Profile.objects.get(user = user)
-                    json_dict['avatar'] = prefix + str(profile.avatar.url)
+                    if profile.avatar and hasattr(profile.avatar, 'url'):
+                        avatar = prefix + str(profile.avatar.url)
+                    else:
+                        avatar = "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"
+                    json_dict['avatar'] = avatar
                     json_list.append(json_dict)
             return JsonResponse(json_list, safe = False)
         else:

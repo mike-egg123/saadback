@@ -58,7 +58,7 @@ class Message:
                         try:
                             json_dict = {}
                             blog = BlogPost.objects.get(id=comment_message.blog_id)
-                            profile = Profile.objects.get(id=comment_message.user_id)
+                            profile = Profile.objects.get(user_id=comment_message.user_id)
                             json_dict["name"] = profile.user.username
                             json_dict["blog_title"] = blog.title
                             json_dict["message_id"] = comment_message.id
@@ -161,7 +161,7 @@ class Message:
                         try:
                             json_dict = {}
                             blog = BlogPost.objects.get(id=star_message.blog.id)
-                            profile = Profile.objects.get(id=star_message.user.id)
+                            profile = Profile.objects.get(user_id=star_message.user.id)
                             json_dict["name"] = profile.user.username
                             json_dict["blog_title"] = blog.title
                             json_dict["message_id"] = star_message.id
@@ -208,7 +208,7 @@ class Message:
                     json_list = []
                     for imessage in imessages:
                         json_dict = {}
-                        profile = Profile.objects.get(id=imessage.user.id)
+                        profile = Profile.objects.get(user_id=imessage.user.id)
                         json_dict["user"] = profile.user.username
                         json_dict["message"] = imessage.message
                         json_dict["message_id"] = imessage.id

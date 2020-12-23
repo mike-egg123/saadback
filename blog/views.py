@@ -16,7 +16,7 @@ import json
 
 from .models import BlogPost, Like, Collect
 
-prefix = "http://49.234.51.41"
+prefix = "http://49.234.51.41/"
 
 class Blog:
     @staticmethod
@@ -31,7 +31,8 @@ class Blog:
                 })
             data = json.loads(request.body)
             type = data.get("type")
-            blog = BlogPost.objects.create(user_id=request.user.id)
+            profile = Profile.objects.get(user_id=request.user.id)
+            blog = BlogPost.objects.create(user=profile)
             blog.type = type
             blog.save()
             # 完成后返回到文章列表
@@ -39,6 +40,42 @@ class Blog:
                 "status": 0,
                 "message": "创建帖子成功",
                 "blogid": blog.id
+            })
+        # 如果用户请求获取数据
+        else:
+            return JsonResponse({
+                "status": 1,
+                "message": "error method"
+            })
+
+    @staticmethod
+    # 删除帖子
+    def deleteBlog(request):
+        # 判断用户是否提交数据
+        if request.method == "POST":
+            if not request.user.is_authenticated:
+                return JsonResponse({
+                    "status": 2,
+                    "massage": "请先登录"
+                })
+            data = json.loads(request.body)
+            blogid = data.get("blogid")
+            profile = Profile.objects.get(user_id=request.user.id)
+            try:
+                blog = BlogPost.objects.filter(user=profile, id=blogid)
+            except:
+                # 不存在这样的帖子
+                return JsonResponse({
+                    "status": 2,
+                    "message": "不存在该帖子",
+                    "blogid": blogid,
+                    "userid": profile.user_id
+                })
+            blog.delete()
+            return JsonResponse({
+                "status": 0,
+                "message": "已删除该帖子",
+                "userid": profile.user_id
             })
         # 如果用户请求获取数据
         else:
@@ -114,12 +151,12 @@ class Blog:
                 print(2)
                 for comment in comments:
                     # 获取用户信息
-                    user_id = int(comment.user.id)
+                    user_id = int(comment.user.user_id)
                     userprofile = Profile.objects.get(user_id=user_id)
                     if userprofile.avatar and hasattr(userprofile.avatar, 'url'):
                         avatar = prefix + str(userprofile.avatar.url)
                     else:
-                        avatar = ""
+                        avatar = "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"
 
                     json_dict = {}
                     json_dict["user_id"] = user_id
@@ -131,6 +168,15 @@ class Blog:
                     json_tiplist.append(json_dict)
                 blog.tipnum = len(json_tiplist)
                 blog.save()
+                profile = Profile.objects.get(user_id=request.user.id)
+                if Like.objects.filter(liker=profile, liked_id=blogid).exists():
+                    is_like = 0
+                else:
+                    is_like = 1
+                if Collect.objects.filter(collector=profile, collectBlog_id=blogid).exists():
+                    is_collect = 0
+                else:
+                    is_collect = 1
                 return JsonResponse({
                     "status": 0,
                     "message": "帖子详情查看成功！",
@@ -143,8 +189,8 @@ class Blog:
                         "readnum": blog.readnum,
                         "tipnum": blog.tipnum,
                         "likenum": blog.likenum,
-                        "is_like": blog.is_like,
-                        "is_collect": blog.is_collect,
+                        "is_like": is_like,
+                        "is_collect": is_collect,
                         "tiplist": json_tiplist
                     }
                 })
@@ -168,9 +214,20 @@ class Blog:
             userid = data.get('id')
             if userid == 0:
                 userid = request.user.id
-            blogs = BlogPost.objects.filter(user_id=userid)
+            profile = Profile.objects.get(user_id=userid)
+            blogs = BlogPost.objects.filter(user=profile)
             json_list = []
             for blog in blogs:
+                is_like = 0
+                profile = Profile.objects.get(user_id=request.user.id)
+                if Like.objects.filter(liker=profile, liked_id=blog.id).exists():
+                    is_like = 0
+                else:
+                    is_like = 1
+                if Collect.objects.filter(collector=profile, collectBlog_id=blog.id).exists():
+                    is_collect = 0
+                else:
+                    is_collect = 1
                 json_dict = {}
                 json_dict["blogid"] = blog.id
                 json_dict["title"] = blog.title
@@ -180,8 +237,8 @@ class Blog:
                 json_dict["readnum"] = blog.readnum
                 json_dict["likenum"] = blog.likenum
                 json_dict["tipnum"] = blog.tipnum
-                json_dict["is_like"] = blog.is_like
-                json_dict["is_collect"] = blog.is_collect
+                json_dict["is_like"] = is_like
+                json_dict["is_collect"] = is_collect
                 json_list.append(json_dict)
             return JsonResponse({
                 "status": 0,
@@ -201,7 +258,7 @@ class Blog:
         if request.method == "POST":
             data = json.loads(request.body)
             blogid = data.get("id")
-            like = data.get("type")  # 0 点赞，1 取消点赞
+            like = data.get("type")  # 0 点赞，1取消点赞
             blog = BlogPost.objects.get(id=blogid)
             if not blog:
                 return JsonResponse({
@@ -209,25 +266,36 @@ class Blog:
                     "message": "不存在该作者或者该帖子"
                 })
             if like == 1:
-                likes = Like.objects.filter(liker_id=request.user.id, liked_id=blogid)
+                blog.is_like = 1
+                blog.save()
+                profile = Profile.objects.get(user_id=request.user.id)
+                likes = Like.objects.filter(liker=profile, liked_id=blogid)
                 for like in likes:
                     like.delete()
                     blog.likenum = blog.likenum - 1
+                    blog.is_like = 1
                     blog.save()
                 return JsonResponse({
                     "status": 0,
                     "message": "dislike success"
                 })
             else:
-                if Like.objects.filter(liker_id=request.user.id, liked_id=blogid):
+                blog.is_like = 0
+                blog.save()
+                profile = Profile.objects.get(user_id=request.user.id)
+                if Like.objects.filter(liker=profile, liked_id=blogid):
+                    blog.is_like = 0
+                    blog.save()
                     return JsonResponse({
                         "status": 2,
                         "isrepeat": "already like"
                     })
                 else:
-                    like = Like.objects.create(liker_id=request.user.id, liked_id=blogid)
+                    profile = Profile.objects.get(user_id=request.user.id)
+                    like = Like.objects.create(liker=profile, liked_id=blogid)
                     like.save()
                     blog.likenum = blog.likenum + 1
+                    blog.is_like = 0
                     blog.save()
                     return JsonResponse({
                         "status": 0,
@@ -240,7 +308,7 @@ class Blog:
             })
 
     @staticmethod
-    # 点赞/取消收藏
+    # 收藏/取消收藏
     def setBlogCollect(request):
         if request.method == "POST":
             if not request.user.is_authenticated:
@@ -258,7 +326,8 @@ class Blog:
                     "message": "不存在该作者或者该帖子"
                 })
             if collect == 1: # 取消收藏
-                collects = Collect.objects.filter(collector_id=request.user.id, collectBlog_id=blogid)
+                profile = Profile.objects.get(user_id=request.user.id)
+                collects = Collect.objects.filter(collector=profile, collectBlog_id=blogid)
                 for collect in collects:
                     collect.delete()
                     blog.is_collect = 1
@@ -268,19 +337,21 @@ class Blog:
                     "message": "discollect success"
                 })
             else:
-                if Collect.objects.filter(collector_id=request.user.id, collectBlog_id=blogid):
+                profile = Profile.objects.get(user_id=request.user.id)
+                if Collect.objects.filter(collector=profile, collectBlog_id=blogid):
                     return JsonResponse({
                         "status": 2,
                         "isrepeat": "already collect"
                     })
                 else:
-                    collect = Collect.objects.create(collector_id=request.user.id, collectBlog_id=blogid)
+                    profile = Profile.objects.get(user_id=request.user.id)
+                    collect = Collect.objects.create(collector=profile, collectBlog_id=blogid)
                     collect.save()
                     blog.is_collect = 0
                     blog.save()
 
                     # 生成消息通知并保存
-                    starmessage = Starmessage.objects.create(user_id=request.user.id, blog_id=blog.id, to_user_id=blog.user.id)
+                    starmessage = Starmessage.objects.create(user_id=request.user.id, blog_id=blog.id, to_user_id=blog.user.user.id)
                     # commentmessage.message = comment_body
                     starmessage.save()
 
@@ -310,11 +381,14 @@ class Blog:
                     "message": "该用户不存在"
                 })
             profile = Profile.objects.get(user_id=userid)
-            blogs = BlogPost.objects.filter(user_id=userid)
+            blogs = BlogPost.objects.filter(user=profile)
             blogNum = 0
             likeNum = 0
             tipNum = 0
-            avatar = prefix + str(profile.avatar.url)
+            if profile.avatar:
+                avatar = prefix + str(profile.avatar.url)
+            else:
+                avatar = "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"
 
             if user:
                 for blog in blogs:
@@ -353,17 +427,17 @@ class Blog:
             json_list = []
             for blog in blogs:
                 json_dict = {}
-                profile = Profile.objects.get(user_id=blog.user_id)
+                profile = blog.user
                 if profile.avatar and hasattr(profile.avatar, 'url'):
                     avatar = prefix + str(profile.avatar.url)
                 else:
-                    avatar = ""
+                    avatar = "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"
                 json_dict['blogname'] = blog.title
                 json_dict['avatar'] = avatar
                 json_dict['readnum'] = blog.readnum
                 json_dict['likenum'] = blog.likenum
                 json_dict['tipnum'] = blog.tipnum
-                json_dict['userid'] = blog.user_id
+                json_dict['userid'] = blog.user.user_id
                 json_dict['textcontent'] = blog.content
                 json_dict['htmlcontent'] = blog.htmlcontent
                 json_dict['blogid'] = blog.id
@@ -393,7 +467,8 @@ class Blog:
             print(user)
             if user:
                 print(userid)
-                blogs = BlogPost.objects.filter(user_id=userid).order_by('-readnum')
+                profile = Profile.objects.get(user_id=userid)
+                blogs = BlogPost.objects.filter(user=profile).order_by('-readnum')
                 json_list = []
                 i = 0
                 for blog in blogs:
@@ -432,24 +507,25 @@ class Blog:
                     "massage": "请先登录"
                 })
             userid = request.user.id
-            comments = Comment.objects.filter(user=userid)
+            profile = Profile.objects.get(user_id=userid)
+            comments = Comment.objects.filter(user=profile)
             json_list = []
             for comment in comments:
                 json_dict = {}
                 blog = comment.blog
-                profile = Profile.objects.get(user_id=blog.user_id)
+                profile = blog.user
                 if profile.avatar and hasattr(profile.avatar, 'url'):
                     avatar = prefix + str(profile.avatar.url)
                 else:
-                    avatar = ""
-                user = User.objects.get(id=blog.user_id)
+                    avatar = "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"
+                user = User.objects.get(id=profile.user_id)
                 json_dict['date'] = comment.created
                 json_dict['blogid'] = blog.id
                 json_dict['blogname'] = blog.title
                 json_dict['content'] = comment.body
                 json_dict['img'] = avatar
                 json_dict['username'] = user.username
-                json_dict['userid'] = blog.user_id
+                json_dict['userid'] = user.id
                 json_dict['readnum'] = blog.readnum
                 json_dict['likenum'] = blog.likenum
                 json_dict['tipnum'] = blog.tipnum
@@ -482,14 +558,14 @@ class Blog:
             for blog in blogs:
                 if re.search(text, blog.title):
                     json_dict = {}
-                    profile = Profile.objects.get(user_id=blog.user_id)
+                    profile = blog.user
                     json_dict['blogname'] = str(blog.title)
                     json_dict['blogid'] = blog.id
                     json_dict['content'] = str(blog.content)
                     json_dict['htmlcontent'] = blog.htmlcontent
                     json_dict['date'] = blog.created
                     json_dict['username'] = str(profile.user.username)
-                    json_dict['userid'] = blog.user_id
+                    json_dict['userid'] = profile.user_id
                     json_dict['readnum'] = blog.readnum
                     json_dict['likenum'] = blog.likenum
                     json_dict['tipnum'] = blog.tipnum
@@ -512,7 +588,8 @@ class Blog:
         if request.method == 'POST':
             data = json.loads(request.body)
             userid = data.get('userid')
-            collects = Collect.objects.filter(collector_id=userid)
+            profile = Profile.objects.get(user_id=userid)
+            collects = Collect.objects.filter(collector=profile)
             print(collects)
             json_list = []
             for collect in collects:
@@ -523,9 +600,9 @@ class Blog:
                 json_dict["title"] = blog.title
                 json_dict["content"] = blog.content
                 json_dict["created"] = blog.created
-                profile = Profile.objects.get(id=blog.user_id)
+                profile = blog.user
                 json_dict["author"] = profile.user.username
-                json_dict["authorid"] = profile.id
+                json_dict["userid"] = profile.user_id
                 json_dict["bio"] = profile.bio
                 # if Collect.objects.filter(collector_id=userid, collectBlog_id=blogid):
                 #     json_dict["is_collect"] = 0
@@ -552,7 +629,8 @@ class Blog:
             userid = data.get('id')
             if userid == 0:
                 userid = request.user.id
-            collects = Collect.objects.filter(collector_id=userid)
+            profile = Profile.objects.get(user_id=userid)
+            collects = Collect.objects.filter(collector=profile)
             print(collects)
             json_list = []
             for collect in collects:
@@ -563,9 +641,9 @@ class Blog:
                 json_dict["title"] = blog.title
                 json_dict["content"] = blog.content
                 json_dict["created"] = blog.created
-                profile = Profile.objects.get(id=blog.user_id)
+                profile = blog.user
                 json_dict["author"] = profile.user.username
-                json_dict["authorid"] = profile.id
+                json_dict["authorid"] = profile.author_id
                 json_dict["bio"] = profile.bio
                 # if Collect.objects.filter(collector_id=userid, collectBlog_id=blogid):
                 #     json_dict["is_collect"] = 0

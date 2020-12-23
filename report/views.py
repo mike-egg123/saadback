@@ -13,6 +13,8 @@ from user.models import Profile
 
 # Create your views here.
 
+prefix = "http://49.234.51.41/"
+
 
 class CreateReport:
     @staticmethod
@@ -85,7 +87,7 @@ class CreateReport:
                 # 生成消息通知并保存
                 blog = BlogPost.objects.get(id=blog_id)
                 reportmessage = Reportmessage.objects.create(blog=blog.id,
-                                                             to_user_id=blog.user.id)
+                                                             to_user_id=blog.user.user.id)
                 # commentmessage.message = comment_body
                 reportmessage.type = 2
                 reportmessage.save()
@@ -132,7 +134,7 @@ class CreateReport:
                 # 生成消息通知并保存
                 comment = Comment.objects.get(id=comment_id)
                 reportmessage = Reportmessage.objects.create(comment=comment.id,
-                                                             to_user_id=comment.user.id)
+                                                             to_user_id=comment.user.user.id)
                 # commentmessage.message = comment_body
                 reportmessage.type = 3
                 reportmessage.save()
@@ -181,9 +183,9 @@ class CreateReport:
                         print(user_id)
                         profile = Profile.objects.get(user_id=user_id)
                         if profile.avatar and hasattr(profile.avatar, 'url'):
-                            avatar = "http://182.92.239.145" + str(profile.avatar.url)
+                            avatar = prefix + str(profile.avatar.url)
                         else:
-                            avatar = ""
+                            avatar = "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"
                         json_dict["report_id"] = report.id
                         json_dict["author_id"] = report.author_id
                         json_dict["reason"] = report.body
@@ -227,18 +229,18 @@ class CreateReport:
                 json_list = []
                 for report in reports:
                     json_dict = {}
-                    user_id = BlogPost.objects.get(id=report.blog_id).user_id
+                    user_id = BlogPost.objects.get(id=report.blog_id).user.user_id
                     profile = Profile.objects.get(user_id=user_id)
                     if profile.avatar and hasattr(profile.avatar, 'url'):
-                        avatar = "http://182.92.239.145" + str(profile.avatar.url)
+                        avatar = prefix + str(profile.avatar.url)
                     else:
-                        avatar = ""
+                        avatar = "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"
                     json_dict["report_id"] = report.id
                     json_dict["blog_id"] = report.blog_id
                     json_dict["title"] = BlogPost.objects.get(id=report.blog_id).title
                     json_dict["content"] = "<p>" + BlogPost.objects.get(id=report.blog_id).htmlcontent + "</p>"
                     json_dict["reason"] = report.body
-                    json_dict["user_id"] = BlogPost.objects.get(id=report.blog_id).user_id
+                    json_dict["user_id"] = user_id
                     json_dict["user_icon"] = avatar
                     json_dict["user_name_r"] = profile.user.username
                     json_dict["user_id_r"] = report.user_id
@@ -277,19 +279,19 @@ class CreateReport:
                 json_list = []
                 for report in reports:
                     json_dict = {}
-                    user_id = Comment.objects.get(id=report.comment_id).user_id
+                    user_id = Comment.objects.get(id=report.comment_id).user.user_id
                     profile = Profile.objects.get(user_id=user_id)
                     blog = BlogPost.objects.get(id=Comment.objects.get(id=report.comment_id).blog_id)
                     if profile.avatar and hasattr(profile.avatar, 'url'):
-                        avatar = "http://182.92.239.145" + str(profile.avatar.url)
+                        avatar = prefix + str(profile.avatar.url)
                     else:
-                        avatar = ""
+                        avatar = "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"
                     json_dict["report_id"] = report.id
                     json_dict["comment_id"] = report.comment_id
                     json_dict["title"] = blog.title
                     json_dict["content"] = Comment.objects.get(id=report.comment_id).body
                     json_dict["reason"] = report.body
-                    json_dict["user_id"] = Comment.objects.get(id=report.comment_id).user_id
+                    json_dict["user_id"] = user_id
                     json_dict["user_icon"] = avatar
                     json_dict["user_name_r"] = profile.user.username
                     json_dict["user_id_r"] = report.user_id
