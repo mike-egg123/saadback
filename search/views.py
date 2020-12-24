@@ -17,7 +17,7 @@ from elasticsearch import helpers
 # from elasticsearch._async import helpers
 
 host_list = [
-    "49.234.51.41:9200"
+    "127.0.0.1:9200"
 ]
 
 # 最热专家
