@@ -359,40 +359,44 @@ def getsimilarauthor(request):
     }
 
     res = client.search(index="author", filter_path=['hits.hits._source'], body=body)
-    tags = res["hits"]["hits"][0]["_source"]["tags"]
-
-    sd = []
-    for tag in tags:
-        taginfo = tag["t"]
-        sd.append({
-            "match": {
-                "tags.t": taginfo
-            }
-        })
+    author = res["hits"]["hits"][0]["_source"]
+    if 'tags' in author :
+        tags = author['tags']
+        if len(tags)>0:
+            tag = tags[0]["t"]
+    else:
+        return JsonResponse({"total": 0, "res": []}, safe=False)
     body = {
         "query": {
             "bool": {
-                "should": sd
+                "should": [
+                    {
+                        "match": {
+                            "tags.t": tag
+                        }
+
+                    }
+
+                ]
             }
         }
-        ,
-        "from": (pagenum - 1) * 10,
-        "size": 10
         , "sort": [
             {
-                "_score": "desc"  # 排序字段，desc降序排序
+                '_score': 'desc'  # 排序字段，desc降序排序
             }
-        ]
+        ],
+        "from": (pagenum - 1) * 10
+        , "size": 10
     }
 
     res = client.search(index="author", filter_path=[], body=body)
+
     total = res['hits']['total']['value']
     res_list = []
     if len(res['hits']['hits']) > 0:
         hits = res['hits']['hits']
         for re in hits:
-            if re['_source']['id'] != aid:
-                res_list.append(re['_source'])
+            res_list.append(re['_source'])
     return JsonResponse({"total": total, "res": res_list}, safe=False)
 
 
